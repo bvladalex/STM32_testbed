@@ -1,0 +1,114 @@
+19:21:19 **** Build of configuration Debug for project led_toggle_int ****
+make -j12 all 
+Building file: ../startup/startup_stm32.s
+Building file: ../startup/sysmem.c
+Building file: ../src/core_cm3.c
+Building file: ../src/main.c
+Invoking: MCU GCC Assembler
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+Building file: ../src/misc.c
+Invoking: MCU GCC Compiler
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+arm-none-eabi-as -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -g -o "startup/startup_stm32.o" "../startup/startup_stm32.s"
+Invoking: MCU GCC Compiler
+Building file: ../src/stm32f10x_adc.c
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"startup/sysmem.d" -MT"startup/sysmem.o" -o "startup/sysmem.o" "../startup/sysmem.c"
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/core_cm3.d" -MT"src/core_cm3.o" -o "src/core_cm3.o" "../src/core_cm3.c"
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+Invoking: MCU GCC Compiler
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/misc.d" -MT"src/misc.o" -o "src/misc.o" "../src/misc.c"
+Building file: ../src/stm32f10x_bkp.c
+Building file: ../src/stm32f10x_can.c
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+Invoking: MCU GCC Compiler
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_adc.d" -MT"src/stm32f10x_adc.o" -o "src/stm32f10x_adc.o" "../src/stm32f10x_adc.c"
+Building file: ../src/stm32f10x_cec.c
+Invoking: MCU GCC Compiler
+Building file: ../src/stm32f10x_crc.c
+Building file: ../src/stm32f10x_dac.c
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+Invoking: MCU GCC Compiler
+Building file: ../src/stm32f10x_dbgmcu.c
+Invoking: MCU GCC Compiler
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_bkp.d" -MT"src/stm32f10x_bkp.o" -o "src/stm32f10x_bkp.o" "../src/stm32f10x_bkp.c"
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_can.d" -MT"src/stm32f10x_can.o" -o "src/stm32f10x_can.o" "../src/stm32f10x_can.c"
+Invoking: MCU GCC Compiler
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+Invoking: MCU GCC Compiler
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_cec.d" -MT"src/stm32f10x_cec.o" -o "src/stm32f10x_cec.o" "../src/stm32f10x_cec.c"
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_crc.d" -MT"src/stm32f10x_crc.o" -o "src/stm32f10x_crc.o" "../src/stm32f10x_crc.c"
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+D:\Electro stuff\stm32_workspace\led_toggle_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_dac.d" -MT"src/stm32f10x_dac.o" -o "src/stm32f10x_dac.o" "../src/stm32f10x_dac.c"
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_dbgmcu.d" -MT"src/stm32f10x_dbgmcu.o" -o "src/stm32f10x_dbgmcu.o" "../src/stm32f10x_dbgmcu.c"
+../src/main.c:24:10: fatal error: stm32f10x_gpio.h: No such file or directory
+ #include "stm32f10x_gpio.h"
+          ^~~~~~~~~~~~~~~~~~
+compilation terminated.
+src/subdir.mk:96: recipe for target 'src/main.o' failed
+make: *** [src/main.o] Error 1
+make: *** Waiting for unfinished jobs....
+../src/stm32f10x_adc.c:23:10: fatal error: stm32f10x_adc.h: No such file or directory
+ #include "stm32f10x_adc.h"
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+../src/misc.c:24:10: fatal error: misc.h: No such file or directory
+ #include "misc.h"
+          ^~~~~~~~
+compilation terminated.
+make: *** [src/stm32f10x_adc.o] Error 1
+src/subdir.mk:96: recipe for target 'src/stm32f10x_adc.o' failed
+src/subdir.mk:96: recipe for target 'src/misc.o' failed
+make: *** [src/misc.o] Error 1
+Finished building: ../startup/startup_stm32.s
+../src/stm32f10x_bkp.c:23:10: fatal error: stm32f10x_bkp.h: No such file or directory
+ #include "stm32f10x_bkp.h"
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+../src/stm32f10x_cec.c:23:10: fatal error: stm32f10x_cec.h: No such file or directory
+ #include "stm32f10x_cec.h"
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+src/subdir.mk:96: recipe for target 'src/stm32f10x_bkp.o' failed
+make: *** [src/stm32f10x_bkp.o] Error 1
+ 
+../src/stm32f10x_crc.c:23:10: fatal error: stm32f10x_crc.h: No such file or directory
+ #include "stm32f10x_crc.h"
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+../src/stm32f10x_can.c:23:10: fatal error: stm32f10x_can.h: No such file or directory
+ #include "stm32f10x_can.h"
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+src/subdir.mk:96: recipe for target 'src/stm32f10x_cec.o' failed
+make: *** [src/stm32f10x_cec.o] Error 1
+../src/stm32f10x_dac.c:23:10: fatal error: stm32f10x_dac.h: No such file or directory
+ #include "stm32f10x_dac.h"
+          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+../src/stm32f10x_dbgmcu.c:23:10: fatal error: stm32f10x_dbgmcu.h: No such file or directory
+ #include "stm32f10x_dbgmcu.h"
+          ^~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [src/stm32f10x_can.o] Error 1
+src/subdir.mk:96: recipe for target 'src/stm32f10x_can.o' failed
+make: *** [src/stm32f10x_crc.o] Error 1
+make: *** [src/stm32f10x_dac.o] Error 1
+src/subdir.mk:96: recipe for target 'src/stm32f10x_crc.o' failed
+src/subdir.mk:96: recipe for target 'src/stm32f10x_dac.o' failed
+src/subdir.mk:96: recipe for target 'src/stm32f10x_dbgmcu.o' failed
+make: *** [src/stm32f10x_dbgmcu.o] Error 1
+Finished building: ../startup/sysmem.c
+Finished building: ../src/core_cm3.c
+ 
+ 
+
+19:21:20 Build Finished (took 1s.514ms)
+

@@ -1,0 +1,142 @@
+/**
+  ******************************************************************************
+  * @file    GPIO/IOToggle/main.c 
+  * @author  MCD Application Team
+  * @version V3.5.0
+  * @date    08-April-2011
+  * @brief   Main program body.
+  ******************************************************************************
+  * @attention
+  *
+  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  *
+  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  ******************************************************************************
+  */ 
+
+/* Includes ------------------------------------------------------------------*/
+//#include "stm32f10x.h"
+#include "stm32f10x_gpio.h"
+#include "stm32f10x_rcc.h"
+//#include "stm32f10x_conf.h"
+//#include "stm32_eval.h"
+
+/** @addtogroup STM32F10x_StdPeriph_Examples
+  * @{
+  */
+
+/** @addtogroup GPIO_IOToggle
+  * @{
+  */
+
+/* Private typedef -----------------------------------------------------------*/
+	GPIO_InitTypeDef GPIO_InitStructure;
+	EXTI_InitTypeDef* EXTI_InitStruct;
+	NVIC_InitTypeDef* NVIC_InitStruct;
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+
+
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+
+/**
+  * @brief  Main program.
+  * @param  None
+  * @retval None
+  */
+int main(void)
+{
+  /*!< At this stage the microcontroller clock setting is already configured, 
+       this is done through SystemInit() function which is called from startup
+       file (startup_stm32f10x_xx.s) before to branch to application main.
+       To reconfigure the default setting of SystemInit() function, refer to
+       system_stm32f10x.c file
+     */     
+
+
+       
+  /* GPIOD Periph clock enable */
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+  /* Configure PB1 in output pushpull mode */
+  /*
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+  */
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(GPIOC, &GPIO_InitStructure);
+  GPIOC->BSRR = 0x00002000;
+
+  /* Configure PB0 in input floating mode */
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+  //GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+  //configure NVIC
+  GPIOC->BRR = 0x00002000;
+  NVIC_InitStruct->NVIC_IRQChannel=EXTI0_IRQn;
+
+  NVIC_InitStruct->NVIC_IRQChannelCmd=ENABLE;
+  NVIC_InitStruct->NVIC_IRQChannelPreemptionPriority=0;
+  NVIC_InitStruct->NVIC_IRQChannelSubPriority=0;
+  NVIC_Init(NVIC_InitStruct);
+
+
+
+  //configure GPIO reg part of EXTI configuration
+
+  GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource0);
+  //continue with EXTI regs
+  //EXTI_StructInit(EXTI_InitStruct);
+  EXTI_InitStruct->EXTI_Line=EXTI_Line0;
+  EXTI_InitStruct->EXTI_LineCmd=ENABLE;
+  EXTI_InitStruct->EXTI_Mode=EXTI_Mode_Interrupt;
+  EXTI_InitStruct->EXTI_Trigger=EXTI_Trigger_Rising_Falling;
+
+  EXTI_Init(EXTI_InitStruct);
+
+  /* To achieve GPIO toggling maximum frequency, the following  sequence is mandatory. 
+     You can monitor PD0 or PD2 on the scope to measure the output signal. 
+     If you need to fine tune this frequency, you can add more GPIO set/reset 
+     cycles to minimize more the infinite loop timing.
+     This code needs to be compiled with high speed optimization option.  */
+  while (1)
+  {
+    /* Set PD0 and PD2 */
+	  //GPIOC->BRR = 0x00002000;
+
+
+  }
+}
+
+
+
+void EXTI0_IRQHandler(void){
+	EXTI_ClearITPendingBit(EXTI_Line0);
+	EXTI_ClearFlag(EXTI_Line0);
+	//GPIOC->BRR = 0x00002000;
+}
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;IOToggle&apos;" deleteContents="false" description="Delete resource &apos;IOToggle&apos;" element1="/IOToggle" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1626463317681"/>
+</session>
