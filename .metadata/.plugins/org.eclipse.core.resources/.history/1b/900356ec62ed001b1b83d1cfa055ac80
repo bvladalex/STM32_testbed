@@ -25,7 +25,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 /* Uncomment/Comment the line below to enable/disable peripheral header file inclusion */
-/#include "stm32f10x_adc.h"
+#include "stm32f10x_adc.h"
 #include "stm32f10x_bkp.h"
 #include "stm32f10x_can.h"
 #include "stm32f10x_cec.h"
@@ -47,7 +47,7 @@
 #include "stm32f10x_tim.h"
 #include "stm32f10x_usart.h"
 #include "stm32f10x_wwdg.h"
-#include "misc.h" /* High level functions for NVIC and SysTick (add-on to CMSIS functions) */
+//#include "misc.h" /* High level functions for NVIC and SysTick (add-on to CMSIS functions) */
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -71,6 +71,8 @@
 #else
   #define assert_param(expr) ((void)0)
 #endif /* USE_FULL_ASSERT */
+
+#include "misc.h" /* High level functions for NVIC and SysTick (add-on to CMSIS functions) */
 
 #endif /* __STM32F10x_CONF_H */
 
