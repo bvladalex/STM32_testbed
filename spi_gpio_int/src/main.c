@@ -62,6 +62,9 @@ int main(void)
 	  /* EXTI configuration ------------------------------------------------------*/
 	  EXTI_Configuration();
 
+	  /* SPI1 configuration ------------------------------------------------------*/
+	  SPI_Configuration();
+
   while (1)
   {
 	  //a=5;
@@ -81,7 +84,7 @@ void EXTI0_IRQHandler(void){
 	a ^= 1;
 	//check if buffer tx buf is empty and if so, load it
 	while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
-	SPI_I2S_SendData(SPI1,buff_tx[1]);
+	SPI_I2S_SendData(SPI1,buff_tx[0]);
 	//GPIOC->BSRR = 0x00002000;
 }
 
@@ -96,7 +99,9 @@ void EXTI0_IRQHandler(void){
 void RCC_Configuration(void){
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 
 }
 void GPIO_Configuration(void){
@@ -116,6 +121,15 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
+	//start configuration for SPI1 on PORTA
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 }
 void NVIC_Configuration(void){
@@ -164,7 +178,7 @@ void SPI_Configuration(void){
 	SPI_SSOutputCmd(SPI1,ENABLE);
 
 	SPI_Init(SPI1,&SPI_InitStruct);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1,ENABLE);
+
 	SPI_Cmd(SPI1,ENABLE);
 }
 
