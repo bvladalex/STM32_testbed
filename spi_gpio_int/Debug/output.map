@@ -2438,6 +2438,8 @@ Discarded input sections
                 0x00000000       0x18 src/stm32f10x_spi.o
  .text.SPI_NSSInternalSoftwareConfig
                 0x00000000       0x42 src/stm32f10x_spi.o
+ .text.SPI_SSOutputCmd
+                0x00000000       0x3e src/stm32f10x_spi.o
  .text.SPI_DataSizeConfig
                 0x00000000       0x36 src/stm32f10x_spi.o
  .text.SPI_TransmitCRC
@@ -3285,100 +3287,97 @@ LOAD c:/ac6/systemworkbench/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.17
  *(.text)
  .text          0x08000130       0x40 c:/ac6/systemworkbench/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.17.0.201812190825/tools/compiler/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7-m/crtbegin.o
  *(.text*)
- .text.main     0x08000170       0x1a src/main.o
+ .text.main     0x08000170       0x28 src/main.o
                 0x08000170                main
- *fill*         0x0800018a        0x2 
  .text.EXTI0_IRQHandler
-                0x0800018c       0x60 src/main.o
-                0x0800018c                EXTI0_IRQHandler
+                0x08000198       0x84 src/main.o
+                0x08000198                EXTI0_IRQHandler
  .text.RCC_Configuration
-                0x080001ec       0x32 src/main.o
-                0x080001ec                RCC_Configuration
- *fill*         0x0800021e        0x2 
+                0x0800021c       0x32 src/main.o
+                0x0800021c                RCC_Configuration
+ *fill*         0x0800024e        0x2 
  .text.GPIO_Configuration
-                0x08000220       0x68 src/main.o
-                0x08000220                GPIO_Configuration
+                0x08000250       0x7c src/main.o
+                0x08000250                GPIO_Configuration
  .text.NVIC_Configuration
-                0x08000288       0x34 src/main.o
-                0x08000288                NVIC_Configuration
+                0x080002cc       0x34 src/main.o
+                0x080002cc                NVIC_Configuration
  .text.EXTI_Configuration
-                0x080002bc       0x2e src/main.o
-                0x080002bc                EXTI_Configuration
- *fill*         0x080002ea        0x2 
+                0x08000300       0x2e src/main.o
+                0x08000300                EXTI_Configuration
+ *fill*         0x0800032e        0x2 
  .text.SPI_Configuration
-                0x080002ec       0x54 src/main.o
-                0x080002ec                SPI_Configuration
+                0x08000330       0x4c src/main.o
+                0x08000330                SPI_Configuration
  .text.toggle_led
-                0x08000340       0x38 src/main.o
-                0x08000340                toggle_led
+                0x0800037c       0x38 src/main.o
+                0x0800037c                toggle_led
  .text.NVIC_Init
-                0x08000378       0xc4 src/misc.o
-                0x08000378                NVIC_Init
+                0x080003b4       0xc4 src/misc.o
+                0x080003b4                NVIC_Init
  .text.EXTI_Init
-                0x0800043c       0xe4 src/stm32f10x_exti.o
-                0x0800043c                EXTI_Init
+                0x08000478       0xe4 src/stm32f10x_exti.o
+                0x08000478                EXTI_Init
  .text.EXTI_ClearFlag
-                0x08000520       0x1c src/stm32f10x_exti.o
-                0x08000520                EXTI_ClearFlag
+                0x0800055c       0x1c src/stm32f10x_exti.o
+                0x0800055c                EXTI_ClearFlag
  .text.EXTI_ClearITPendingBit
-                0x0800053c       0x1c src/stm32f10x_exti.o
-                0x0800053c                EXTI_ClearITPendingBit
+                0x08000578       0x1c src/stm32f10x_exti.o
+                0x08000578                EXTI_ClearITPendingBit
  .text.GPIO_Init
-                0x08000558      0x178 src/stm32f10x_gpio.o
-                0x08000558                GPIO_Init
+                0x08000594      0x178 src/stm32f10x_gpio.o
+                0x08000594                GPIO_Init
  .text.GPIO_SetBits
-                0x080006d0       0x1c src/stm32f10x_gpio.o
-                0x080006d0                GPIO_SetBits
+                0x0800070c       0x1c src/stm32f10x_gpio.o
+                0x0800070c                GPIO_SetBits
  .text.GPIO_ResetBits
-                0x080006ec       0x1c src/stm32f10x_gpio.o
-                0x080006ec                GPIO_ResetBits
+                0x08000728       0x1c src/stm32f10x_gpio.o
+                0x08000728                GPIO_ResetBits
  .text.GPIO_EXTILineConfig
-                0x08000708       0x80 src/stm32f10x_gpio.o
-                0x08000708                GPIO_EXTILineConfig
+                0x08000744       0x80 src/stm32f10x_gpio.o
+                0x08000744                GPIO_EXTILineConfig
  .text.NMI_Handler
-                0x08000788        0xc src/stm32f10x_it.o
-                0x08000788                NMI_Handler
- .text.HardFault_Handler
-                0x08000794        0x6 src/stm32f10x_it.o
-                0x08000794                HardFault_Handler
- .text.MemManage_Handler
-                0x0800079a        0x6 src/stm32f10x_it.o
-                0x0800079a                MemManage_Handler
- .text.BusFault_Handler
-                0x080007a0        0x6 src/stm32f10x_it.o
-                0x080007a0                BusFault_Handler
- .text.UsageFault_Handler
-                0x080007a6        0x6 src/stm32f10x_it.o
-                0x080007a6                UsageFault_Handler
- .text.SVC_Handler
-                0x080007ac        0xc src/stm32f10x_it.o
-                0x080007ac                SVC_Handler
- .text.DebugMon_Handler
-                0x080007b8        0xc src/stm32f10x_it.o
-                0x080007b8                DebugMon_Handler
- .text.PendSV_Handler
                 0x080007c4        0xc src/stm32f10x_it.o
-                0x080007c4                PendSV_Handler
+                0x080007c4                NMI_Handler
+ .text.HardFault_Handler
+                0x080007d0        0x6 src/stm32f10x_it.o
+                0x080007d0                HardFault_Handler
+ .text.MemManage_Handler
+                0x080007d6        0x6 src/stm32f10x_it.o
+                0x080007d6                MemManage_Handler
+ .text.BusFault_Handler
+                0x080007dc        0x6 src/stm32f10x_it.o
+                0x080007dc                BusFault_Handler
+ .text.UsageFault_Handler
+                0x080007e2        0x6 src/stm32f10x_it.o
+                0x080007e2                UsageFault_Handler
+ .text.SVC_Handler
+                0x080007e8        0xc src/stm32f10x_it.o
+                0x080007e8                SVC_Handler
+ .text.DebugMon_Handler
+                0x080007f4        0xc src/stm32f10x_it.o
+                0x080007f4                DebugMon_Handler
+ .text.PendSV_Handler
+                0x08000800        0xc src/stm32f10x_it.o
+                0x08000800                PendSV_Handler
  .text.SysTick_Handler
-                0x080007d0        0xc src/stm32f10x_it.o
-                0x080007d0                SysTick_Handler
+                0x0800080c        0xc src/stm32f10x_it.o
+                0x0800080c                SysTick_Handler
  .text.RCC_APB2PeriphClockCmd
-                0x080007dc       0x3c src/stm32f10x_rcc.o
-                0x080007dc                RCC_APB2PeriphClockCmd
+                0x08000818       0x3c src/stm32f10x_rcc.o
+                0x08000818                RCC_APB2PeriphClockCmd
  .text.SPI_Init
-                0x08000818       0x86 src/stm32f10x_spi.o
-                0x08000818                SPI_Init
- .text.SPI_Cmd  0x0800089e       0x3e src/stm32f10x_spi.o
-                0x0800089e                SPI_Cmd
+                0x08000854       0x86 src/stm32f10x_spi.o
+                0x08000854                SPI_Init
+ .text.SPI_Cmd  0x080008da       0x3e src/stm32f10x_spi.o
+                0x080008da                SPI_Cmd
  .text.SPI_I2S_SendData
-                0x080008dc       0x1c src/stm32f10x_spi.o
-                0x080008dc                SPI_I2S_SendData
- .text.SPI_SSOutputCmd
-                0x080008f8       0x3e src/stm32f10x_spi.o
-                0x080008f8                SPI_SSOutputCmd
+                0x08000918       0x1c src/stm32f10x_spi.o
+                0x08000918                SPI_I2S_SendData
  .text.SPI_I2S_GetFlagStatus
-                0x08000936       0x36 src/stm32f10x_spi.o
-                0x08000936                SPI_I2S_GetFlagStatus
+                0x08000934       0x36 src/stm32f10x_spi.o
+                0x08000934                SPI_I2S_GetFlagStatus
+ *fill*         0x0800096a        0x2 
  .text.SystemInit
                 0x0800096c       0x68 src/system_stm32f10x.o
                 0x0800096c                SystemInit
@@ -3745,16 +3744,16 @@ OUTPUT(spi_gpio_int.elf elf32-littlearm)
  .debug_macro   0x0000c809      0x2be src/stm32f10x_spi.o
  .debug_macro   0x0000cac7      0x188 src/system_stm32f10x.o
 
-.debug_line     0x00000000     0x323a
- .debug_line    0x00000000      0x5ae src/main.o
- .debug_line    0x000005ae      0x556 src/misc.o
- .debug_line    0x00000b04      0x5ad src/stm32f10x_exti.o
- .debug_line    0x000010b1      0x6d7 src/stm32f10x_gpio.o
- .debug_line    0x00001788      0x5a4 src/stm32f10x_it.o
- .debug_line    0x00001d2c      0x7d3 src/stm32f10x_rcc.o
- .debug_line    0x000024ff      0x722 src/stm32f10x_spi.o
- .debug_line    0x00002c21      0x59d src/system_stm32f10x.o
- .debug_line    0x000031be       0x7c startup/startup_stm32.o
+.debug_line     0x00000000     0x3247
+ .debug_line    0x00000000      0x5bb src/main.o
+ .debug_line    0x000005bb      0x556 src/misc.o
+ .debug_line    0x00000b11      0x5ad src/stm32f10x_exti.o
+ .debug_line    0x000010be      0x6d7 src/stm32f10x_gpio.o
+ .debug_line    0x00001795      0x5a4 src/stm32f10x_it.o
+ .debug_line    0x00001d39      0x7d3 src/stm32f10x_rcc.o
+ .debug_line    0x0000250c      0x722 src/stm32f10x_spi.o
+ .debug_line    0x00002c2e      0x59d src/system_stm32f10x.o
+ .debug_line    0x000031cb       0x7c startup/startup_stm32.o
 
 .debug_str      0x00000000    0x4f049
  .debug_str     0x00000000    0x4d784 src/main.o

@@ -39,7 +39,7 @@ void NVIC_Configuration(void);
 void EXTI_Configuration(void);
 void SPI_Configuration(void);
 void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value);
-uint8_t buff_tx[2] = {0x06, 0x0c};
+uint8_t buff_tx[2] = {0x04, 0x0c};
 
 /**
   * @brief  Main program.
@@ -65,6 +65,9 @@ int main(void)
 	  /* SPI1 configuration ------------------------------------------------------*/
 	  SPI_Configuration();
 
+	  //Set NSS pin of SPI1 to HI as GPIO
+	  GPIO_SetBits(GPIOA, GPIO_Pin_4);
+
   while (1)
   {
 	  //a=5;
@@ -83,8 +86,11 @@ void EXTI0_IRQHandler(void){
 	toggle_led(GPIOC,GPIO_Pin_13,a);
 	a ^= 1;
 	//check if buffer tx buf is empty and if so, load it
+	GPIO_ResetBits(GPIOA,GPIO_Pin_4);
 	while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
 	SPI_I2S_SendData(SPI1,buff_tx[0]);
+	while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
+	GPIO_SetBits(GPIOA, GPIO_Pin_4);
 	//GPIOC->BSRR = 0x00002000;
 }
 
@@ -123,12 +129,16 @@ void GPIO_Configuration(void){
 
 	//start configuration for SPI1 on PORTA
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 }
@@ -173,9 +183,9 @@ void SPI_Configuration(void){
 	SPI_InitStruct.SPI_Direction=SPI_Direction_2Lines_FullDuplex;
 	SPI_InitStruct.SPI_FirstBit=SPI_FirstBit_MSB;
 	SPI_InitStruct.SPI_Mode=SPI_Mode_Master;
-	SPI_InitStruct.SPI_NSS=SPI_NSS_Hard;
+	SPI_InitStruct.SPI_NSS=SPI_NSS_Soft;
 
-	SPI_SSOutputCmd(SPI1,ENABLE);
+	//SPI_SSOutputCmd(SPI1,ENABLE);
 
 	SPI_Init(SPI1,&SPI_InitStruct);
 
