@@ -1,0 +1,23 @@
+21:51:05 **** Incremental Build of configuration Debug for project i2c_lcd_test ****
+make -j8 all 
+Building file: ../src/main.c
+Invoking: MCU GCC Compiler
+D:\stm_workspace\i2c_lcd_test\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/i2c_lcd_test/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+Finished building: ../src/main.c
+ 
+Building target: i2c_lcd_test.elf
+Invoking: MCU GCC Linker
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -T"D:/stm_workspace/i2c_lcd_test/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "i2c_lcd_test.elf" @"objects.list"   -lm
+Finished building target: i2c_lcd_test.elf
+ 
+make --no-print-directory post-build
+Generating binary and Printing size information:
+arm-none-eabi-objcopy -O binary "i2c_lcd_test.elf" "i2c_lcd_test.bin"
+arm-none-eabi-size "i2c_lcd_test.elf"
+   text	   data	    bss	    dec	    hex	filename
+   1916	   1080	   1092	   4088	    ff8	i2c_lcd_test.elf
+ 
+
+21:51:07 Build Finished (took 1s.739ms)
+

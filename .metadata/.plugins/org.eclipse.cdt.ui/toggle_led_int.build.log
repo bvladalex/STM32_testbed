@@ -1,44 +1,191 @@
-22:43:35 **** Programming project toggle_led_int on chip ****
-"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.3796545767691691784.cfg -s "D:\\Electro stuff\\stm32_workspace\\toggle_led_int" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/toggle_led_int.elf verify reset " -c shutdown 
-Open On-Chip Debugger 0.10.0+dev-00021-g524e8c8 (2019-04-12-08:48)
-Licensed under GNU GPL v2
-For bug reports, read
-	http://openocd.org/doc/doxygen/bugs.html
-none separate
-Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
-adapter speed: 8000 kHz
-adapter_nsrst_delay: 100
-Info : clock speed 8000 kHz
-Info : STLINK v2 JTAG v29 API v2 SWIM v7 VID 0x0483 PID 0x3748
-Info : using stlink api v2
-Info : Target voltage: 3.188527
-Info : Unable to match requested speed 8000 kHz, using 4000 kHz
-Info : Stlink adapter speed set to 4000 kHz
-Info : STM32F103C8Tx.cpu: hardware has 6 breakpoints, 4 watchpoints
-Info : Listening on port 3333 for gdb connections
-target halted due to debug-request, current mode: Thread 
-xPSR: 0x01000000 pc: 0x0800094c msp: 0x20005000
-Info : Unable to match requested speed 8000 kHz, using 4000 kHz
-Info : Stlink adapter speed set to 4000 kHz
-Info : Unable to match requested speed 8000 kHz, using 4000 kHz
-adapter speed: 4000 kHz
-** Programming Started **
-auto erase enabled
-Info : device id = 0x20036410
-Info : flash size = 64kbytes
-target halted due to breakpoint, current mode: Thread 
-xPSR: 0x61000000 pc: 0x2000003a msp: 0x20005000
-wrote 4096 bytes from file Debug/toggle_led_int.elf in 0.393089s (10.176 KiB/s)
-** Programming Finished **
-** Verify Started **
-target halted due to breakpoint, current mode: Thread 
-xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
-target halted due to breakpoint, current mode: Thread 
-xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
-verified 3816 bytes in 0.093021s (40.062 KiB/s)
-** Verified OK **
-** Resetting Target **
-shutdown command invoked
+21:36:10 **** Build of configuration Debug for project toggle_led_int ****
+make -j8 all 
+Building file: ../startup/startup_stm32.s
+Building file: ../startup/sysmem.c
+Building file: ../src/core_cm3.c
+Invoking: MCU GCC Assembler
+Invoking: MCU GCC Compiler
+Building file: ../src/main.c
+Invoking: MCU GCC Compiler
+D:\stm_workspace\toggle_led_int\Debug
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-as -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -g -o "startup/startup_stm32.o" "../startup/startup_stm32.s"
+Invoking: MCU GCC Compiler
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"startup/sysmem.d" -MT"startup/sysmem.o" -o "startup/sysmem.o" "../startup/sysmem.c"
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/core_cm3.d" -MT"src/core_cm3.o" -o "src/core_cm3.o" "../src/core_cm3.c"
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+Building file: ../src/misc.c
+Building file: ../src/stm32f10x_adc.c
+Building file: ../src/stm32f10x_bkp.c
+Building file: ../src/stm32f10x_can.c
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/misc.d" -MT"src/misc.o" -o "src/misc.o" "../src/misc.c"
+D:\stm_workspace\toggle_led_int\Debug
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_adc.d" -MT"src/stm32f10x_adc.o" -o "src/stm32f10x_adc.o" "../src/stm32f10x_adc.c"
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_bkp.d" -MT"src/stm32f10x_bkp.o" -o "src/stm32f10x_bkp.o" "../src/stm32f10x_bkp.c"
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_can.d" -MT"src/stm32f10x_can.o" -o "src/stm32f10x_can.o" "../src/stm32f10x_can.c"
+Finished building: ../startup/startup_stm32.s
+Finished building: ../startup/sysmem.c
+Finished building: ../src/core_cm3.c
+ 
+ 
+ 
+Building file: ../src/stm32f10x_cec.c
+Invoking: MCU GCC Compiler
+Building file: ../src/stm32f10x_crc.c
+Building file: ../src/stm32f10x_dac.c
+Finished building: ../src/main.c
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_cec.d" -MT"src/stm32f10x_cec.o" -o "src/stm32f10x_cec.o" "../src/stm32f10x_cec.c"
+Invoking: MCU GCC Compiler
+ 
+Invoking: MCU GCC Compiler
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_crc.d" -MT"src/stm32f10x_crc.o" -o "src/stm32f10x_crc.o" "../src/stm32f10x_crc.c"
+Building file: ../src/stm32f10x_dbgmcu.c
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_dac.d" -MT"src/stm32f10x_dac.o" -o "src/stm32f10x_dac.o" "../src/stm32f10x_dac.c"
+Finished building: ../src/misc.c
+Invoking: MCU GCC Compiler
+ 
+D:\stm_workspace\toggle_led_int\Debug
+Finished building: ../src/stm32f10x_can.c
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_dbgmcu.d" -MT"src/stm32f10x_dbgmcu.o" -o "src/stm32f10x_dbgmcu.o" "../src/stm32f10x_dbgmcu.c"
+Finished building: ../src/stm32f10x_bkp.c
+Finished building: ../src/stm32f10x_adc.c
+Building file: ../src/stm32f10x_dma.c
+ 
+ 
+ 
+Invoking: MCU GCC Compiler
+Building file: ../src/stm32f10x_exti.c
+Building file: ../src/stm32f10x_flash.c
+D:\stm_workspace\toggle_led_int\Debug
+Building file: ../src/stm32f10x_fsmc.c
+Invoking: MCU GCC Compiler
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_dma.d" -MT"src/stm32f10x_dma.o" -o "src/stm32f10x_dma.o" "../src/stm32f10x_dma.c"
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+D:\stm_workspace\toggle_led_int\Debug
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_exti.d" -MT"src/stm32f10x_exti.o" -o "src/stm32f10x_exti.o" "../src/stm32f10x_exti.c"
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_flash.d" -MT"src/stm32f10x_flash.o" -o "src/stm32f10x_flash.o" "../src/stm32f10x_flash.c"
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_fsmc.d" -MT"src/stm32f10x_fsmc.o" -o "src/stm32f10x_fsmc.o" "../src/stm32f10x_fsmc.c"
+Finished building: ../src/stm32f10x_cec.c
+Finished building: ../src/stm32f10x_crc.c
+Finished building: ../src/stm32f10x_dac.c
+ 
+ 
+ 
+Finished building: ../src/stm32f10x_dbgmcu.c
+Building file: ../src/stm32f10x_gpio.c
+ 
+Building file: ../src/stm32f10x_i2c.c
+Building file: ../src/stm32f10x_it.c
+Invoking: MCU GCC Compiler
+Building file: ../src/stm32f10x_iwdg.c
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_gpio.d" -MT"src/stm32f10x_gpio.o" -o "src/stm32f10x_gpio.o" "../src/stm32f10x_gpio.c"
+D:\stm_workspace\toggle_led_int\Debug
+Invoking: MCU GCC Compiler
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_i2c.d" -MT"src/stm32f10x_i2c.o" -o "src/stm32f10x_i2c.o" "../src/stm32f10x_i2c.c"
+Finished building: ../src/stm32f10x_dma.c
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_it.d" -MT"src/stm32f10x_it.o" -o "src/stm32f10x_it.o" "../src/stm32f10x_it.c"
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_iwdg.d" -MT"src/stm32f10x_iwdg.o" -o "src/stm32f10x_iwdg.o" "../src/stm32f10x_iwdg.c"
+ 
+Finished building: ../src/stm32f10x_exti.c
+Building file: ../src/stm32f10x_pwr.c
+Finished building: ../src/stm32f10x_flash.c
+Invoking: MCU GCC Compiler
+ 
+ 
+Finished building: ../src/stm32f10x_fsmc.c
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_pwr.d" -MT"src/stm32f10x_pwr.o" -o "src/stm32f10x_pwr.o" "../src/stm32f10x_pwr.c"
+Building file: ../src/stm32f10x_rcc.c
+ 
+Invoking: MCU GCC Compiler
+Building file: ../src/stm32f10x_rtc.c
+Building file: ../src/stm32f10x_sdio.c
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_rcc.d" -MT"src/stm32f10x_rcc.o" -o "src/stm32f10x_rcc.o" "../src/stm32f10x_rcc.c"
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_rtc.d" -MT"src/stm32f10x_rtc.o" -o "src/stm32f10x_rtc.o" "../src/stm32f10x_rtc.c"
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_sdio.d" -MT"src/stm32f10x_sdio.o" -o "src/stm32f10x_sdio.o" "../src/stm32f10x_sdio.c"
+Finished building: ../src/stm32f10x_gpio.c
+Finished building: ../src/stm32f10x_it.c
+Finished building: ../src/stm32f10x_iwdg.c
+ 
+ 
+ 
+Finished building: ../src/stm32f10x_i2c.c
+Building file: ../src/stm32f10x_spi.c
+Building file: ../src/stm32f10x_tim.c
+Building file: ../src/stm32f10x_usart.c
+ 
+Invoking: MCU GCC Compiler
+Finished building: ../src/stm32f10x_pwr.c
+Invoking: MCU GCC Compiler
+Invoking: MCU GCC Compiler
+D:\stm_workspace\toggle_led_int\Debug
+ 
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_spi.d" -MT"src/stm32f10x_spi.o" -o "src/stm32f10x_spi.o" "../src/stm32f10x_spi.c"
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_tim.d" -MT"src/stm32f10x_tim.o" -o "src/stm32f10x_tim.o" "../src/stm32f10x_tim.c"
+Building file: ../src/stm32f10x_wwdg.c
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_usart.d" -MT"src/stm32f10x_usart.o" -o "src/stm32f10x_usart.o" "../src/stm32f10x_usart.c"
+Invoking: MCU GCC Compiler
+Building file: ../src/system_stm32f10x.c
+Finished building: ../src/stm32f10x_rcc.c
+D:\stm_workspace\toggle_led_int\Debug
+Finished building: ../src/stm32f10x_rtc.c
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_wwdg.d" -MT"src/stm32f10x_wwdg.o" -o "src/stm32f10x_wwdg.o" "../src/stm32f10x_wwdg.c"
+Invoking: MCU GCC Compiler
+ 
+ 
+D:\stm_workspace\toggle_led_int\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/toggle_led_int/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/system_stm32f10x.d" -MT"src/system_stm32f10x.o" -o "src/system_stm32f10x.o" "../src/system_stm32f10x.c"
+Finished building: ../src/stm32f10x_sdio.c
+ 
+Finished building: ../src/stm32f10x_spi.c
+ 
+Finished building: ../src/stm32f10x_usart.c
+ 
+Finished building: ../src/stm32f10x_wwdg.c
+Finished building: ../src/stm32f10x_tim.c
+ 
+ 
+Finished building: ../src/system_stm32f10x.c
+ 
+Building target: toggle_led_int.elf
+Invoking: MCU G++ Linker
+arm-none-eabi-g++ -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -L"D:\stm_workspace\toggle_led_int\inc" -T"D:/stm_workspace/toggle_led_int/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -fno-exceptions -fno-rtti -o "toggle_led_int.elf" @"objects.list"   -lm
+Finished building target: toggle_led_int.elf
+ 
+make --no-print-directory post-build
+Generating binary and Printing size information:
+arm-none-eabi-objcopy -O binary "toggle_led_int.elf" "toggle_led_int.bin"
+arm-none-eabi-size "toggle_led_int.elf"
+   text	   data	    bss	    dec	    hex	filename
+   2728	   1088	   1092	   4908	   132c	toggle_led_int.elf
+ 
 
-22:43:36 Build Finished (took 701ms)
+21:36:15 Build Finished (took 5s.398ms)
 

@@ -119,7 +119,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x6a src/core_cm3.o
  .debug_macro   0x00000000      0x1df src/core_cm3.o
  .debug_line    0x00000000      0x461 src/core_cm3.o
- .debug_str     0x00000000     0x3d7e src/core_cm3.o
+ .debug_str     0x00000000     0x3d6e src/core_cm3.o
  .comment       0x00000000       0x80 src/core_cm3.o
  .debug_frame   0x00000000      0x320 src/core_cm3.o
  .ARM.attributes
@@ -393,8 +393,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_adc.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_adc.o
  .debug_macro   0x00000000      0x2df src/stm32f10x_adc.o
- .debug_line    0x00000000      0x844 src/stm32f10x_adc.o
- .debug_str     0x00000000    0x4dd81 src/stm32f10x_adc.o
+ .debug_line    0x00000000      0x834 src/stm32f10x_adc.o
+ .debug_str     0x00000000    0x4dd71 src/stm32f10x_adc.o
  .comment       0x00000000       0x80 src/stm32f10x_adc.o
  .debug_frame   0x00000000      0x5a4 src/stm32f10x_adc.o
  .ARM.attributes
@@ -500,8 +500,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_bkp.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_bkp.o
  .debug_macro   0x00000000      0x13e src/stm32f10x_bkp.o
- .debug_line    0x00000000      0x5d5 src/stm32f10x_bkp.o
- .debug_str     0x00000000    0x4d860 src/stm32f10x_bkp.o
+ .debug_line    0x00000000      0x5c5 src/stm32f10x_bkp.o
+ .debug_str     0x00000000    0x4d850 src/stm32f10x_bkp.o
  .comment       0x00000000       0x80 src/stm32f10x_bkp.o
  .debug_frame   0x00000000      0x1c4 src/stm32f10x_bkp.o
  .ARM.attributes
@@ -633,8 +633,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_can.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_can.o
  .debug_macro   0x00000000      0x3c9 src/stm32f10x_can.o
- .debug_line    0x00000000      0x876 src/stm32f10x_can.o
- .debug_str     0x00000000    0x4d965 src/stm32f10x_can.o
+ .debug_line    0x00000000      0x866 src/stm32f10x_can.o
+ .debug_str     0x00000000    0x4d955 src/stm32f10x_can.o
  .comment       0x00000000       0x80 src/stm32f10x_can.o
  .debug_frame   0x00000000      0x3f4 src/stm32f10x_can.o
  .ARM.attributes
@@ -743,8 +743,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_cec.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_cec.o
  .debug_macro   0x00000000       0xc2 src/stm32f10x_cec.o
- .debug_line    0x00000000      0x615 src/stm32f10x_cec.o
- .debug_str     0x00000000    0x4d5cd src/stm32f10x_cec.o
+ .debug_line    0x00000000      0x605 src/stm32f10x_cec.o
+ .debug_str     0x00000000    0x4d5bd src/stm32f10x_cec.o
  .comment       0x00000000       0x80 src/stm32f10x_cec.o
  .debug_frame   0x00000000      0x224 src/stm32f10x_cec.o
  .ARM.attributes
@@ -838,8 +838,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 src/stm32f10x_crc.o
  .debug_macro   0x00000000       0x8b src/stm32f10x_crc.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_crc.o
- .debug_line    0x00000000      0x56e src/stm32f10x_crc.o
- .debug_str     0x00000000    0x4d286 src/stm32f10x_crc.o
+ .debug_line    0x00000000      0x55e src/stm32f10x_crc.o
+ .debug_str     0x00000000    0x4d276 src/stm32f10x_crc.o
  .comment       0x00000000       0x80 src/stm32f10x_crc.o
  .debug_frame   0x00000000       0xe8 src/stm32f10x_crc.o
  .ARM.attributes
@@ -944,8 +944,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_dac.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_dac.o
  .debug_macro   0x00000000      0x174 src/stm32f10x_dac.o
- .debug_line    0x00000000      0x5f1 src/stm32f10x_dac.o
- .debug_str     0x00000000    0x4d503 src/stm32f10x_dac.o
+ .debug_line    0x00000000      0x5e1 src/stm32f10x_dac.o
+ .debug_str     0x00000000    0x4d4f3 src/stm32f10x_dac.o
  .comment       0x00000000       0x80 src/stm32f10x_dac.o
  .debug_frame   0x00000000      0x1e4 src/stm32f10x_dac.o
  .ARM.attributes
@@ -1033,8 +1033,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_dbgmcu.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_dbgmcu.o
  .debug_macro   0x00000000       0xa6 src/stm32f10x_dbgmcu.o
- .debug_line    0x00000000      0x52a src/stm32f10x_dbgmcu.o
- .debug_str     0x00000000    0x4d266 src/stm32f10x_dbgmcu.o
+ .debug_line    0x00000000      0x51a src/stm32f10x_dbgmcu.o
+ .debug_str     0x00000000    0x4d256 src/stm32f10x_dbgmcu.o
  .comment       0x00000000       0x80 src/stm32f10x_dbgmcu.o
  .debug_frame   0x00000000       0x78 src/stm32f10x_dbgmcu.o
  .ARM.attributes
@@ -1137,8 +1137,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_dma.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_dma.o
  .debug_macro   0x00000000      0x3a7 src/stm32f10x_dma.o
- .debug_line    0x00000000      0x642 src/stm32f10x_dma.o
- .debug_str     0x00000000    0x4d8d5 src/stm32f10x_dma.o
+ .debug_line    0x00000000      0x632 src/stm32f10x_dma.o
+ .debug_str     0x00000000    0x4d8c5 src/stm32f10x_dma.o
  .comment       0x00000000       0x80 src/stm32f10x_dma.o
  .debug_frame   0x00000000      0x1c8 src/stm32f10x_dma.o
  .ARM.attributes
@@ -1356,8 +1356,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_flash.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_flash.o
  .debug_macro   0x00000000      0x2c9 src/stm32f10x_flash.o
- .debug_line    0x00000000      0x7d4 src/stm32f10x_flash.o
- .debug_str     0x00000000    0x4da17 src/stm32f10x_flash.o
+ .debug_line    0x00000000      0x7c4 src/stm32f10x_flash.o
+ .debug_str     0x00000000    0x4da07 src/stm32f10x_flash.o
  .comment       0x00000000       0x80 src/stm32f10x_flash.o
  .debug_frame   0x00000000      0x410 src/stm32f10x_flash.o
  .ARM.attributes
@@ -1477,8 +1477,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_fsmc.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_fsmc.o
  .debug_macro   0x00000000      0x273 src/stm32f10x_fsmc.o
- .debug_line    0x00000000      0x7a5 src/stm32f10x_fsmc.o
- .debug_str     0x00000000    0x4d8fa src/stm32f10x_fsmc.o
+ .debug_line    0x00000000      0x795 src/stm32f10x_fsmc.o
+ .debug_str     0x00000000    0x4d8ea src/stm32f10x_fsmc.o
  .comment       0x00000000       0x80 src/stm32f10x_fsmc.o
  .debug_frame   0x00000000      0x300 src/stm32f10x_fsmc.o
  .ARM.attributes
@@ -1723,8 +1723,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_i2c.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_i2c.o
  .debug_macro   0x00000000      0x2ab src/stm32f10x_i2c.o
- .debug_line    0x00000000      0x7dc src/stm32f10x_i2c.o
- .debug_str     0x00000000    0x4db47 src/stm32f10x_i2c.o
+ .debug_line    0x00000000      0x7cc src/stm32f10x_i2c.o
+ .debug_str     0x00000000    0x4db37 src/stm32f10x_i2c.o
  .comment       0x00000000       0x80 src/stm32f10x_i2c.o
  .debug_frame   0x00000000      0x530 src/stm32f10x_i2c.o
  .ARM.attributes
@@ -1889,8 +1889,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_iwdg.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_iwdg.o
  .debug_macro   0x00000000       0x5e src/stm32f10x_iwdg.o
- .debug_line    0x00000000      0x55f src/stm32f10x_iwdg.o
- .debug_str     0x00000000    0x4d2e9 src/stm32f10x_iwdg.o
+ .debug_line    0x00000000      0x54f src/stm32f10x_iwdg.o
+ .debug_str     0x00000000    0x4d2d9 src/stm32f10x_iwdg.o
  .comment       0x00000000       0x80 src/stm32f10x_iwdg.o
  .debug_frame   0x00000000       0xf0 src/stm32f10x_iwdg.o
  .ARM.attributes
@@ -1992,8 +1992,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_pwr.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_pwr.o
  .debug_macro   0x00000000       0x7c src/stm32f10x_pwr.o
- .debug_line    0x00000000      0x5d9 src/stm32f10x_pwr.o
- .debug_str     0x00000000    0x4d510 src/stm32f10x_pwr.o
+ .debug_line    0x00000000      0x5c9 src/stm32f10x_pwr.o
+ .debug_str     0x00000000    0x4d500 src/stm32f10x_pwr.o
  .comment       0x00000000       0x80 src/stm32f10x_pwr.o
  .debug_frame   0x00000000      0x19c src/stm32f10x_pwr.o
  .ARM.attributes
@@ -2235,8 +2235,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_rtc.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_rtc.o
  .debug_macro   0x00000000       0x52 src/stm32f10x_rtc.o
- .debug_line    0x00000000      0x61a src/stm32f10x_rtc.o
- .debug_str     0x00000000    0x4d436 src/stm32f10x_rtc.o
+ .debug_line    0x00000000      0x60a src/stm32f10x_rtc.o
+ .debug_str     0x00000000    0x4d426 src/stm32f10x_rtc.o
  .comment       0x00000000       0x80 src/stm32f10x_rtc.o
  .debug_frame   0x00000000      0x214 src/stm32f10x_rtc.o
  .ARM.attributes
@@ -2378,8 +2378,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_sdio.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_sdio.o
  .debug_macro   0x00000000      0x33b src/stm32f10x_sdio.o
- .debug_line    0x00000000      0x74f src/stm32f10x_sdio.o
- .debug_str     0x00000000    0x4dbcc src/stm32f10x_sdio.o
+ .debug_line    0x00000000      0x73f src/stm32f10x_sdio.o
+ .debug_str     0x00000000    0x4dbbc src/stm32f10x_sdio.o
  .comment       0x00000000       0x80 src/stm32f10x_sdio.o
  .debug_frame   0x00000000      0x490 src/stm32f10x_sdio.o
  .ARM.attributes
@@ -2505,8 +2505,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_spi.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_spi.o
  .debug_macro   0x00000000      0x2be src/stm32f10x_spi.o
- .debug_line    0x00000000      0x724 src/stm32f10x_spi.o
- .debug_str     0x00000000    0x4d8a5 src/stm32f10x_spi.o
+ .debug_line    0x00000000      0x714 src/stm32f10x_spi.o
+ .debug_str     0x00000000    0x4d895 src/stm32f10x_spi.o
  .comment       0x00000000       0x80 src/stm32f10x_spi.o
  .debug_frame   0x00000000      0x3a0 src/stm32f10x_spi.o
  .ARM.attributes
@@ -2769,8 +2769,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_tim.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_tim.o
  .debug_macro   0x00000000      0x70b src/stm32f10x_tim.o
- .debug_line    0x00000000      0xe5a src/stm32f10x_tim.o
- .debug_str     0x00000000    0x4dea9 src/stm32f10x_tim.o
+ .debug_line    0x00000000      0xe4a src/stm32f10x_tim.o
+ .debug_str     0x00000000    0x4de99 src/stm32f10x_tim.o
  .comment       0x00000000       0x80 src/stm32f10x_tim.o
  .debug_frame   0x00000000      0xe2c src/stm32f10x_tim.o
  .ARM.attributes
@@ -2910,8 +2910,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_usart.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_usart.o
  .debug_macro   0x00000000      0x21a src/stm32f10x_usart.o
- .debug_line    0x00000000      0x7a7 src/stm32f10x_usart.o
- .debug_str     0x00000000    0x4dab5 src/stm32f10x_usart.o
+ .debug_line    0x00000000      0x797 src/stm32f10x_usart.o
+ .debug_str     0x00000000    0x4daa5 src/stm32f10x_usart.o
  .comment       0x00000000       0x80 src/stm32f10x_usart.o
  .debug_frame   0x00000000      0x490 src/stm32f10x_usart.o
  .ARM.attributes
@@ -3009,8 +3009,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x8b src/stm32f10x_wwdg.o
  .debug_macro   0x00000000       0x35 src/stm32f10x_wwdg.o
  .debug_macro   0x00000000       0x2e src/stm32f10x_wwdg.o
- .debug_line    0x00000000      0x586 src/stm32f10x_wwdg.o
- .debug_str     0x00000000    0x4d3cb src/stm32f10x_wwdg.o
+ .debug_line    0x00000000      0x576 src/stm32f10x_wwdg.o
+ .debug_str     0x00000000    0x4d3bb src/stm32f10x_wwdg.o
  .comment       0x00000000       0x80 src/stm32f10x_wwdg.o
  .debug_frame   0x00000000      0x12c src/stm32f10x_wwdg.o
  .ARM.attributes
@@ -3166,7 +3166,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x16 startup/sysmem.o
  .debug_macro   0x00000000      0x16f startup/sysmem.o
  .debug_line    0x00000000      0x3e6 startup/sysmem.o
- .debug_str     0x00000000     0x779e startup/sysmem.o
+ .debug_str     0x00000000     0x778e startup/sysmem.o
  .comment       0x00000000       0x80 startup/sysmem.o
  .debug_frame   0x00000000       0x34 startup/sysmem.o
  .ARM.attributes
@@ -3740,33 +3740,33 @@ OUTPUT(toggle_led_int.elf elf32-littlearm)
  .debug_macro   0x0000c23e      0x3dc src/stm32f10x_rcc.o
  .debug_macro   0x0000c61a      0x188 src/system_stm32f10x.o
 
-.debug_line     0x00000000     0x2af7
- .debug_line    0x00000000      0x581 src/main.o
- .debug_line    0x00000581      0x558 src/misc.o
- .debug_line    0x00000ad9      0x5af src/stm32f10x_exti.o
- .debug_line    0x00001088      0x6d9 src/stm32f10x_gpio.o
- .debug_line    0x00001761      0x5a6 src/stm32f10x_it.o
- .debug_line    0x00001d07      0x7d5 src/stm32f10x_rcc.o
- .debug_line    0x000024dc      0x59f src/system_stm32f10x.o
- .debug_line    0x00002a7b       0x7c startup/startup_stm32.o
+.debug_line     0x00000000     0x2a87
+ .debug_line    0x00000000      0x571 src/main.o
+ .debug_line    0x00000571      0x548 src/misc.o
+ .debug_line    0x00000ab9      0x59f src/stm32f10x_exti.o
+ .debug_line    0x00001058      0x6c9 src/stm32f10x_gpio.o
+ .debug_line    0x00001721      0x596 src/stm32f10x_it.o
+ .debug_line    0x00001cb7      0x7c5 src/stm32f10x_rcc.o
+ .debug_line    0x0000247c      0x58f src/system_stm32f10x.o
+ .debug_line    0x00002a0b       0x7c startup/startup_stm32.o
 
-.debug_str      0x00000000    0x4ea65
- .debug_str     0x00000000    0x4d652 src/main.o
-                              0x4d7cc (size before relaxing)
- .debug_str     0x0004d652      0x1d2 src/misc.o
-                              0x4d42d (size before relaxing)
- .debug_str     0x0004d824       0xf7 src/stm32f10x_exti.o
-                              0x4d3b6 (size before relaxing)
- .debug_str     0x0004d91b      0x477 src/stm32f10x_gpio.o
-                              0x4d7a5 (size before relaxing)
- .debug_str     0x0004dd92       0xb8 src/stm32f10x_it.o
-                              0x4d261 (size before relaxing)
- .debug_str     0x0004de4a      0xb48 src/stm32f10x_rcc.o
-                              0x4dd8b (size before relaxing)
- .debug_str     0x0004e992       0xaa src/system_stm32f10x.o
-                              0x4d34a (size before relaxing)
- .debug_str     0x0004ea3c       0x29 startup/startup_stm32.o
-                                 0x5f (size before relaxing)
+.debug_str      0x00000000    0x4ea55
+ .debug_str     0x00000000    0x4d642 src/main.o
+                              0x4d7bc (size before relaxing)
+ .debug_str     0x0004d642      0x1d2 src/misc.o
+                              0x4d41d (size before relaxing)
+ .debug_str     0x0004d814       0xf7 src/stm32f10x_exti.o
+                              0x4d3a6 (size before relaxing)
+ .debug_str     0x0004d90b      0x477 src/stm32f10x_gpio.o
+                              0x4d795 (size before relaxing)
+ .debug_str     0x0004dd82       0xb8 src/stm32f10x_it.o
+                              0x4d251 (size before relaxing)
+ .debug_str     0x0004de3a      0xb48 src/stm32f10x_rcc.o
+                              0x4dd7b (size before relaxing)
+ .debug_str     0x0004e982       0xaa src/system_stm32f10x.o
+                              0x4d33a (size before relaxing)
+ .debug_str     0x0004ea2c       0x29 startup/startup_stm32.o
+                                 0x4f (size before relaxing)
 
 .comment        0x00000000       0x7f
  .comment       0x00000000       0x7f src/main.o

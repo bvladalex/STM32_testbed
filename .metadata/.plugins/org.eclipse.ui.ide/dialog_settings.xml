@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="D:\stm_workspace\i2c_display_test"/>
 		<item value="D:\Electro stuff\stm32_workspace\toggle_led_int"/>
 		<item value="D:\Electro stuff\stm32_workspace\toggle_led\inc"/>
 		<item value="D:\Electro stuff\stm32_workspace\toggle_led\src"/>

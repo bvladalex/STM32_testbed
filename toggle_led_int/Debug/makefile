@@ -48,7 +48,7 @@ all: toggle_led_int.elf
 toggle_led_int.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU G++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -L"D:\Electro stuff\stm32_workspace\toggle_led_int\inc" -T"D:/Electro stuff/stm32_workspace/toggle_led_int/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -fno-exceptions -fno-rtti -o "toggle_led_int.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
+	arm-none-eabi-g++ -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -L"D:\stm_workspace\toggle_led_int\inc" -T"D:/stm_workspace/toggle_led_int/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -fno-exceptions -fno-rtti -o "toggle_led_int.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
