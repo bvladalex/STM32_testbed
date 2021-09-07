@@ -2,12 +2,13 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Periph_I2C" key="selection"/>
+		<item value="Addr" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="addr"/>
 			<item value="Periph_I2C"/>
 			<item value="I2C_InitTypeDef"/>
 			<item value="I2C_ClockSpeed"/>
@@ -15,7 +16,6 @@
 			<item value="I2C_CCR"/>
 			<item value="I2C_acknowledged_address"/>
 			<item value="SSM"/>
-			<item value="SSOE"/>
 		</list>
 		<list key="replacehistory">
 		</list>

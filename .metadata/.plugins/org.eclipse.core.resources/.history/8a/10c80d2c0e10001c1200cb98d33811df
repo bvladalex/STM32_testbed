@@ -31,14 +31,13 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-uint8_t a = 1;
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void RCC_Configuration(void);
 void GPIO_Configuration(void);
 void NVIC_Configuration(void);
 void EXTI_Configuration(void);
-void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value);
 
 
 /**
