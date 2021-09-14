@@ -32,12 +32,17 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint8_t a = 1;
+uint8_t addr=0xD0;
+uint8_t data=0x69;
+uint16_t tmp;
+uint32_t dummy_read;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void RCC_Configuration(void);
 void GPIO_Configuration(void);
 void NVIC_Configuration(void);
 void EXTI_Configuration(void);
+void I2C_Configuration(void);
 void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value);
 
 
@@ -62,6 +67,10 @@ int main(void)
 	/* EXTI configuration ------------------------------------------------------*/
 	EXTI_Configuration();
 
+	/*I2C configuration*/
+	I2C_Configuration();
+
+
   while (1)
   {
 
@@ -73,6 +82,24 @@ void EXTI0_IRQHandler(void){
 	EXTI_ClearFlag(EXTI_Line0);
 	toggle_led(GPIOC,GPIO_Pin_13,a);
 	a ^= 1;
+
+	I2C_GenerateSTART(I2C1,ENABLE);
+	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_SB));
+	//I2C_ReadRegister(I2C1,I2C_Register_SR1);
+	I2C_Send7bitAddress(I2C1,addr,I2C_Direction_Transmitter);
+	//I2C_ReadRegister(I2C1,I2C_Register_SR1);
+	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_ADDR));
+	//I2C_ReadRegister(I2C1,I2C_Register_SR2);
+	//(void)(I2C1->SR2);
+	dummy_read=I2C1->SR1;
+	dummy_read=I2C1->SR2;
+	I2C_SendData(I2C1,data);
+	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
+	I2C_SendData(I2C1,data);
+	I2C_GenerateSTOP(I2C1,ENABLE);
+
+	//I2C_SendData(I2C1,a);
+
 }
 
 /**
@@ -88,7 +115,7 @@ void RCC_Configuration(void){
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
 
 }
 void GPIO_Configuration(void){
@@ -100,6 +127,7 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	//start config for LED
@@ -143,6 +171,24 @@ void EXTI_Configuration(void){
 	EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
 	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Rising;
 	EXTI_Init(&EXTI_InitStruct);
+
+
+}
+
+void I2C_Configuration(void){
+	I2C_InitTypeDef I2C_InitStruct;
+	I2C_InitStruct.I2C_Ack=I2C_Ack_Disable;
+	I2C_InitStruct.I2C_AcknowledgedAddress=I2C_AcknowledgedAddress_7bit;
+	I2C_InitStruct.I2C_ClockSpeed=100000;
+	I2C_InitStruct.I2C_DutyCycle=I2C_DutyCycle_2;
+	I2C_InitStruct.I2C_Mode=I2C_Mode_I2C;
+	I2C_InitStruct.I2C_OwnAddress1=0;
+
+	//commnet following line for custom values like above;
+	//I2C_StructInit(&I2C_InitStruct);
+
+	I2C_Init(I2C1,&I2C_InitStruct);
+	I2C_Cmd(I2C1,ENABLE);
 
 
 }

@@ -1,4 +1,4 @@
-22:03:09 **** Incremental Build of configuration Debug for project i2c_lcd_test ****
+22:16:01 **** Incremental Build of configuration Debug for project i2c_lcd_test ****
 make -j8 all 
 Building file: ../src/main.c
 Invoking: MCU GCC Compiler
@@ -16,10 +16,10 @@ Generating binary and Printing size information:
 arm-none-eabi-objcopy -O binary "i2c_lcd_test.elf" "i2c_lcd_test.bin"
 arm-none-eabi-size "i2c_lcd_test.elf"
    text	   data	    bss	    dec	    hex	filename
-   2768	   1088	   1092	   4948	   1354	i2c_lcd_test.elf
+   4168	   1104	   1100	   6372	   18e4	i2c_lcd_test.elf
  
-22:03:55 **** Programming project i2c_lcd_test on chip ****
-"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.603572542490349533.cfg -s "D:\\stm_workspace\\i2c_lcd_test" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/i2c_lcd_test.elf verify reset " -c shutdown 
+22:16:13 **** Programming project i2c_lcd_test on chip ****
+"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.3281646335411236853.cfg -s "D:\\stm_workspace\\i2c_lcd_test" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/i2c_lcd_test.elf verify reset " -c shutdown 
 Open On-Chip Debugger 0.10.0+dev-00021-g524e8c8 (2019-04-12-08:48)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -31,13 +31,13 @@ adapter_nsrst_delay: 100
 Info : clock speed 8000 kHz
 Info : STLINK v2 JTAG v29 API v2 SWIM v7 VID 0x0483 PID 0x3748
 Info : using stlink api v2
-Info : Target voltage: 3.193738
+Info : Target voltage: 3.188013
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
 Info : Stlink adapter speed set to 4000 kHz
 Info : STM32F103C8Tx.cpu: hardware has 6 breakpoints, 4 watchpoints
 Info : Listening on port 3333 for gdb connections
 target halted due to debug-request, current mode: Thread 
-xPSR: 0x01000000 pc: 0x08000ae0 msp: 0x20005000
+xPSR: 0x01000000 pc: 0x08000e54 msp: 0x20005000
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
 Info : Stlink adapter speed set to 4000 kHz
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
@@ -48,14 +48,55 @@ Info : device id = 0x20036410
 Info : flash size = 64kbytes
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000003a msp: 0x20005000
-wrote 4096 bytes from file Debug/i2c_lcd_test.elf in 0.300759s (13.300 KiB/s)
+wrote 6144 bytes from file Debug/i2c_lcd_test.elf in 0.448036s (13.392 KiB/s)
 ** Programming Finished **
 ** Verify Started **
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
-verified 3856 bytes in 0.084613s (44.504 KiB/s)
+verified 5272 bytes in 0.101156s (50.896 KiB/s)
+** Verified OK **
+** Resetting Target **
+shutdown command invoked
+22:16:23 **** Programming project i2c_lcd_test on chip ****
+"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.7246055283083452362.cfg -s "D:\\stm_workspace\\i2c_lcd_test" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/i2c_lcd_test.elf verify reset " -c shutdown 
+Open On-Chip Debugger 0.10.0+dev-00021-g524e8c8 (2019-04-12-08:48)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+none separate
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+adapter speed: 8000 kHz
+adapter_nsrst_delay: 100
+Info : clock speed 8000 kHz
+Info : STLINK v2 JTAG v29 API v2 SWIM v7 VID 0x0483 PID 0x3748
+Info : using stlink api v2
+Info : Target voltage: 3.184886
+Info : Unable to match requested speed 8000 kHz, using 4000 kHz
+Info : Stlink adapter speed set to 4000 kHz
+Info : STM32F103C8Tx.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : Listening on port 3333 for gdb connections
+target halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x08000e74 msp: 0x20005000
+Info : Unable to match requested speed 8000 kHz, using 4000 kHz
+Info : Stlink adapter speed set to 4000 kHz
+Info : Unable to match requested speed 8000 kHz, using 4000 kHz
+adapter speed: 4000 kHz
+** Programming Started **
+auto erase enabled
+Info : device id = 0x20036410
+Info : flash size = 64kbytes
+target halted due to breakpoint, current mode: Thread 
+xPSR: 0x61000000 pc: 0x2000003a msp: 0x20005000
+wrote 6144 bytes from file Debug/i2c_lcd_test.elf in 0.425897s (14.088 KiB/s)
+** Programming Finished **
+** Verify Started **
+target halted due to breakpoint, current mode: Thread 
+xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
+target halted due to breakpoint, current mode: Thread 
+xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
+verified 5272 bytes in 0.118020s (43.623 KiB/s)
 ** Verified OK **
 ** Resetting Target **
 shutdown command invoked
