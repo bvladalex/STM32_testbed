@@ -13,8 +13,10 @@
 //#include "stm32_eval.h"
 #include "stm32f10x_conf.h"
 #include "stm32f10x_i2c.h"
+#include "lcd1602_i2c.h"
+#include "delay_stm32f1.h"
+#include "stm32f10x.h"
 
-//#include "stm32f10x.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Examples
   * @{
@@ -32,9 +34,12 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint8_t a = 1;
-uint8_t addr=0x40;
+uint8_t addr=0xD0;
 uint8_t data=0x69;
 uint16_t tmp;
+uint32_t dummy_read, wait;
+
+RCC_ClocksTypeDef RCC_Clocks;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void RCC_Configuration(void);
@@ -69,6 +74,15 @@ int main(void)
 	/*I2C configuration*/
 	I2C_Configuration();
 
+	DelayInit();
+
+	/*Configure systick with count value + enable interrupt*/
+	/*implemented in DelayInit function*/
+	/*
+	SystemCoreClockUpdate();
+	SysTick_Config(SystemCoreClock/);
+	*/
+
 
   while (1)
   {
@@ -87,16 +101,28 @@ void EXTI0_IRQHandler(void){
 	//I2C_ReadRegister(I2C1,I2C_Register_SR1);
 	I2C_Send7bitAddress(I2C1,addr,I2C_Direction_Transmitter);
 	//I2C_ReadRegister(I2C1,I2C_Register_SR1);
-	I2C_GetFlagStatus(I2C1,I2C_FLAG_ADDR);
+	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_ADDR));
 	//I2C_ReadRegister(I2C1,I2C_Register_SR2);
-	(void)(I2C1->SR2);
+	//(void)(I2C1->SR2);
+	dummy_read=I2C1->SR1;
+	dummy_read=I2C1->SR2;
 	I2C_SendData(I2C1,data);
-	//while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
+	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
+	I2C_SendData(I2C1,data);
+	RCC_GetClocksFreq(&RCC_Clocks);
+	/*lazy delay, works badly*/
+	/*
+	wait=RCC_Clocks.HCLK_Frequency;
+	for(uint32_t i=0;i<=wait/8;i++);
+	*/
+	DelayMs(1000);
 	I2C_GenerateSTOP(I2C1,ENABLE);
 
 	//I2C_SendData(I2C1,a);
 
 }
+
+
 
 /**
   * @}
@@ -149,9 +175,12 @@ void NVIC_Configuration(void){
 	////////////
 	NVIC_InitStruct.NVIC_IRQChannel=EXTI0_IRQn;
 	NVIC_InitStruct.NVIC_IRQChannelCmd=ENABLE;
-	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority=0;
+	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority=1;
 	NVIC_InitStruct.NVIC_IRQChannelSubPriority=0;
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 	NVIC_Init(&NVIC_InitStruct);
+	NVIC_SetPriority(SysTick_IRQn, 0);
+
 
 
 }

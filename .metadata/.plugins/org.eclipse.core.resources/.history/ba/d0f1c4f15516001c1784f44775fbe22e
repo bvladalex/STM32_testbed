@@ -34,8 +34,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint8_t a = 1;
-//uint8_t addr=0xD0;
-uint8_t addr=0x4E;
+uint8_t addr=0xD0;
 uint8_t data=0x69;
 uint16_t tmp;
 uint32_t dummy_read, wait;
@@ -88,31 +87,31 @@ int main(void)
   while (1)
   {
 	  if(send_i2c_flag==1){
-		  toggle_led(GPIOC,GPIO_Pin_13,a);
-		  a ^= 1;
+		  	toggle_led(GPIOC,GPIO_Pin_13,a);
+		  	a ^= 1;
 
-		  I2C_GenerateSTART(I2C1,ENABLE);
-		  while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_SB));
-		  //I2C_ReadRegister(I2C1,I2C_Register_SR1);
-		  I2C_Send7bitAddress(I2C1,addr,I2C_Direction_Transmitter);
-		  //I2C_ReadRegister(I2C1,I2C_Register_SR1);
-		  while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_ADDR));
-		  //I2C_ReadRegister(I2C1,I2C_Register_SR2);
-		  //(void)(I2C1->SR2);
-		  dummy_read=I2C1->SR1;
-		  dummy_read=I2C1->SR2;
-		  I2C_SendData(I2C1,data);
-		  while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
-		  I2C_SendData(I2C1,data);
-		  RCC_GetClocksFreq(&RCC_Clocks);
-		  /*lazy delay, works badly*/
-		  /*
-		  wait=RCC_Clocks.HCLK_Frequency;
-		  for(uint32_t i=0;i<=wait/8;i++);
-		  */
-		  DelayMs(1000);
-		  I2C_GenerateSTOP(I2C1,ENABLE);
-		  send_i2c_flag=0;
+		  	I2C_GenerateSTART(I2C1,ENABLE);
+		  	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_SB));
+		  	//I2C_ReadRegister(I2C1,I2C_Register_SR1);
+		  	I2C_Send7bitAddress(I2C1,addr,I2C_Direction_Transmitter);
+		  	//I2C_ReadRegister(I2C1,I2C_Register_SR1);
+		  	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_ADDR));
+		  	//I2C_ReadRegister(I2C1,I2C_Register_SR2);
+		  	//(void)(I2C1->SR2);
+		  	dummy_read=I2C1->SR1;
+		  	dummy_read=I2C1->SR2;
+		  	I2C_SendData(I2C1,data);
+		  	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
+		  	I2C_SendData(I2C1,data);
+		  	RCC_GetClocksFreq(&RCC_Clocks);
+		  	/*lazy delay, works badly*/
+		  	/*
+		  	wait=RCC_Clocks.HCLK_Frequency;
+		  	for(uint32_t i=0;i<=wait/8;i++);
+		  	*/
+		  	DelayMs(1000);
+		  	I2C_GenerateSTOP(I2C1,ENABLE);
+		  	send_i2c_flag=0;
 	  }
 
   }

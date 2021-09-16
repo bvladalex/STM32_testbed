@@ -35,7 +35,7 @@
 /* Private variables ---------------------------------------------------------*/
 uint8_t a = 1;
 //uint8_t addr=0xD0;
-uint8_t addr=0x4E;
+uint8_t address=0x4E;
 uint8_t data=0x69;
 uint16_t tmp;
 uint32_t dummy_read, wait;

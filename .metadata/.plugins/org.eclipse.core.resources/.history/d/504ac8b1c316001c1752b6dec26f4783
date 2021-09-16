@@ -302,6 +302,7 @@ void HD44780_PCF8574_SendData (char addr, char data)
   HD44780_PCF8574_Send_8bits_M4b_I(addr, data, PCF8574_PIN_RS | PCF8574_PIN_P3);
   // check BF
   //HD44780_PCF8574_CheckBF(addr);
+  //_delay_ms(50);
   DelayMs(50);
 }
 
