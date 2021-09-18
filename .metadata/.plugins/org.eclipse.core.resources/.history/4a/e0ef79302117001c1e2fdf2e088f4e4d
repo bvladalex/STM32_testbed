@@ -89,7 +89,7 @@ uint32_t dummy_read;
  *
  * @return  char
  */
-char HD44780_PCF8574_Init (char addr)
+uint8_t HD44780_PCF8574_Init (uint8_t addr)
 {
   // delay > 15ms
 	DelayMs(16);
@@ -163,7 +163,7 @@ char HD44780_PCF8574_Init (char addr)
  *
  * @return  void
  */
-void HD44780_PCF8574_E_pulse (char data)
+void HD44780_PCF8574_E_pulse (uint8_t data)
 {
   // E pulse
   // ----------------------------------
@@ -193,7 +193,7 @@ void HD44780_PCF8574_E_pulse (char data)
  *
  * @return  void
  */
-void HD44780_PCF8574_Send_4bits_M4b_I (char data)
+void HD44780_PCF8574_Send_4bits_M4b_I (uint8_t data)
 {
   // Send upper nibble, E up
   // ----------------------------------
@@ -214,12 +214,12 @@ void HD44780_PCF8574_Send_4bits_M4b_I (char data)
  *
  * @return  void
  */
-void HD44780_PCF8574_Send_8bits_M4b_I (char addr, char data, char annex)
+void HD44780_PCF8574_Send_8bits_M4b_I (uint8_t addr, uint8_t data, uint8_t annex)
 {
   // upper nible with backlight
-  char up_nibble = (data & 0xF0) | annex;
+	uint8_t up_nibble = (data & 0xF0) | annex;
   // lower nibble with backlight
-  char low_nibble = (data << 4) | annex;
+	uint8_t low_nibble = (data << 4) | annex;
 
   // TWI: start
   // -------------------------
@@ -251,8 +251,6 @@ void HD44780_PCF8574_Send_8bits_M4b_I (char addr, char data, char annex)
   I2C_SendData(I2C1,low_nibble);
   // E pulse
   HD44780_PCF8574_E_pulse(low_nibble);
-  //wait for last transfer to finish before sending stop condition
-  while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
 
   // TWI Stop
   //I2C_LCD_Stop();
@@ -267,7 +265,7 @@ void HD44780_PCF8574_Send_8bits_M4b_I (char addr, char data, char annex)
  *
  * @return  void
  */
-void HD44780_PCF8574_CheckBF (char addr)
+void HD44780_PCF8574_CheckBF (uint8_t addr)
 {
 }
 
@@ -279,7 +277,7 @@ void HD44780_PCF8574_CheckBF (char addr)
  *
  * @return  void
  */
-void HD44780_PCF8574_SendInstruction (char addr, char instruction)
+void HD44780_PCF8574_SendInstruction (uint8_t addr, uint8_t instruction)
 {
   // send instruction
   HD44780_PCF8574_Send_8bits_M4b_I(addr, instruction, PCF8574_PIN_P3);
@@ -296,7 +294,7 @@ void HD44780_PCF8574_SendInstruction (char addr, char instruction)
  *
  * @return  void
  */
-void HD44780_PCF8574_SendData (char addr, char data)
+void HD44780_PCF8574_SendData (uint8_t addr, uint8_t data)
 {
   // send data
   // data/command -> pin RS High
@@ -316,7 +314,7 @@ void HD44780_PCF8574_SendData (char addr, char data)
  *
  * @return  char
  */
-char HD44780_PCF8574_PositionXY (char addr, char x, char y)
+uint8_t HD44780_PCF8574_PositionXY (uint8_t addr, uint8_t x, uint8_t y)
 {
   if (x > HD44780_COLS || y > HD44780_ROWS) {
     // error
@@ -341,7 +339,7 @@ char HD44780_PCF8574_PositionXY (char addr, char x, char y)
  *
  * @return  void
  */
-void HD44780_PCF8574_DisplayClear (char addr)
+void HD44780_PCF8574_DisplayClear (uint8_t addr)
 {
   // Diplay clear
   HD44780_PCF8574_SendInstruction(addr, HD44780_DISP_CLEAR);
@@ -354,7 +352,7 @@ void HD44780_PCF8574_DisplayClear (char addr)
  *
  * @return  void
  */
-void HD44780_PCF8574_DisplayOn (char addr)
+void HD44780_PCF8574_DisplayOn (uint8_t addr)
 {
   // send instruction - display on
   HD44780_PCF8574_SendInstruction(addr, HD44780_DISP_ON);
@@ -367,7 +365,7 @@ void HD44780_PCF8574_DisplayOn (char addr)
  *
  * @return  void
  */
-void HD44780_PCF8574_CursorOn (char addr)
+void HD44780_PCF8574_CursorOn (uint8_t addr)
 {
   // send instruction - cursor on
   HD44780_PCF8574_SendInstruction(addr, HD44780_CURSOR_ON);
@@ -380,7 +378,7 @@ void HD44780_PCF8574_CursorOn (char addr)
  *
  * @return  void
  */
-void HD44780_PCF8574_CursorBlink (char addr)
+void HD44780_PCF8574_CursorBlink (uint8_t addr)
 {
   // send instruction - Cursor blink
   HD44780_PCF8574_SendInstruction(addr, HD44780_CURSOR_BLINK);
@@ -394,7 +392,7 @@ void HD44780_PCF8574_CursorBlink (char addr)
  *
  * @return  void
  */
-void HD44780_PCF8574_DrawChar (char addr, char character)
+void HD44780_PCF8574_DrawChar (uint8_t addr, uint8_t character)
 {
   // Draw character
   HD44780_PCF8574_SendData(addr, character);
@@ -408,7 +406,7 @@ void HD44780_PCF8574_DrawChar (char addr, char character)
  *
  * @return  void
  */
-void HD44780_PCF8574_DrawString (char addr, char *str)
+void HD44780_PCF8574_DrawString (uint8_t addr, uint8_t *str)
 {
   unsigned short int i = 0;
   // loop through chars
@@ -427,7 +425,7 @@ void HD44780_PCF8574_DrawString (char addr, char *str)
  *
  * @return  char
  */
-char HD44780_PCF8574_Shift (char addr, char item, char direction)
+uint8_t HD44780_PCF8574_Shift (uint8_t addr, uint8_t item, uint8_t direction)
 {
   // check if item is cursor or display or direction is left or right
   if ((item != HD44780_DISPLAY) && (item != HD44780_CURSOR)) {

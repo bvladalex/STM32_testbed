@@ -107,7 +107,6 @@ int main(void)
 		  DelayMs(1000);
 		  I2C_GenerateSTOP(I2C1,ENABLE);
 		  */
-
 		  // init LCD with address
 		  HD44780_PCF8574_Init(addr);
 
@@ -123,22 +122,6 @@ int main(void)
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
 		  // draw char
 		  HD44780_PCF8574_DrawString(addr, "I [A]:");
-		  //test position function
-		  HD44780_PCF8574_PositionXY(addr, 8, 1);
-		  // draw char
-		  HD44780_PCF8574_DrawString(addr, "test");
-
-/*
-		  HD44780_PCF8574_SendInstruction(addr, 0x02);
-		  HD44780_PCF8574_SendInstruction(addr, 0x28);
-		  HD44780_PCF8574_SendInstruction(addr, 0x0E);
-		  HD44780_PCF8574_SendInstruction(addr, 0x01);
-		  HD44780_PCF8574_SendInstruction(addr, 0x80);
-		  HD44780_PCF8574_DrawString(addr, "ABCDE");
-		  */
-
-
-
 		  send_i2c_flag=0;
 
 	  }

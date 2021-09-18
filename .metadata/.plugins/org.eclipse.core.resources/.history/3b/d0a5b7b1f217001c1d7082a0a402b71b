@@ -123,10 +123,7 @@ int main(void)
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
 		  // draw char
 		  HD44780_PCF8574_DrawString(addr, "I [A]:");
-		  //test position function
-		  HD44780_PCF8574_PositionXY(addr, 8, 1);
-		  // draw char
-		  HD44780_PCF8574_DrawString(addr, "test");
+
 
 /*
 		  HD44780_PCF8574_SendInstruction(addr, 0x02);

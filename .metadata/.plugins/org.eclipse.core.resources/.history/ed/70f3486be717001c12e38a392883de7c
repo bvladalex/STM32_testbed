@@ -251,8 +251,6 @@ void HD44780_PCF8574_Send_8bits_M4b_I (char addr, char data, char annex)
   I2C_SendData(I2C1,low_nibble);
   // E pulse
   HD44780_PCF8574_E_pulse(low_nibble);
-  //wait for last transfer to finish before sending stop condition
-  while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
 
   // TWI Stop
   //I2C_LCD_Stop();
@@ -282,7 +280,8 @@ void HD44780_PCF8574_CheckBF (char addr)
 void HD44780_PCF8574_SendInstruction (char addr, char instruction)
 {
   // send instruction
-  HD44780_PCF8574_Send_8bits_M4b_I(addr, instruction, PCF8574_PIN_P3);
+  //HD44780_PCF8574_Send_8bits_M4b_I(addr, instruction, PCF8574_PIN_P3);
+	HD44780_PCF8574_Send_8bits_M4b_I(addr, instruction, 0x0);
   // check BF
   //HD44780_PCF8574_CheckBF(addr);
   DelayMs(50);
@@ -301,7 +300,8 @@ void HD44780_PCF8574_SendData (char addr, char data)
   // send data
   // data/command -> pin RS High
   // backlight -> pin P3
-  HD44780_PCF8574_Send_8bits_M4b_I(addr, data, PCF8574_PIN_RS | PCF8574_PIN_P3);
+  //HD44780_PCF8574_Send_8bits_M4b_I(addr, data, PCF8574_PIN_RS | PCF8574_PIN_P3);
+	HD44780_PCF8574_Send_8bits_M4b_I(addr, data, PCF8574_PIN_RS);
   // check BF
   //HD44780_PCF8574_CheckBF(addr);
   DelayMs(50);

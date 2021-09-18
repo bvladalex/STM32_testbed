@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="SysTick_Config" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="PCF8574_PIN_P3"/>
+			<item value="uint8_t"/>
+			<item value="PCF8574_ADDRESS"/>
+			<item value="_delay"/>
 			<item value="SysTick_Config"/>
 			<item value="IS_NVIC_PRIORITY_GROUP"/>
 			<item value="SCB-&gt;SHP"/>
 			<item value="scb"/>
-			<item value="NVIC_IRQChannelPreemptionPriority"/>
-			<item value="NVIC_Init"/>
-			<item value="SCB_Type"/>
-			<item value="SCB_BASE"/>
 		</list>
 		<list key="replacehistory">
 		</list>
@@ -24,7 +24,7 @@
 		<item value="336" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="454" key="DIALOG_HEIGHT"/>
-		<item value="1155" key="DIALOG_X_ORIGIN"/>
-		<item value="414" key="DIALOG_Y_ORIGIN"/>
+		<item value="1129" key="DIALOG_X_ORIGIN"/>
+		<item value="312" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>
