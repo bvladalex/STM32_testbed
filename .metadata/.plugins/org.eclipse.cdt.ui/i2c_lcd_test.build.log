@@ -1,5 +1,5 @@
-23:06:40 **** Programming project i2c_lcd_test on chip ****
-"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.5868423046869037604.cfg -s "D:\\stm_workspace\\i2c_lcd_test" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/i2c_lcd_test.elf verify reset " -c shutdown 
+11:38:08 **** Programming project i2c_lcd_test on chip ****
+"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.9103898258072388996.cfg -s "D:\\stm_workspace\\i2c_lcd_test" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/i2c_lcd_test.elf verify reset " -c shutdown 
 Open On-Chip Debugger 0.10.0+dev-00021-g524e8c8 (2019-04-12-08:48)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -28,17 +28,17 @@ Info : device id = 0x20036410
 Info : flash size = 64kbytes
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000003a msp: 0x20005000
-wrote 7168 bytes from file Debug/i2c_lcd_test.elf in 0.496338s (14.103 KiB/s)
+wrote 7168 bytes from file Debug/i2c_lcd_test.elf in 0.508555s (13.764 KiB/s)
 ** Programming Finished **
 ** Verify Started **
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
-verified 6908 bytes in 0.130652s (51.634 KiB/s)
+verified 6900 bytes in 0.122948s (54.806 KiB/s)
 ** Verified OK **
 ** Resetting Target **
 shutdown command invoked
 
-23:06:41 Build Finished (took 902ms)
+11:38:09 Build Finished (took 887ms)
 

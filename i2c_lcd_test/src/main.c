@@ -39,7 +39,8 @@ uint8_t addr=0x4E;
 uint8_t data=0x69;
 uint16_t tmp;
 uint32_t dummy_read, wait;
-uint8_t send_i2c_flag;
+uint8_t send_i2c_flag=1;
+uint8_t state=0;
 
 RCC_ClocksTypeDef RCC_Clocks;
 /* Private function prototypes -----------------------------------------------*/
@@ -90,24 +91,7 @@ int main(void)
 	  if(send_i2c_flag==1){
 		  toggle_led(GPIOC,GPIO_Pin_13,a);
 		  a ^= 1;
-/*
-		  I2C_GenerateSTART(I2C1,ENABLE);
-		  while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_SB));
-		  //I2C_ReadRegister(I2C1,I2C_Register_SR1);
-		  I2C_Send7bitAddress(I2C1,addr,I2C_Direction_Transmitter);
-		  //I2C_ReadRegister(I2C1,I2C_Register_SR1);
-		  while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_ADDR));
-		  //I2C_ReadRegister(I2C1,I2C_Register_SR2);
-		  //(void)(I2C1->SR2);
-		  dummy_read=I2C1->SR1;
-		  dummy_read=I2C1->SR2;
-		  I2C_SendData(I2C1,data);
-		  while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
-		  I2C_SendData(I2C1,data);
-		  DelayMs(1000);
-		  I2C_GenerateSTOP(I2C1,ENABLE);
-		  */
-
+if(state==0){
 		  // init LCD with address
 		  HD44780_PCF8574_Init(addr);
 
@@ -118,15 +102,28 @@ int main(void)
 		  // display on
 		  HD44780_PCF8574_DisplayOn(addr);
 		  // draw char
-		  HD44780_PCF8574_DrawString(addr, "U [V]:");
-		  // position
-		  HD44780_PCF8574_PositionXY(addr, 0, 1);
-		  // draw char
-		  HD44780_PCF8574_DrawString(addr, "I [A]:");
-		  //test position function
-		  HD44780_PCF8574_PositionXY(addr, 8, 1);
-		  // draw char
-		  HD44780_PCF8574_DrawString(addr, "test");
+		  HD44780_PCF8574_DrawString(addr, "    Volume:");
+}
+else if(state==1){
+	// DISPLAY - SCREEN TEXT
+			  // -------------------------------------------------
+			  // display clear
+			  HD44780_PCF8574_DisplayClear(addr);
+			  // display on
+			  HD44780_PCF8574_DisplayOn(addr);
+			  // draw char
+			  HD44780_PCF8574_DrawString(addr, "    Balance:");
+}
+else if(state==2){
+	// DISPLAY - SCREEN TEXT
+			  // -------------------------------------------------
+			  // display clear
+			  HD44780_PCF8574_DisplayClear(addr);
+			  // display on
+			  HD44780_PCF8574_DisplayOn(addr);
+			  // draw char
+			  HD44780_PCF8574_DrawString(addr, "  Temeperature:");
+}
 
 /*
 		  HD44780_PCF8574_SendInstruction(addr, 0x02);
@@ -150,6 +147,9 @@ void EXTI0_IRQHandler(void){
 	EXTI_ClearITPendingBit(EXTI_Line0);
 	EXTI_ClearFlag(EXTI_Line0);
 	send_i2c_flag=1;
+	if(++state==3){
+		state=0;
+	}
 
 }
 

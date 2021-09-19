@@ -5459,3 +5459,15 @@ Caused by: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING
 	at com.google.gson.stream.JsonReader.beginObject(JsonReader.java:374)
 	at com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$Adapter.read(ReflectiveTypeAdapterFactory.java:165)
 	... 9 more
+
+!ENTRY org.eclipse.launchbar.core 2 0 2021-09-18 11:18:53.477
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2021-09-18 11:18:53.479
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.core.resources 4 372 2021-09-18 11:18:53.484
+!MESSAGE Resource '/test1_project' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2021-09-18 11:18:53.511
+!MESSAGE Resource '/toggle_led' is not open.
