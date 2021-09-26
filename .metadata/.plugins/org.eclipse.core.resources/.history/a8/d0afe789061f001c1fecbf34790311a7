@@ -122,7 +122,7 @@ int main(void)
 
 	state_fun = state[cur_state];
 	rc = state_fun();
-	//cur_state = lookup_transitions(cur_state, rc);
+	cur_state = lookup_transitions(cur_state, rc);
 /*
 	// init LCD with address
 	//HD44780_PCF8574_Init(addr);
@@ -140,22 +140,18 @@ int main(void)
   while (1)
   {
 	  if(change_state==1){
-		  cur_state = lookup_transitions(cur_state, rc);
 		  state_fun = state[cur_state];
 		  rc = state_fun();
+		  cur_state = lookup_transitions(cur_state, rc);
 		  change_state=0;
 	  }
 	  if(btn_up_p==1){
-		  if(cur_state==vol){
-			  change_lcd_vol(UP);
-			  btn_up_p=0;
-		  }
+		  change_lcd_vol(UP);
+		  btn_up_p=0;
 	  }
 	  if(btn_down_p==1){
-		  if(cur_state==vol){
-			  change_lcd_vol(DOWN);
-			  btn_down_p=0;
-		  }
+		  change_lcd_vol(DOWN);
+		  btn_down_p=0;
 	  }
 
 

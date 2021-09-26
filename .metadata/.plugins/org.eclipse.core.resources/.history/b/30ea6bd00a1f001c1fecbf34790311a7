@@ -143,6 +143,7 @@ int main(void)
 		  cur_state = lookup_transitions(cur_state, rc);
 		  state_fun = state[cur_state];
 		  rc = state_fun();
+		  //cur_state = lookup_transitions(cur_state, rc);
 		  change_state=0;
 	  }
 	  if(btn_up_p==1){

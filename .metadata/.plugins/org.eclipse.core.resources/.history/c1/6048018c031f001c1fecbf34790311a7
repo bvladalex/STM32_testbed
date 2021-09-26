@@ -30,8 +30,6 @@ int vol_state(void)
 	char vol_bar[16];
 	for (int j=0;j<=lcd_vol_lvl;j++)
 		vol_bar[j]=0xFF;
-	for(int j=lcd_vol_lvl+1;j<16;j++)
-		vol_bar[j]=0xFE;
 	HD44780_PCF8574_DrawString(addr, vol_bar);
 	/*
 	HD44780_PCF8574_PositionXY(addr, 4, 1);

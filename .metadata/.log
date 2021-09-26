@@ -5597,3 +5597,15 @@ Caused by: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING
 
 !ENTRY fr.ac6.mcu.ide 1 1 2021-09-26 17:18:53.537
 !MESSAGE Started RMI Server, listening on port 21112
+
+!ENTRY org.eclipse.launchbar.core 2 0 2021-09-26 20:58:45.346
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2021-09-26 20:58:45.346
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.core.resources 4 372 2021-09-26 20:58:45.362
+!MESSAGE Resource '/test1_project' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2021-09-26 20:58:45.378
+!MESSAGE Resource '/toggle_led' is not open.
