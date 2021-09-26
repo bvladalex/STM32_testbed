@@ -1,0 +1,6 @@
+11:43:43 **** Build of configuration Default for project master_amp_control ****
+make all 
+make: *** No rule to make target `all'.  Stop.
+
+11:43:43 Build Finished (took 286ms)
+

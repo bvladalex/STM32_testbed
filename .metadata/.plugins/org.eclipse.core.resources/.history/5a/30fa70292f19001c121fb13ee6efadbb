@@ -1,0 +1,43 @@
+#include "state_machine.h"
+
+static int start_state(void) 
+{
+
+	return ok;
+}
+
+static int vol_state(void)
+{
+
+	return ok;
+}
+
+static int bal_state(void)
+{
+
+	return ok;
+}
+
+static int fan_state(void)
+{
+
+	return ok;
+}
+
+/* array and enum below must be in sync! */
+int (*state[])(void) = { start_state, vol_state, bal_state, fan_state};
+
+
+
+static enum state_codes lookup_transitions(enum state_codes current, enum ret_codes ret)
+{
+	int i = 0;
+	enum state_codes temp = fan;
+	for (i = 0;; ++i) {
+	  if (state_transitions[i].src_state == current && state_transitions[i].ret_code == ret) {
+		temp = state_transitions[i].dst_state;
+		break;
+	  }
+	}
+	return temp;
+}
