@@ -1,8 +1,10 @@
 #include "state_machine.h"
 #include "lcd1602_i2c.h"
+#include "stdint.h"
 
-extern int addr,lcd_vol_lvl;
+extern uint8_t addr,lcd_vol_lvl,lcd_bal_lvl;
 extern struct transition state_transitions[];
+extern char bal_symbol[2];
 
 int start_state(void)
 {
@@ -22,7 +24,7 @@ int vol_state(void)
 	// display on
 	HD44780_PCF8574_DisplayOn(addr);
 	// draw char
-	HD44780_PCF8574_DrawString(addr, "volume state");
+	HD44780_PCF8574_DrawString(addr, "     Volume     ");
 
 	//draw volume bar
 	HD44780_PCF8574_PositionXY(addr, 0, 1);
@@ -44,13 +46,15 @@ int vol_state(void)
 
 int bal_state(void)
 {
+	//char bal_symbol[2]={0x3c,0x3e};
 	HD44780_PCF8574_DisplayClear(addr);
 	// display on
 	HD44780_PCF8574_DisplayOn(addr);
 	// draw char
-	HD44780_PCF8574_DrawString(addr, "balance state");
-
-
+	HD44780_PCF8574_DrawString(addr, "L    Center    R");
+	//draw balance position symbol
+	HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+	HD44780_PCF8574_DrawString(addr, bal_symbol);
 	return ok;
 }
 

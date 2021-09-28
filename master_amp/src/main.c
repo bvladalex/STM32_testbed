@@ -44,6 +44,8 @@ uint8_t send_i2c_flag=1;
 uint8_t change_state=0;
 uint8_t btn_up_p=0, btn_down_p=0;
 uint8_t lcd_vol_lvl=7;
+uint8_t lcd_bal_lvl=7;
+char bal_symbol[2]={0x3c,0x3e};
 #define UP 			0x04
 #define DOWN		0x03
 
@@ -72,6 +74,7 @@ void EXTI_Configuration(void);
 void I2C_Configuration(void);
 void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value);
 void change_lcd_vol(uint8_t direction);
+void change_lcd_bal(uint8_t direction);
 
 /**
   * @brief  Main program.
@@ -150,10 +153,18 @@ int main(void)
 			  change_lcd_vol(UP);
 			  btn_up_p=0;
 		  }
+		  if(cur_state==bal){
+			  change_lcd_bal(UP);
+			  btn_up_p=0;
+		  }
 	  }
 	  if(btn_down_p==1){
 		  if(cur_state==vol){
 			  change_lcd_vol(DOWN);
+			  btn_down_p=0;
+		  }
+		  if(cur_state==bal){
+			  change_lcd_bal(DOWN);
 			  btn_down_p=0;
 		  }
 	  }
@@ -331,8 +342,27 @@ void change_lcd_vol(uint8_t direction){
 		HD44780_PCF8574_DrawChar(addr,0x10);
 		lcd_vol_lvl-=1;
 	}
+}
 
-
+void change_lcd_bal(uint8_t direction){
+	if(direction==UP){
+		if(lcd_bal_lvl<=13){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_DrawChar(addr,0x10);
+			lcd_bal_lvl+=1;
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_DrawString(addr, bal_symbol);
+		}
+	}
+	if(direction==DOWN){
+		if(lcd_bal_lvl>=1){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl+1, 1);
+			HD44780_PCF8574_DrawChar(addr,0x10);
+			lcd_bal_lvl-=1;
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_DrawString(addr, bal_symbol);
+		}
+	}
 }
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
