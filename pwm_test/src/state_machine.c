@@ -1,0 +1,88 @@
+#include "state_machine.h"
+#include "lcd1602_i2c.h"
+#include "stdint.h"
+
+extern uint8_t addr,lcd_vol_lvl,lcd_bal_lvl;
+extern struct transition state_transitions[];
+extern char bal_symbol[2];
+
+int start_state(void)
+{
+	HD44780_PCF8574_Init(addr);
+	HD44780_PCF8574_DisplayClear(addr);
+	// display on
+	HD44780_PCF8574_DisplayOn(addr);
+	// draw char
+	HD44780_PCF8574_DrawString(addr, "start state");
+
+	return ok;
+}
+
+int vol_state(void)
+{
+	HD44780_PCF8574_DisplayClear(addr);
+	// display on
+	HD44780_PCF8574_DisplayOn(addr);
+	// draw char
+	HD44780_PCF8574_DrawString(addr, "     Volume     ");
+
+	//draw volume bar
+	HD44780_PCF8574_PositionXY(addr, 0, 1);
+	// draw char
+	char vol_bar[16];
+	for (int j=0;j<=lcd_vol_lvl;j++)
+		vol_bar[j]=0xFF;
+	for(int j=lcd_vol_lvl+1;j<16;j++)
+		vol_bar[j]=0xFE;
+	HD44780_PCF8574_DrawString(addr, vol_bar);
+	/*
+	HD44780_PCF8574_PositionXY(addr, 4, 1);
+	HD44780_PCF8574_DrawChar(addr,0x10);
+	HD44780_PCF8574_PositionXY(addr, 9, 1);
+	HD44780_PCF8574_DrawChar(addr,0x10);
+	*/
+	return ok;
+}
+
+int bal_state(void)
+{
+	//char bal_symbol[2]={0x3c,0x3e};
+	HD44780_PCF8574_DisplayClear(addr);
+	// display on
+	HD44780_PCF8574_DisplayOn(addr);
+	// draw char
+	HD44780_PCF8574_DrawString(addr, "L    Center    R");
+	//draw balance position symbol
+	HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+	HD44780_PCF8574_DrawString(addr, bal_symbol);
+	return ok;
+}
+
+int fan_state(void)
+{
+	HD44780_PCF8574_DisplayClear(addr);
+	// display on
+	HD44780_PCF8574_DisplayOn(addr);
+	// draw char
+	HD44780_PCF8574_DrawString(addr, "fan state");
+
+
+	return ok;
+}
+
+
+enum state_codes lookup_transitions(enum state_codes current, enum ret_codes ret)
+//enum state_codes lookup_transitions(enum state_codes current, enum ret_codes ret, struct transition st_tr[])
+{
+	//struct transition state_transitions[];
+	//state_transitions=st_tr;
+	int i = 0;
+	enum state_codes temp = fan;
+	for (i = 0;; ++i) {
+	  if (state_transitions[i].src_state == current && state_transitions[i].ret_code == ret) {
+		temp = state_transitions[i].dst_state;
+		break;
+	  }
+	}
+	return temp;
+}
