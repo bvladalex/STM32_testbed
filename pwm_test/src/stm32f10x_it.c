@@ -36,6 +36,11 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+uint16_t capture = 0;
+extern __IO uint16_t CCR1_Val;
+extern __IO uint16_t CCR2_Val;
+extern __IO uint16_t CCR3_Val;
+extern __IO uint16_t CCR4_Val;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -166,5 +171,16 @@ void SysTick_Handler(void)
 /**
   * @}
   */
+void TIM2_IRQHandler(void){
+	if (TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
+	  {
+	    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
+
+	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
+	    GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
+	    capture = TIM_GetCapture1(TIM2);
+	    TIM_SetCompare1(TIM2, capture + CCR1_Val);
+	  }
+}
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

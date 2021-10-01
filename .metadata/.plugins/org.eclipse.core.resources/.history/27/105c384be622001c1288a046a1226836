@@ -155,7 +155,7 @@ void RCC_Configuration(void)
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
   /* GPIOC clock enable */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 }
 
 /**

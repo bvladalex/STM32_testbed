@@ -155,7 +155,7 @@ void RCC_Configuration(void)
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
   /* GPIOC clock enable */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 }
 
 /**
@@ -169,7 +169,7 @@ void GPIO_Configuration(void)
 
   /* GPIOC Configuration:Pin6, 7, 8 and 9 as alternate function push-pull */
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 
   GPIO_Init(GPIOA, &GPIO_InitStructure);

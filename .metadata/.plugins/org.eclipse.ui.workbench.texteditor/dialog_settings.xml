@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="lcd_bal_lvl" key="selection"/>
+		<item value="handler" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="lcd_bal_lvl"/>
-			<item value="lcd_vol_lvl"/>
-			<item value="state_transitions"/>
-			<item value="state"/>
-			<item value="state_fun"/>
-			<item value="PCF8574_PIN_P3"/>
-			<item value="uint8_t"/>
-			<item value="PCF8574_ADDRESS"/>
+			<item value="handler"/>
+			<item value="IS_TIM_OC_MODE"/>
+			<item value="IS_TIM_IT"/>
+			<item value="interrupt"/>
+			<item value="UIF"/>
+			<item value="TIM_OCMode"/>
+			<item value="TIM_Output_Compare_and_PWM_modes"/>
+			<item value="TIM_OutputState_Enable"/>
 		</list>
 		<list key="replacehistory">
 		</list>
@@ -24,7 +24,7 @@
 		<item value="336" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="454" key="DIALOG_HEIGHT"/>
-		<item value="1190" key="DIALOG_X_ORIGIN"/>
-		<item value="269" key="DIALOG_Y_ORIGIN"/>
+		<item value="1377" key="DIALOG_X_ORIGIN"/>
+		<item value="166" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>
