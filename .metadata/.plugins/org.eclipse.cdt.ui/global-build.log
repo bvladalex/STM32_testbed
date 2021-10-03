@@ -1,16 +1,10 @@
-22:19:08 **** Incremental Build of configuration Debug for project pwm_test ****
+21:36:02 **** Incremental Build of configuration Debug for project pwm_test ****
 make -j8 all 
 Building file: ../src/main.c
 Invoking: MCU GCC Compiler
-Building file: ../src/stm32f10x_it.c
 D:\stm_workspace\pwm_test\Debug
 arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/pwm_test/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
-Invoking: MCU GCC Compiler
-D:\stm_workspace\pwm_test\Debug
-arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/pwm_test/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/stm32f10x_it.d" -MT"src/stm32f10x_it.o" -o "src/stm32f10x_it.o" "../src/stm32f10x_it.c"
 Finished building: ../src/main.c
-Finished building: ../src/stm32f10x_it.c
- 
  
 Building target: pwm_test.elf
 Invoking: MCU GCC Linker
@@ -22,10 +16,10 @@ Generating binary and Printing size information:
 arm-none-eabi-objcopy -O binary "pwm_test.elf" "pwm_test.bin"
 arm-none-eabi-size "pwm_test.elf"
    text	   data	    bss	    dec	    hex	filename
-   4528	   1112	   1124	   6764	   1a6c	pwm_test.elf
+   3668	   1104	   1124	   5896	   1708	pwm_test.elf
  
-22:19:56 **** Programming project pwm_test on chip ****
-"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.6929964233926081999.cfg -s "D:\\stm_workspace\\pwm_test" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/pwm_test.elf verify reset " -c shutdown 
+21:36:09 **** Programming project pwm_test on chip ****
+"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.8882346200372242135.cfg -s "D:\\stm_workspace\\pwm_test" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/pwm_test.elf verify reset " -c shutdown 
 Open On-Chip Debugger 0.10.0+dev-00021-g524e8c8 (2019-04-12-08:48)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -37,13 +31,13 @@ adapter_nsrst_delay: 100
 Info : clock speed 8000 kHz
 Info : STLINK v2 JTAG v29 API v2 SWIM v7 VID 0x0483 PID 0x3748
 Info : using stlink api v2
-Info : Target voltage: 3.188527
+Info : Target voltage: 3.186962
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
 Info : Stlink adapter speed set to 4000 kHz
 Info : STM32F103C8Tx.cpu: hardware has 6 breakpoints, 4 watchpoints
 Info : Listening on port 3333 for gdb connections
 target halted due to debug-request, current mode: Thread 
-xPSR: 0x01000000 pc: 0x08000e68 msp: 0x20005000
+xPSR: 0x01000000 pc: 0x08000c34 msp: 0x20005000
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
 Info : Stlink adapter speed set to 4000 kHz
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
@@ -54,14 +48,14 @@ Info : device id = 0x20036410
 Info : flash size = 64kbytes
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000003a msp: 0x20005000
-wrote 6144 bytes from file Debug/pwm_test.elf in 0.493513s (12.158 KiB/s)
+wrote 5120 bytes from file Debug/pwm_test.elf in 0.359926s (13.892 KiB/s)
 ** Programming Finished **
 ** Verify Started **
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
-verified 5640 bytes in 0.109160s (50.456 KiB/s)
+verified 4772 bytes in 0.111017s (41.977 KiB/s)
 ** Verified OK **
 ** Resetting Target **
 shutdown command invoked
