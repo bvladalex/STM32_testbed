@@ -192,7 +192,7 @@ void TIM2_IRQHandler(void){
   * @param  None
   * @retval None
   */
-void TIM1_CC_IRQHandler(void)
+void TIM1_IRQHandler(void)
 {
   /* Clear TIM1 Capture compare interrupt pending bit */
   TIM_ClearITPendingBit(TIM1, TIM_IT_CC2);

@@ -41,10 +41,6 @@ extern __IO uint16_t CCR1_Val;
 extern __IO uint16_t CCR2_Val;
 extern __IO uint16_t CCR3_Val;
 extern __IO uint16_t CCR4_Val;
-
-__IO uint16_t IC2Value = 0;
-__IO uint16_t DutyCycle = 0;
-__IO uint32_t Frequency = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -186,35 +182,5 @@ void TIM2_IRQHandler(void){
 	    TIM_SetCompare1(TIM2, capture + CCR1_Val);
 	  }
 }
-
-/**
-  * @brief  This function handles TIM3 global interrupt request.
-  * @param  None
-  * @retval None
-  */
-void TIM1_CC_IRQHandler(void)
-{
-  /* Clear TIM1 Capture compare interrupt pending bit */
-  TIM_ClearITPendingBit(TIM1, TIM_IT_CC2);
-
-  /* Get the Input Capture value */
-  IC2Value = TIM_GetCapture2(TIM1);
-
-  if (IC2Value != 0)
-  {
-    /* Duty cycle computation */
-    DutyCycle = (TIM_GetCapture1(TIM1) * 100) / IC2Value;
-
-    /* Frequency computation */
-    Frequency = SystemCoreClock / IC2Value;
-  }
-  else
-  {
-    DutyCycle = 0;
-    Frequency = 0;
-  }
-}
-
-
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
