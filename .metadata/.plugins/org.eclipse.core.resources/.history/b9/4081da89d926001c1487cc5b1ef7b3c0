@@ -195,7 +195,7 @@ void TIM2_IRQHandler(void){
 	    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 
 	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
-	    GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
+	    //GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
 	    capture = TIM_GetCapture1(TIM2);
 	    TIM_SetCompare1(TIM2, capture + CCR1_Val);
 	  }
@@ -307,8 +307,8 @@ void NVIC_Configuration(void){
 
 	/* Enable the TIM2 global Interrupt */
 	NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn;
-	//NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
-	//NVIC_InitStruct.NVIC_IRQChannelSubPriority = 1;
+	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStruct.NVIC_IRQChannelSubPriority = 1;
 
 	NVIC_Init(&NVIC_InitStruct);
 

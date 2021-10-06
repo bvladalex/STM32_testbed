@@ -195,7 +195,7 @@ void TIM2_IRQHandler(void){
 	    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 
 	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
-	    GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
+	    //GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
 	    capture = TIM_GetCapture1(TIM2);
 	    TIM_SetCompare1(TIM2, capture + CCR1_Val);
 	  }
@@ -274,13 +274,6 @@ void GPIO_Configuration(void){
 
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 
-	//config for the tim1c2 pwm input read
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-
 }
 
 void NVIC_Configuration(void){
@@ -305,16 +298,7 @@ void NVIC_Configuration(void){
 	NVIC_InitStruct.NVIC_IRQChannel=EXTI4_IRQn;
 	NVIC_Init(&NVIC_InitStruct);
 
-	/* Enable the TIM2 global Interrupt */
-	NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn;
-	//NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
-	//NVIC_InitStruct.NVIC_IRQChannelSubPriority = 1;
 
-	NVIC_Init(&NVIC_InitStruct);
-
-	NVIC_InitStruct.NVIC_IRQChannel = TIM1_CC_IRQn;
-
-	NVIC_Init(&NVIC_InitStruct);
 }
 void EXTI_Configuration(void){
 
