@@ -4,7 +4,8 @@
 
 extern uint8_t addr,lcd_vol_lvl,lcd_bal_lvl;
 extern struct transition state_transitions[];
-extern char bal_symbol[2];
+//extern char bal_symbol[2];
+extern char *bal_symbol;
 
 int start_state(void)
 {

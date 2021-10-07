@@ -110,7 +110,6 @@ int main(void)
 /*
 	// init LCD with address
 	HD44780_PCF8574_Init(addr);
-
     // DISPLAY - SCREEN TEXT
 	// -------------------------------------------------
 	// display clear
@@ -119,7 +118,6 @@ int main(void)
 	HD44780_PCF8574_DisplayOn(addr);
 	// draw char
 	HD44780_PCF8574_DrawString(addr, "start state");
-
 */
 	DelayMs(2000);
 
@@ -129,7 +127,6 @@ int main(void)
 /*
 	// init LCD with address
 	//HD44780_PCF8574_Init(addr);
-
 	// DISPLAY - SCREEN TEXT
 	// -------------------------------------------------
 	// display clear
@@ -346,16 +343,22 @@ void change_lcd_vol(uint8_t direction){
 
 void change_lcd_bal(uint8_t direction){
 	if(direction==UP){
-		HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
-		HD44780_PCF8574_DrawChar(addr,0x10);
-		HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
-		HD44780_PCF8574_DrawString(addr, bal_symbol);
-		lcd_bal_lvl+=1;
+		if(lcd_bal_lvl<=13){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_DrawChar(addr,0x10);
+			lcd_bal_lvl+=1;
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_DrawString(addr, bal_symbol);
+		}
 	}
 	if(direction==DOWN){
-		lcd_bal_lvl-=1;
-		HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
-		HD44780_PCF8574_DrawString(addr, bal_symbol);
+		if(lcd_bal_lvl>=1){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl+1, 1);
+			HD44780_PCF8574_DrawChar(addr,0x10);
+			lcd_bal_lvl-=1;
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_DrawString(addr, bal_symbol);
+		}
 	}
 }
 

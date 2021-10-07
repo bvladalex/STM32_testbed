@@ -17,6 +17,7 @@
 #include "delay_stm32f1.h"
 #include "stm32f10x.h"
 #include "state_machine.h"
+#include "stm32f10x_tim.h"
 
 
 /** @addtogroup STM32F10x_StdPeriph_Examples
@@ -49,6 +50,18 @@ char bal_symbol[2]={0x3c,0x3e};
 #define UP 			0x04
 #define DOWN		0x03
 
+//definitions for timer handlers
+__IO uint16_t CCR1_Val = 40961;
+uint16_t capture = 0;
+
+__IO uint16_t IC2Value = 0;
+__IO uint16_t DutyCycle = 0;
+__IO uint32_t Frequency = 0;
+
+TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+TIM_OCInitTypeDef  TIM_OCInitStructure;
+TIM_ICInitTypeDef  TIM_ICInitStructure;
+
 /* definitions related to the state machine*/
 enum state_codes cur_state = start;
 enum ret_codes rc;
@@ -72,6 +85,7 @@ void GPIO_Configuration(void);
 void NVIC_Configuration(void);
 void EXTI_Configuration(void);
 void I2C_Configuration(void);
+void TIM_Configuration(void);
 void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value);
 void change_lcd_vol(uint8_t direction);
 void change_lcd_bal(uint8_t direction);
@@ -101,44 +115,21 @@ int main(void)
 	/*I2C configuration*/
 	I2C_Configuration();
 
+	/*Timers configuration*/
+	TIM_Configuration();
+
 	DelayInit();
 
 /*Starting the state machine*/
 	state_fun = state[cur_state];
 	rc = state_fun();
 	cur_state = lookup_transitions(cur_state, rc);
-/*
-	// init LCD with address
-	HD44780_PCF8574_Init(addr);
 
-    // DISPLAY - SCREEN TEXT
-	// -------------------------------------------------
-	// display clear
-	HD44780_PCF8574_DisplayClear(addr);
-	// display on
-	HD44780_PCF8574_DisplayOn(addr);
-	// draw char
-	HD44780_PCF8574_DrawString(addr, "start state");
-
-*/
 	DelayMs(2000);
 
 	state_fun = state[cur_state];
 	rc = state_fun();
-	//cur_state = lookup_transitions(cur_state, rc);
-/*
-	// init LCD with address
-	//HD44780_PCF8574_Init(addr);
 
-	// DISPLAY - SCREEN TEXT
-	// -------------------------------------------------
-	// display clear
-	HD44780_PCF8574_DisplayClear(addr);
-	// display on
-	HD44780_PCF8574_DisplayOn(addr);
-	// draw char
-	HD44780_PCF8574_DrawString(addr, "state 1");
-*/
 
   while (1)
   {
@@ -157,6 +148,8 @@ int main(void)
 			  change_lcd_bal(UP);
 			  btn_up_p=0;
 		  }
+		  else
+			  btn_up_p=0;
 	  }
 	  if(btn_down_p==1){
 		  if(cur_state==vol){
@@ -167,6 +160,8 @@ int main(void)
 			  change_lcd_bal(DOWN);
 			  btn_down_p=0;
 		  }
+		  else
+			  btn_down_p=0;
 	  }
 
 
@@ -184,19 +179,55 @@ void EXTI0_IRQHandler(void){
 void EXTI3_IRQHandler(void){
 	EXTI_ClearITPendingBit(EXTI_Line3);
 	EXTI_ClearFlag(EXTI_Line3);
-	//change_state=1;
 	btn_down_p=1;
 }
 
 void EXTI4_IRQHandler(void){
 	EXTI_ClearITPendingBit(EXTI_Line4);
 	EXTI_ClearFlag(EXTI_Line4);
-	//change_state=1;
 	btn_up_p=1;
 }
 
 
+void TIM2_IRQHandler(void){
+	if (TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
+	  {
+	    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 
+	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
+	    GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
+	    capture = TIM_GetCapture1(TIM2);
+	    TIM_SetCompare1(TIM2, capture + CCR1_Val);
+	  }
+}
+
+/**
+  * @brief  This function handles TIM3 global interrupt request.
+  * @param  None
+  * @retval None
+  */
+void TIM1_CC_IRQHandler(void)
+{
+  /* Clear TIM1 Capture compare interrupt pending bit */
+  TIM_ClearITPendingBit(TIM1, TIM_IT_CC2);
+
+  /* Get the Input Capture value */
+  IC2Value = TIM_GetCapture2(TIM1);
+
+  if (IC2Value != 0)
+  {
+    /* Duty cycle computation */
+    DutyCycle = (TIM_GetCapture1(TIM1) * 100) / IC2Value;
+
+    /* Frequency computation */
+    Frequency = SystemCoreClock / IC2Value;
+  }
+  else
+  {
+    DutyCycle = 0;
+    Frequency = 0;
+  }
+}
 /**
   * @}
   */
@@ -227,24 +258,28 @@ void GPIO_Configuration(void){
 
 	//start config for LED
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
-	//GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
 
 	//start config for mode btn
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-	//GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	//start config for up and down buttons
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4;
-	//GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+
+	//config for the tim1c2 pwm input read
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
 
 }
 
@@ -265,18 +300,21 @@ void NVIC_Configuration(void){
 	/*Enable core interrupts for up and down buttons*/
 
 	NVIC_InitStruct.NVIC_IRQChannel=EXTI3_IRQn;
-	//NVIC_InitStruct.NVIC_IRQChannelCmd=ENABLE;
-	//NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority=1;
-	//NVIC_InitStruct.NVIC_IRQChannelSubPriority=0;
 	NVIC_Init(&NVIC_InitStruct);
 
 	NVIC_InitStruct.NVIC_IRQChannel=EXTI4_IRQn;
-	//NVIC_InitStruct.NVIC_IRQChannelCmd=ENABLE;
-	//NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority=1;
-	//NVIC_InitStruct.NVIC_IRQChannelSubPriority=0;
 	NVIC_Init(&NVIC_InitStruct);
 
+	/* Enable the TIM2 global Interrupt */
+	NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn;
+	//NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
+	//NVIC_InitStruct.NVIC_IRQChannelSubPriority = 1;
 
+	NVIC_Init(&NVIC_InitStruct);
+
+	NVIC_InitStruct.NVIC_IRQChannel = TIM1_CC_IRQn;
+
+	NVIC_Init(&NVIC_InitStruct);
 }
 void EXTI_Configuration(void){
 
@@ -319,9 +357,40 @@ void I2C_Configuration(void){
 
 	I2C_Init(I2C1,&I2C_InitStruct);
 	I2C_Cmd(I2C1,ENABLE);
+}
+
+void TIM_Configuration(void){
+	/*
+	* This is where TIM1 config as PWM input begins
+	*/
+
+
+	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
+	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
+	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
+	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+	TIM_ICInitStructure.TIM_ICFilter = 0x0;
+
+	TIM_PWMIConfig(TIM1, &TIM_ICInitStructure);
+
+	// Select the TIM3 Input Trigger: TI2FP2
+	TIM_SelectInputTrigger(TIM1, TIM_TS_TI2FP2);
+
+	// Select the slave Mode: Reset Mode
+	TIM_SelectSlaveMode(TIM1, TIM_SlaveMode_Reset);
+
+	// Enable the Master/Slave Mode
+	TIM_SelectMasterSlaveMode(TIM1, TIM_MasterSlaveMode_Enable);
+
+	// TIM3 enable counter
+	TIM_Cmd(TIM1, ENABLE);
+
+	// Enable the CC2 Interrupt Request
+	TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
 
 
 }
+
 void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value){
 	if (value == 1)
 		GPIO_ResetBits(GPIOC, GPIO_Pin);
@@ -346,16 +415,22 @@ void change_lcd_vol(uint8_t direction){
 
 void change_lcd_bal(uint8_t direction){
 	if(direction==UP){
-		HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
-		HD44780_PCF8574_DrawChar(addr,0x10);
-		lcd_bal_lvl+=1;
-		HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
-		HD44780_PCF8574_DrawString(addr, bal_symbol);
+		if(lcd_bal_lvl<=13){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_DrawChar(addr,0x10);
+			lcd_bal_lvl+=1;
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_DrawString(addr, bal_symbol);
+		}
 	}
 	if(direction==DOWN){
-		lcd_bal_lvl-=1;
-		HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
-		HD44780_PCF8574_DrawString(addr, bal_symbol);
+		if(lcd_bal_lvl>=1){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl+1, 1);
+			HD44780_PCF8574_DrawChar(addr,0x10);
+			lcd_bal_lvl-=1;
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_DrawString(addr, bal_symbol);
+		}
 	}
 }
 
