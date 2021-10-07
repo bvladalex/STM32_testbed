@@ -61,7 +61,8 @@ __IO uint32_t Frequency = 0;
 
 uint32_t tim_freq;
 
-uint8_t freq_to_print[4]={0,0,0,0};
+uint8_t freq_to_print[5];
+freq_to_print[4]=6;
 
 TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 TIM_OCInitTypeDef  TIM_OCInitStructure;
@@ -206,10 +207,6 @@ void TIM2_IRQHandler(void){
 	    while(tim_freq){
 	    	*(freq_to_print+i)=tim_freq/10;
 	    	i--;
-	    }
-	    if(cur_state==fan){
-	    	HD44780_PCF8574_PositionXY(addr, 0, 1);
-	    	HD44780_PCF8574_DrawString(addr, (char*)freq_to_print);
 	    }
 	    capture = TIM_GetCapture1(TIM2);
 	    TIM_SetCompare1(TIM2, capture + CCR1_Val);

@@ -59,10 +59,6 @@ __IO uint16_t IC2Value = 0;
 __IO uint16_t DutyCycle = 0;
 __IO uint32_t Frequency = 0;
 
-uint32_t tim_freq;
-
-uint8_t freq_to_print[4]={0,0,0,0};
-
 TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 TIM_OCInitTypeDef  TIM_OCInitStructure;
 TIM_ICInitTypeDef  TIM_ICInitStructure;
@@ -200,17 +196,7 @@ void TIM2_IRQHandler(void){
 	    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 
 	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
-	    //GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
-	    tim_freq=Frequency;
-	    int i=3;
-	    while(tim_freq){
-	    	*(freq_to_print+i)=tim_freq/10;
-	    	i--;
-	    }
-	    if(cur_state==fan){
-	    	HD44780_PCF8574_PositionXY(addr, 0, 1);
-	    	HD44780_PCF8574_DrawString(addr, (char*)freq_to_print);
-	    }
+	    GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
 	    capture = TIM_GetCapture1(TIM2);
 	    TIM_SetCompare1(TIM2, capture + CCR1_Val);
 	  }

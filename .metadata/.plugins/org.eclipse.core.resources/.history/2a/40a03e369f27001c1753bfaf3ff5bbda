@@ -209,7 +209,7 @@ void TIM2_IRQHandler(void){
 	    }
 	    if(cur_state==fan){
 	    	HD44780_PCF8574_PositionXY(addr, 0, 1);
-	    	HD44780_PCF8574_DrawString(addr, (char*)freq_to_print);
+	    	HD44780_PCF8574_DrawString(addr, freq_to_print);
 	    }
 	    capture = TIM_GetCapture1(TIM2);
 	    TIM_SetCompare1(TIM2, capture + CCR1_Val);

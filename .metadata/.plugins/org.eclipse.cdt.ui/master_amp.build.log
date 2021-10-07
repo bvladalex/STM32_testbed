@@ -1,6 +1,23 @@
-20:48:29 **** Incremental Build of configuration Debug for project master_amp ****
+21:48:53 **** Incremental Build of configuration Debug for project master_amp ****
 make -j8 all 
-make: Nothing to be done for 'all'.
+Building file: ../src/main.c
+Invoking: MCU GCC Compiler
+D:\stm_workspace\master_amp\Debug
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/master_amp/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+Finished building: ../src/main.c
+ 
+Building target: master_amp.elf
+Invoking: MCU GCC Linker
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -T"D:/stm_workspace/master_amp/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "master_amp.elf" @"objects.list"   -lm
+Finished building target: master_amp.elf
+ 
+make --no-print-directory post-build
+Generating binary and Printing size information:
+arm-none-eabi-objcopy -O binary "master_amp.elf" "master_amp.bin"
+arm-none-eabi-size "master_amp.elf"
+   text	   data	    bss	    dec	    hex	filename
+   8748	   1168	   1196	  11112	   2b68	master_amp.elf
+ 
 
-20:48:30 Build Finished (took 930ms)
+21:48:58 Build Finished (took 4s.259ms)
 
