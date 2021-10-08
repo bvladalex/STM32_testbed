@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="TIM1" key="selection"/>
+		<item value="DelayMs" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="DelayMs"/>
+			<item value="ms"/>
+			<item value="bal_symbol"/>
 			<item value="TIM1"/>
 			<item value="Periph_TIM1"/>
 			<item value="RCC_AP%Periph_TIM1"/>
 			<item value="RCC_AP*Periph_TIM1"/>
 			<item value="RCC_APB1Periph_TIM1"/>
-			<item value="TIM_SelectSlaveMode"/>
-			<item value="TIM_SelectInputTrigger"/>
-			<item value="TIM_IT_CC2"/>
 		</list>
 		<list key="replacehistory">
 		</list>
@@ -24,7 +24,7 @@
 		<item value="336" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|5|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="454" key="DIALOG_HEIGHT"/>
-		<item value="783" key="DIALOG_X_ORIGIN"/>
-		<item value="446" key="DIALOG_Y_ORIGIN"/>
+		<item value="534" key="DIALOG_X_ORIGIN"/>
+		<item value="439" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

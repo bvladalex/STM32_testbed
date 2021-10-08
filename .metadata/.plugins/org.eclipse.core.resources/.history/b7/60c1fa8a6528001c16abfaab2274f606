@@ -200,7 +200,7 @@ void TIM2_IRQHandler(void){
 	    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 
 	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
-	    GPIO_WriteBit(GPIOA, GPIO_Pin_6, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_6)));
+	    //GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
 	    tim_freq=Frequency;
 	    int i=3;
 	    while(tim_freq){
@@ -297,11 +297,6 @@ void GPIO_Configuration(void){
 
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-	//2s timer monitor
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 }
 

@@ -200,18 +200,16 @@ void TIM2_IRQHandler(void){
 	    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
 
 	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
-	    GPIO_WriteBit(GPIOA, GPIO_Pin_6, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_6)));
+	    //GPIO_WriteBit(GPIOA, GPIO_Pin_1, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_1)));
 	    tim_freq=Frequency;
 	    int i=3;
 	    while(tim_freq){
-	    	*(freq_to_print+i)=tim_freq%10;
-	    	tim_freq/=10;
+	    	*(freq_to_print+i)=tim_freq/10;
 	    	i--;
 	    }
 	    if(cur_state==fan){
 	    	HD44780_PCF8574_PositionXY(addr, 0, 1);
 	    	HD44780_PCF8574_DrawString(addr, (char*)freq_to_print);
-	    	//HD44780_PCF8574_DrawString(addr, freq_to_print);
 	    }
 	    capture = TIM_GetCapture1(TIM2);
 	    TIM_SetCompare1(TIM2, capture + CCR1_Val);
@@ -297,11 +295,6 @@ void GPIO_Configuration(void){
 
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-	//2s timer monitor
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 }
 
