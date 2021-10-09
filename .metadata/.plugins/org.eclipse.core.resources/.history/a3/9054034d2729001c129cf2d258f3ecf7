@@ -43,7 +43,7 @@ uint16_t tmp;
 uint32_t dummy_read, wait;
 uint8_t send_i2c_flag=1;
 uint8_t change_state=0;
-uint8_t btn_up_p=0, btn_down_p=0, update_fan=0;
+uint8_t btn_up_p=0, btn_down_p=0;
 uint8_t lcd_vol_lvl=7;
 uint8_t lcd_bal_lvl=7;
 //char bal_symbol[2]={0x3c,0x3e};
@@ -168,11 +168,6 @@ int main(void)
 		  else
 			  btn_down_p=0;
 	  }
-	  if(update_fan==1){
-		  HD44780_PCF8574_PositionXY(addr, 0, 1);
-		  HD44780_PCF8574_DrawString(addr, freq_to_print);
-		  update_fan=0;
-	  }
 
 
   }
@@ -209,15 +204,14 @@ void TIM2_IRQHandler(void){
 	    tim_freq=Frequency;
 	    int i=3;
 	    while(tim_freq){
-	    	*(freq_to_print+i)=tim_freq%10+0x30; //the 0x30 is an offset so that we get the ASCII value of the digit
+	    	*(freq_to_print+i)=tim_freq%10;
 	    	tim_freq/=10;
 	    	i--;
 	    }
 	    if(cur_state==fan){
-	    	//HD44780_PCF8574_PositionXY(addr, 0, 1);
-	    	//HD44780_PCF8574_DrawString(addr, (char*)freq_to_print);
+	    	HD44780_PCF8574_PositionXY(addr, 0, 1);
+	    	HD44780_PCF8574_DrawString(addr, (char*)freq_to_print);
 	    	//HD44780_PCF8574_DrawString(addr, freq_to_print);
-	    	update_fan=1;
 	    }
 	    capture = TIM_GetCapture1(TIM2);
 	    TIM_SetCompare1(TIM2, capture + CCR1_Val);
