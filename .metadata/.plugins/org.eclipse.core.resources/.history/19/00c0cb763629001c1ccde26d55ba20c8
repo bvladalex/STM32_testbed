@@ -6,7 +6,6 @@ extern uint8_t addr,lcd_vol_lvl,lcd_bal_lvl;
 extern struct transition state_transitions[];
 //extern char bal_symbol[2];
 extern char *bal_symbol;
-extern uint8_t freq_to_print[]; // extern uint8_t *freq_to_print does not work. why??
 
 int start_state(void)
 {
@@ -67,7 +66,6 @@ int fan_state(void)
 	HD44780_PCF8574_DisplayOn(addr);
 	// draw char
 	HD44780_PCF8574_DrawString(addr, "fan state");
-	//draw current tacho value
 	HD44780_PCF8574_PositionXY(addr, 0, 1);
 	HD44780_PCF8574_DrawString(addr, freq_to_print);
 

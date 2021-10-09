@@ -6,7 +6,7 @@ extern uint8_t addr,lcd_vol_lvl,lcd_bal_lvl;
 extern struct transition state_transitions[];
 //extern char bal_symbol[2];
 extern char *bal_symbol;
-extern uint8_t freq_to_print[]; // extern uint8_t *freq_to_print does not work. why??
+extern uint8_t freq_to_print[];
 
 int start_state(void)
 {

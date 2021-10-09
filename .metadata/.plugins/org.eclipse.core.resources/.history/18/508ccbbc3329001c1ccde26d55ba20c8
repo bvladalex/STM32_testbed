@@ -61,7 +61,7 @@ __IO uint32_t Frequency = 0;
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
 
-uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
+uint8_t freq_to_print[4]={0,0,0,0};
 
 TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 TIM_OCInitTypeDef  TIM_OCInitStructure;
