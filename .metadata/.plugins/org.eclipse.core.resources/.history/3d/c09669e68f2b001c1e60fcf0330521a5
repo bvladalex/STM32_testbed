@@ -60,7 +60,6 @@ __IO uint16_t DutyCycle = 0;
 __IO uint32_t Frequency = 0;
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
-uint8_t IC_PrescalerValue=1;
 
 uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 
@@ -214,8 +213,6 @@ void TIM2_IRQHandler(void){
 	    	tim_freq/=10;
 	    	i--;
 	    }
-	    if(i>=0)
-	    	*(freq_to_print+i)=0x10;
 	    if(cur_state==fan){
 	    	//HD44780_PCF8574_PositionXY(addr, 0, 1);
 	    	//HD44780_PCF8574_DrawString(addr, (char*)freq_to_print);
@@ -246,7 +243,7 @@ void TIM1_CC_IRQHandler(void)
     DutyCycle = (TIM_GetCapture1(TIM1) * 100) / IC2Value;
 
     /* Frequency computation */
-    Frequency = (SystemCoreClock/(IC_PrescalerValue+1)) / IC2Value;
+    Frequency = SystemCoreClock / IC2Value;
   }
   else
   {
@@ -395,14 +392,6 @@ void TIM_Configuration(void){
 	* This is where TIM1 config as PWM input begins
 	*/
 
-		/* Time base configuration */
-	TIM_TimeBaseStructure.TIM_Period = 65535;
-	TIM_TimeBaseStructure.TIM_Prescaler = IC_PrescalerValue;
-	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-
-	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
-		////////////////////////////////////////////////////
 
 	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
 	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
