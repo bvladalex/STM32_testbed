@@ -121,19 +121,22 @@ char HD44780_PCF8574_Init (char addr)
   // ---------------------------------------------------------------------
   HD44780_PCF8574_Send_4bits_M4b_I(PCF8574_PIN_DB4 | PCF8574_PIN_DB5);
   // delay > 100us
-  DelayUs(110);
+  //DelayUs(110);
+  DelayMs(1);
 
   // DB4=1, DB5=1 / BF cannot be checked in these instructions
   // ---------------------------------------------------------------------
   HD44780_PCF8574_Send_4bits_M4b_I(PCF8574_PIN_DB4 | PCF8574_PIN_DB5);
   // delay > 45us (=37+4 * 270/250)
-  DelayUs(50);
+  //DelayUs(50);
+  DelayMs(1);
 
   // DB5=1 / 4 bit mode 0x20 / BF cannot be checked in these instructions
   // ----------------------------------------------------------------------
   HD44780_PCF8574_Send_4bits_M4b_I(PCF8574_PIN_DB5);
   // delay > 45us (=37+4 * 270/250)
-  DelayUs(50);
+  //DelayUs(50);
+  DelayMs(1);
 
   // TWI Stop
   //I2C_LCD_Stop();
@@ -174,7 +177,8 @@ void HD44780_PCF8574_E_pulse (char data)
   I2C_SendData(I2C1,data | PCF8574_PIN_E);
   // delay needs to be implemented
   // PWeh delay time > 450ns
-  DelayUs(0.5);
+  //DelayUs(10);
+  DelayMs(1);
   // E down
   //I2C_LCD_Transmit_Byte(data & ~PCF8574_PIN_E);
   //For STM32: use void I2C_SendData(I2C_TypeDef* I2Cx, uint8_t Data) API
@@ -183,7 +187,8 @@ void HD44780_PCF8574_E_pulse (char data)
   I2C_SendData(I2C1,data & ~PCF8574_PIN_E);
   //delay needs to be imlemented
   // PWeh delay time > 450ns
-  DelayUs(0.5);
+  //DelayUs(10);
+  DelayMs(1);
 }
 
 /**

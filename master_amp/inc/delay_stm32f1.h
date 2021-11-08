@@ -10,6 +10,8 @@ extern "C" {
 void DelayInit(void);
 void DelayUs(uint32_t us);
 void DelayMs(uint32_t ms);
+void Delay100us(uint32_t ms);
+
  
 #ifdef __cplusplus
 }
