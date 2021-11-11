@@ -182,9 +182,9 @@ int main(void)
 
 }
 
-void EXTI9_5_IRQHandler(void){
-	EXTI_ClearITPendingBit(EXTI_Line5);
-	EXTI_ClearFlag(EXTI_Line5);
+void EXTI0_IRQHandler(void){
+	EXTI_ClearITPendingBit(EXTI_Line0);
+	EXTI_ClearFlag(EXTI_Line0);
 	change_state=1;
 }
 
@@ -319,7 +319,7 @@ void NVIC_Configuration(void){
 
 	NVIC_InitTypeDef NVIC_InitStruct;
 	////////////
-	NVIC_InitStruct.NVIC_IRQChannel=EXTI9_5_IRQn;
+	NVIC_InitStruct.NVIC_IRQChannel=EXTI0_IRQn;
 	NVIC_InitStruct.NVIC_IRQChannelCmd=ENABLE;
 	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority=1;
 	NVIC_InitStruct.NVIC_IRQChannelSubPriority=0;

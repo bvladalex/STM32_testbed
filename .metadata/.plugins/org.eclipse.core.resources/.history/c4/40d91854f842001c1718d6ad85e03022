@@ -182,9 +182,9 @@ int main(void)
 
 }
 
-void EXTI9_5_IRQHandler(void){
-	EXTI_ClearITPendingBit(EXTI_Line5);
-	EXTI_ClearFlag(EXTI_Line5);
+void EXTI0_IRQHandler(void){
+	EXTI_ClearITPendingBit(EXTI_Line0);
+	EXTI_ClearFlag(EXTI_Line0);
 	change_state=1;
 }
 
@@ -294,9 +294,14 @@ void GPIO_Configuration(void){
 	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
+	//start config for LED
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
+
 	//start config for mode, up and down buttons
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
@@ -318,8 +323,10 @@ void GPIO_Configuration(void){
 void NVIC_Configuration(void){
 
 	NVIC_InitTypeDef NVIC_InitStruct;
+//testt
+	GPIOC->BSRR = 0x20000000;
 	////////////
-	NVIC_InitStruct.NVIC_IRQChannel=EXTI9_5_IRQn;
+	NVIC_InitStruct.NVIC_IRQChannel=EXTI0_IRQn;
 	NVIC_InitStruct.NVIC_IRQChannelCmd=ENABLE;
 	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority=1;
 	NVIC_InitStruct.NVIC_IRQChannelSubPriority=0;
@@ -351,9 +358,9 @@ void EXTI_Configuration(void){
 	EXTI_InitTypeDef EXTI_InitStruct;
 	/*EXTI config for mode buton*/
 
-	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource5);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource0);
 	  //continue with EXTI regs
-	EXTI_InitStruct.EXTI_Line=EXTI_Line5;
+	EXTI_InitStruct.EXTI_Line=EXTI_Line0;
 	EXTI_InitStruct.EXTI_LineCmd=ENABLE;
 	EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
 	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Falling;

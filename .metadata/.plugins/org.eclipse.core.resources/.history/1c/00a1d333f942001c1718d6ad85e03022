@@ -182,9 +182,9 @@ int main(void)
 
 }
 
-void EXTI9_5_IRQHandler(void){
-	EXTI_ClearITPendingBit(EXTI_Line5);
-	EXTI_ClearFlag(EXTI_Line5);
+void EXTI0_IRQHandler(void){
+	EXTI_ClearITPendingBit(EXTI_Line0);
+	EXTI_ClearFlag(EXTI_Line0);
 	change_state=1;
 }
 
@@ -296,7 +296,7 @@ void GPIO_Configuration(void){
 
 	//start config for mode, up and down buttons
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
@@ -319,7 +319,7 @@ void NVIC_Configuration(void){
 
 	NVIC_InitTypeDef NVIC_InitStruct;
 	////////////
-	NVIC_InitStruct.NVIC_IRQChannel=EXTI9_5_IRQn;
+	NVIC_InitStruct.NVIC_IRQChannel=EXTI0_IRQn;
 	NVIC_InitStruct.NVIC_IRQChannelCmd=ENABLE;
 	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority=1;
 	NVIC_InitStruct.NVIC_IRQChannelSubPriority=0;

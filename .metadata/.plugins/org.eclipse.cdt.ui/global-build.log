@@ -1,4 +1,4 @@
-10:32:11 **** Incremental Build of configuration Debug for project master_amp ****
+17:36:11 **** Incremental Build of configuration Debug for project master_amp ****
 make -j8 all 
 Building file: ../src/main.c
 Invoking: MCU GCC Compiler
@@ -13,7 +13,7 @@ D:/stm_workspace/master_amp/inc/lcd1602_i2c.h:194:8: note: expected 'char *' but
    void HD44780_PCF8574_DrawString (char, char *);
         ^~~~~~~~~~~~~~~~~~~~~~~~~~
 ../src/main.c: In function 'RCC_Configuration_HSI_64Mhz_without_USBclock':
-../src/main.c:526:14: warning: unused variable 'HSIStartUpStatus' [-Wunused-variable]
+../src/main.c:512:14: warning: unused variable 'HSIStartUpStatus' [-Wunused-variable]
   ErrorStatus HSIStartUpStatus;
               ^~~~~~~~~~~~~~~~
 Finished building: ../src/main.c
@@ -28,10 +28,10 @@ Generating binary and Printing size information:
 arm-none-eabi-objcopy -O binary "master_amp.elf" "master_amp.bin"
 arm-none-eabi-size "master_amp.elf"
    text	   data	    bss	    dec	    hex	filename
-  10640	   1176	   1196	  13012	   32d4	master_amp.elf
+  10604	   1176	   1196	  12976	   32b0	master_amp.elf
  
-10:32:20 **** Programming project master_amp on chip ****
-"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.7760234367992282031.cfg -s "D:\\stm_workspace\\master_amp" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/master_amp.elf verify reset " -c shutdown 
+17:36:17 **** Programming project master_amp on chip ****
+"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.4134484124155397127.cfg -s "D:\\stm_workspace\\master_amp" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/master_amp.elf verify reset " -c shutdown 
 Open On-Chip Debugger 0.10.0+dev-00021-g524e8c8 (2019-04-12-08:48)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -43,13 +43,13 @@ adapter_nsrst_delay: 100
 Info : clock speed 8000 kHz
 Info : STLINK v2 JTAG v29 API v2 SWIM v7 VID 0x0483 PID 0x3748
 Info : using stlink api v2
-Info : Target voltage: 3.190607
+Info : Target voltage: 3.192689
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
 Info : Stlink adapter speed set to 4000 kHz
 Info : STM32F103C8Tx.cpu: hardware has 6 breakpoints, 4 watchpoints
 Info : Listening on port 3333 for gdb connections
 target halted due to debug-request, current mode: Thread 
-xPSR: 0x01000000 pc: 0x0800278c msp: 0x20005000
+xPSR: 0x01000000 pc: 0x08002754 msp: 0x20005000
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
 Info : Stlink adapter speed set to 4000 kHz
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
@@ -60,14 +60,14 @@ Info : device id = 0x20036410
 Info : flash size = 128kbytes
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000003a msp: 0x20005000
-wrote 12288 bytes from file Debug/master_amp.elf in 0.842665s (14.241 KiB/s)
+wrote 12288 bytes from file Debug/master_amp.elf in 0.871951s (13.762 KiB/s)
 ** Programming Finished **
 ** Verify Started **
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
-verified 11816 bytes in 0.191377s (60.295 KiB/s)
+verified 11780 bytes in 0.194975s (59.002 KiB/s)
 ** Verified OK **
 ** Resetting Target **
 shutdown command invoked

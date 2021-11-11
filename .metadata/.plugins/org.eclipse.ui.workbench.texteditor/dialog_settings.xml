@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="SetSysClockTo72" key="selection"/>
+		<item value="EXTI" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="EXTI"/>
+			<item value="EXTI4"/>
+			<item value="EXTI5"/>
+			<item value="PIN_5"/>
 			<item value="SetSysClockTo72"/>
 			<item value="flash"/>
 			<item value="hsi"/>
 			<item value="pllmul"/>
-			<item value="RCC_WaitForHSEStartUp"/>
-			<item value="TIM_TimeBaseInitStruct"/>
-			<item value="TIM_TimeBaseInitTypeDef"/>
-			<item value="baseinit"/>
 		</list>
 		<list key="replacehistory">
 		</list>

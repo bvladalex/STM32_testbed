@@ -183,8 +183,8 @@ int main(void)
 }
 
 void EXTI9_5_IRQHandler(void){
-	EXTI_ClearITPendingBit(EXTI_Line5);
-	EXTI_ClearFlag(EXTI_Line5);
+	EXTI_ClearITPendingBit(EXTI_Line0);
+	EXTI_ClearFlag(EXTI_Line0);
 	change_state=1;
 }
 
