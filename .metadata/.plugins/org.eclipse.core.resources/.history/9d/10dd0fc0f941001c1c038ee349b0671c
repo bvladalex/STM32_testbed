@@ -95,7 +95,6 @@ void TIM_Configuration(void);
 void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value);
 void change_lcd_vol(uint8_t direction);
 void change_lcd_bal(uint8_t direction);
-void RCC_Configuration_HSI_64Mhz_without_USBclock(void);
 
 /**
   * @brief  Main program.
@@ -266,14 +265,10 @@ void TIM1_CC_IRQHandler(void)
 void RCC_Configuration(void){
 
 	/*Routing clock*/
-	/*
 	RCC_HSICmd(ENABLE);
 	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_16);
 	RCC_PLLCmd(ENABLE);
 	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-	*/
-
-	RCC_Configuration_HSI_64Mhz_without_USBclock();
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
