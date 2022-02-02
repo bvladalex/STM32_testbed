@@ -154,8 +154,8 @@ int main(void)
 	  }
 	  if(btn_up_p==1){
 		  if(cur_state==vol){
-			  change_pot_vol(UP);
 			  change_lcd_vol(UP);
+			  change_pot_vol(UP);
 			  btn_up_p=0;
 		  }
 		  if(cur_state==bal){
@@ -167,8 +167,8 @@ int main(void)
 	  }
 	  if(btn_down_p==1){
 		  if(cur_state==vol){
-			  change_pot_vol(DOWN);
 			  change_lcd_vol(DOWN);
+			  change_pot_vol(DOWN);
 			  btn_down_p=0;
 		  }
 		  if(cur_state==bal){

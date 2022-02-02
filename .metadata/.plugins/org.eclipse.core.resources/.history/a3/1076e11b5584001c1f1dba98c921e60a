@@ -154,8 +154,8 @@ int main(void)
 	  }
 	  if(btn_up_p==1){
 		  if(cur_state==vol){
-			  change_pot_vol(UP);
 			  change_lcd_vol(UP);
+			  change_pot_vol(UP);
 			  btn_up_p=0;
 		  }
 		  if(cur_state==bal){
@@ -167,8 +167,8 @@ int main(void)
 	  }
 	  if(btn_down_p==1){
 		  if(cur_state==vol){
-			  change_pot_vol(DOWN);
 			  change_lcd_vol(DOWN);
+			  change_pot_vol(DOWN);
 			  btn_down_p=0;
 		  }
 		  if(cur_state==bal){
@@ -525,13 +525,13 @@ void change_lcd_vol(uint8_t direction){
 	if(direction==UP){
 		if(lcd_vol_lvl<=15){
 			lcd_vol_lvl+=1;
-			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl-1, 1);
+			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl, 1);
 			HD44780_PCF8574_DrawChar(addr,0xFF);
 		}
 	}
 	if(direction==DOWN){
 		if(lcd_vol_lvl>=1){
-			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl-1, 1);
+			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl, 1);
 			HD44780_PCF8574_DrawChar(addr,0x10);
 			lcd_vol_lvl-=1;
 		}
