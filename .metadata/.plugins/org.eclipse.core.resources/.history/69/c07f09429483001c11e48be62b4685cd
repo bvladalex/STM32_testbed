@@ -96,6 +96,7 @@ void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value);
 void change_lcd_vol(uint8_t direction);
 void change_lcd_bal(uint8_t direction);
 void RCC_Configuration_HSI_64Mhz_without_USBclock(void);
+void SPI_Configuration(void);
 
 /**
   * @brief  Main program.
@@ -115,6 +116,9 @@ int main(void)
 
 	/* GPIO configuration ------------------------------------------------------*/
 	GPIO_Configuration();
+
+	/* SPI configuration -------------------------------------------------------*/
+	SPI_Configuration();
 
 	/* EXTI configuration ------------------------------------------------------*/
 	EXTI_Configuration();
@@ -149,6 +153,7 @@ int main(void)
 	  if(btn_up_p==1){
 		  if(cur_state==vol){
 			  change_lcd_vol(UP);
+			  change_pot_vol(UP);
 			  btn_up_p=0;
 		  }
 		  if(cur_state==bal){
@@ -161,6 +166,7 @@ int main(void)
 	  if(btn_down_p==1){
 		  if(cur_state==vol){
 			  change_lcd_vol(DOWN);
+			  change_pot_vol(DOWN);
 			  btn_down_p=0;
 		  }
 		  if(cur_state==bal){
@@ -182,9 +188,9 @@ int main(void)
 
 }
 
-void EXTI0_IRQHandler(void){
-	EXTI_ClearITPendingBit(EXTI_Line0);
-	EXTI_ClearFlag(EXTI_Line0);
+void EXTI9_5_IRQHandler(void){
+	EXTI_ClearITPendingBit(EXTI_Line5);
+	EXTI_ClearFlag(EXTI_Line5);
 	change_state=1;
 }
 
@@ -294,20 +300,9 @@ void GPIO_Configuration(void){
 	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	//start config for LED
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-	//start config for mode btn
-
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-	//start config for up and down buttons
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+	//start config for mode, up and down buttons
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
@@ -326,13 +321,31 @@ void GPIO_Configuration(void){
 
 }
 
+void SPI_Configuration(void){
+	SPI_InitTypeDef SPI_InitStruct;
+
+	SPI_InitStruct.SPI_BaudRatePrescaler=SPI_BaudRatePrescaler_16;
+	SPI_InitStruct.SPI_CPHA=SPI_CPHA_1Edge;
+	SPI_InitStruct.SPI_CPOL=SPI_CPOL_Low;
+	SPI_InitStruct.SPI_CRCPolynomial=7;
+	SPI_InitStruct.SPI_DataSize=SPI_DataSize_8b;
+	SPI_InitStruct.SPI_Direction=SPI_Direction_2Lines_FullDuplex;
+	SPI_InitStruct.SPI_FirstBit=SPI_FirstBit_MSB;
+	SPI_InitStruct.SPI_Mode=SPI_Mode_Master;
+	SPI_InitStruct.SPI_NSS=SPI_NSS_Soft;
+
+	//SPI_SSOutputCmd(SPI1,ENABLE);
+
+	SPI_Init(SPI1,&SPI_InitStruct);
+
+	SPI_Cmd(SPI1,ENABLE);
+}
+
 void NVIC_Configuration(void){
 
 	NVIC_InitTypeDef NVIC_InitStruct;
-//testt
-	GPIOC->BSRR = 0x20000000;
 	////////////
-	NVIC_InitStruct.NVIC_IRQChannel=EXTI0_IRQn;
+	NVIC_InitStruct.NVIC_IRQChannel=EXTI9_5_IRQn;
 	NVIC_InitStruct.NVIC_IRQChannelCmd=ENABLE;
 	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority=1;
 	NVIC_InitStruct.NVIC_IRQChannelSubPriority=0;
@@ -364,12 +377,12 @@ void EXTI_Configuration(void){
 	EXTI_InitTypeDef EXTI_InitStruct;
 	/*EXTI config for mode buton*/
 
-	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource0);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB,GPIO_PinSource5);
 	  //continue with EXTI regs
-	EXTI_InitStruct.EXTI_Line=EXTI_Line0;
+	EXTI_InitStruct.EXTI_Line=EXTI_Line5;
 	EXTI_InitStruct.EXTI_LineCmd=ENABLE;
 	EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
-	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Rising;
+	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Falling;
 	EXTI_Init(&EXTI_InitStruct);
 
 	/*EXTI config for up and down buttons*/
@@ -518,6 +531,23 @@ void change_lcd_bal(uint8_t direction){
 			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
 			HD44780_PCF8574_DrawString(addr, bal_symbol);
 		}
+	}
+}
+
+void change_pot_vol(uint8_t direction){
+	if(direction==UP){
+		GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+		while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+		SPI_I2S_SendData(SPI1,0x04);
+		while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
+		GPIO_SetBits(GPIOA, GPIO_Pin_4);
+	}
+	else{
+		GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+		while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+		SPI_I2S_SendData(SPI1,0x08);
+		while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
+		GPIO_SetBits(GPIOA, GPIO_Pin_4);
 	}
 }
 

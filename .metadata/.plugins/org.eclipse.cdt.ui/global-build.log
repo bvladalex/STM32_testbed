@@ -1,11 +1,11 @@
-17:36:11 **** Incremental Build of configuration Debug for project master_amp ****
+22:02:01 **** Incremental Build of configuration Debug for project master_amp ****
 make -j8 all 
 Building file: ../src/main.c
 Invoking: MCU GCC Compiler
 D:\stm_workspace\master_amp\Debug
 arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -DUSE_STDPERIPH_DRIVER -I"D:/stm_workspace/master_amp/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
 ../src/main.c: In function 'main':
-../src/main.c:175:38: warning: pointer targets in passing argument 2 of 'HD44780_PCF8574_DrawString' differ in signedness [-Wpointer-sign]
+../src/main.c:183:38: warning: pointer targets in passing argument 2 of 'HD44780_PCF8574_DrawString' differ in signedness [-Wpointer-sign]
      HD44780_PCF8574_DrawString(addr, freq_to_print);
                                       ^~~~~~~~~~~~~
 In file included from ../src/main.c:16:0:
@@ -13,7 +13,7 @@ D:/stm_workspace/master_amp/inc/lcd1602_i2c.h:194:8: note: expected 'char *' but
    void HD44780_PCF8574_DrawString (char, char *);
         ^~~~~~~~~~~~~~~~~~~~~~~~~~
 ../src/main.c: In function 'RCC_Configuration_HSI_64Mhz_without_USBclock':
-../src/main.c:512:14: warning: unused variable 'HSIStartUpStatus' [-Wunused-variable]
+../src/main.c:588:14: warning: unused variable 'HSIStartUpStatus' [-Wunused-variable]
   ErrorStatus HSIStartUpStatus;
               ^~~~~~~~~~~~~~~~
 Finished building: ../src/main.c
@@ -28,10 +28,10 @@ Generating binary and Printing size information:
 arm-none-eabi-objcopy -O binary "master_amp.elf" "master_amp.bin"
 arm-none-eabi-size "master_amp.elf"
    text	   data	    bss	    dec	    hex	filename
-  10604	   1176	   1196	  12976	   32b0	master_amp.elf
+  11304	   1176	   1196	  13676	   356c	master_amp.elf
  
-17:36:17 **** Programming project master_amp on chip ****
-"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.4134484124155397127.cfg -s "D:\\stm_workspace\\master_amp" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/master_amp.elf verify reset " -c shutdown 
+22:02:10 **** Programming project master_amp on chip ****
+"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.4340880240128349190.cfg -s "D:\\stm_workspace\\master_amp" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/master_amp.elf verify reset " -c shutdown 
 Open On-Chip Debugger 0.10.0+dev-00021-g524e8c8 (2019-04-12-08:48)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -43,13 +43,13 @@ adapter_nsrst_delay: 100
 Info : clock speed 8000 kHz
 Info : STLINK v2 JTAG v29 API v2 SWIM v7 VID 0x0483 PID 0x3748
 Info : using stlink api v2
-Info : Target voltage: 3.192689
+Info : Target voltage: 3.186962
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
 Info : Stlink adapter speed set to 4000 kHz
 Info : STM32F103C8Tx.cpu: hardware has 6 breakpoints, 4 watchpoints
 Info : Listening on port 3333 for gdb connections
 target halted due to debug-request, current mode: Thread 
-xPSR: 0x01000000 pc: 0x08002754 msp: 0x20005000
+xPSR: 0x01000000 pc: 0x080029d4 msp: 0x20005000
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
 Info : Stlink adapter speed set to 4000 kHz
 Info : Unable to match requested speed 8000 kHz, using 4000 kHz
@@ -60,14 +60,14 @@ Info : device id = 0x20036410
 Info : flash size = 128kbytes
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000003a msp: 0x20005000
-wrote 12288 bytes from file Debug/master_amp.elf in 0.871951s (13.762 KiB/s)
+wrote 13312 bytes from file Debug/master_amp.elf in 0.896467s (14.501 KiB/s)
 ** Programming Finished **
 ** Verify Started **
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
-verified 11780 bytes in 0.194975s (59.002 KiB/s)
+verified 12480 bytes in 0.203329s (59.940 KiB/s)
 ** Verified OK **
 ** Resetting Target **
 shutdown command invoked

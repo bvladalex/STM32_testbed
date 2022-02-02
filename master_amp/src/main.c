@@ -46,6 +46,7 @@ uint8_t change_state=0;
 uint8_t btn_up_p=0, btn_down_p=0, update_fan=0;
 uint8_t lcd_vol_lvl=7;
 uint8_t lcd_bal_lvl=7;
+uint8_t i;
 //char bal_symbol[2]={0x3c,0x3e};
 char *bal_symbol="<>";
 #define UP 			0x04
@@ -94,8 +95,10 @@ void I2C_Configuration(void);
 void TIM_Configuration(void);
 void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value);
 void change_lcd_vol(uint8_t direction);
+void change_pot_vol(uint8_t direction);
 void change_lcd_bal(uint8_t direction);
 void RCC_Configuration_HSI_64Mhz_without_USBclock(void);
+void SPI_Configuration(void);
 
 /**
   * @brief  Main program.
@@ -115,6 +118,9 @@ int main(void)
 
 	/* GPIO configuration ------------------------------------------------------*/
 	GPIO_Configuration();
+
+	/* SPI configuration -------------------------------------------------------*/
+	SPI_Configuration();
 
 	/* EXTI configuration ------------------------------------------------------*/
 	EXTI_Configuration();
@@ -149,6 +155,7 @@ int main(void)
 	  if(btn_up_p==1){
 		  if(cur_state==vol){
 			  change_lcd_vol(UP);
+			  change_pot_vol(UP);
 			  btn_up_p=0;
 		  }
 		  if(cur_state==bal){
@@ -161,6 +168,7 @@ int main(void)
 	  if(btn_down_p==1){
 		  if(cur_state==vol){
 			  change_lcd_vol(DOWN);
+			  change_pot_vol(DOWN);
 			  btn_down_p=0;
 		  }
 		  if(cur_state==bal){
@@ -281,6 +289,7 @@ void RCC_Configuration(void){
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1 , ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 , ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 }
 void GPIO_Configuration(void){
 
@@ -299,8 +308,10 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
+	//Enable GPIO usage of PORTB pin 4 otherwise used as JTAG oin
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 
+	/*
 	//config for the tim1c2 pwm input read
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
@@ -312,7 +323,44 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	*/
 
+	//Potentiometer SPI config
+	//start configuration for SPI1 on PORTA
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+
+}
+
+void SPI_Configuration(void){
+	SPI_InitTypeDef SPI_InitStruct;
+
+	SPI_InitStruct.SPI_BaudRatePrescaler=SPI_BaudRatePrescaler_16;
+	SPI_InitStruct.SPI_CPHA=SPI_CPHA_1Edge;
+	SPI_InitStruct.SPI_CPOL=SPI_CPOL_Low;
+	SPI_InitStruct.SPI_CRCPolynomial=7;
+	SPI_InitStruct.SPI_DataSize=SPI_DataSize_8b;
+	SPI_InitStruct.SPI_Direction=SPI_Direction_2Lines_FullDuplex;
+	SPI_InitStruct.SPI_FirstBit=SPI_FirstBit_MSB;
+	SPI_InitStruct.SPI_Mode=SPI_Mode_Master;
+	SPI_InitStruct.SPI_NSS=SPI_NSS_Soft;
+
+	//SPI_SSOutputCmd(SPI1,ENABLE);
+
+	SPI_Init(SPI1,&SPI_InitStruct);
+
+	SPI_Cmd(SPI1,ENABLE);
 }
 
 void NVIC_Configuration(void){
@@ -475,15 +523,18 @@ void toggle_led(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t value){
 
 void change_lcd_vol(uint8_t direction){
 	if(direction==UP){
-		lcd_vol_lvl+=1;
-		HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl, 1);
-		HD44780_PCF8574_DrawChar(addr,0xFF);
+		if(lcd_vol_lvl<=15){
+			lcd_vol_lvl+=1;
+			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl, 1);
+			HD44780_PCF8574_DrawChar(addr,0xFF);
+		}
 	}
 	if(direction==DOWN){
-
-		HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl, 1);
-		HD44780_PCF8574_DrawChar(addr,0x10);
-		lcd_vol_lvl-=1;
+		if(lcd_vol_lvl>=1){
+			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl, 1);
+			HD44780_PCF8574_DrawChar(addr,0x10);
+			lcd_vol_lvl-=1;
+		}
 	}
 }
 
@@ -504,6 +555,31 @@ void change_lcd_bal(uint8_t direction){
 			lcd_bal_lvl-=1;
 			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
 			HD44780_PCF8574_DrawString(addr, bal_symbol);
+		}
+	}
+}
+
+void change_pot_vol(uint8_t direction){
+	if(direction==UP){
+		if(lcd_vol_lvl<=15){
+			for(i=1;i<=16;i++){
+				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+				SPI_I2S_SendData(SPI1,0x04);
+				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
+				GPIO_SetBits(GPIOA, GPIO_Pin_4);
+			}
+		}
+	}
+	else{
+		if(lcd_vol_lvl>=1){
+			for(i=1;i<=16;i++){
+				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+				SPI_I2S_SendData(SPI1,0x08);
+				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
+				GPIO_SetBits(GPIOA, GPIO_Pin_4);
+			}
 		}
 	}
 }
