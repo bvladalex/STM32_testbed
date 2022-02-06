@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="lcd_vol_lvl" key="selection"/>
+		<item value="GPIO_Pin_4" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="GPIO_Pin_4"/>
+			<item value="SPI_I2S_SendData"/>
 			<item value="lcd_vol_lvl"/>
 			<item value="update_fan"/>
 			<item value="EXTI"/>
 			<item value="EXTI4"/>
 			<item value="EXTI5"/>
 			<item value="PIN_5"/>
-			<item value="SetSysClockTo72"/>
-			<item value="flash"/>
 		</list>
 		<list key="replacehistory">
 		</list>

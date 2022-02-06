@@ -159,9 +159,10 @@ int main(void)
 		  GPIO_SetBits(GPIOA,GPIO_Pin_4);
 		  GPIO_ResetBits(GPIOA,GPIO_Pin_4);
 		  while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+		  SPI_I2S_SendData(SPI1,0x1cff);
+		  //while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
 		  SPI_I2S_SendData(SPI1,0x1c);
-		  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
-		  spi_rx_data=SPI_I2S_ReceiveData(SPI1);
+		  //while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
 		  SPI_I2S_SendData(SPI1,0xff);
 		  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
 		  spi_rx_data=SPI_I2S_ReceiveData(SPI1);
