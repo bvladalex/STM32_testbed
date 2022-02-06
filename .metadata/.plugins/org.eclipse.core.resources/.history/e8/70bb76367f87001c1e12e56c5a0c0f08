@@ -165,7 +165,7 @@ int main(void)
 	rc = state_fun();
 
 	//set volume to half for both channels
-	pot_rd_data=spi_pot_16b_op(POT0_WR,0x7f);
+	pot_rd_data=spi_pot_16b_op(POT0_WR,0xff);
 	pot_rd_data=spi_pot_16b_op(POT1_WR,0x7f);
 
   while (1)

@@ -51,15 +51,13 @@ uint8_t i;
 //char bal_symbol[2]={0x3c,0x3e};
 char *bal_symbol="<>";
 
-#define POT0_INC 		0x00
-#define POT1_INC 		0x01
-#define POT0_DEC 		0x02
-#define POT1_DEC 		0x03
+#define POT0_INC 	0x00
+#define POT1_INC 	0x01
+#define POT0_DEC 	0x02
+#define POT1_DEC 	0x03
 
-#define UP 				0x04
-#define DOWN			0x03
-
-#define SPI_DUMMY_BYTE	0xff
+#define UP 			0x04
+#define DOWN		0x03
 
 uint8_t pot_commands_8bit[]={0x04,0x14,0x08,0x18};
 
@@ -70,7 +68,7 @@ typedef enum{
 	POT1_WR
 }spi_cmd_16b;
 
-uint16_t spi_cmd_list[]={0x0c,0x1c,0x00,0x10};
+uint16_t spi_cmd_list[]={0x0cff,0x1cff,0x00dd,0x10dd};
 
 //definitions for timer handlers
 __IO uint16_t CCR1_Val = 40961;
@@ -164,15 +162,25 @@ int main(void)
 	state_fun = state[cur_state];
 	rc = state_fun();
 
-	//set volume to half for both channels
-	pot_rd_data=spi_pot_16b_op(POT0_WR,0x7f);
-	pot_rd_data=spi_pot_16b_op(POT1_WR,0x7f);
-
   while (1)
   {
 	  if(change_state==1){
-
-		  pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
+		  /////lazy testing of SPI receive
+		  /*
+		  GPIO_SetBits(GPIOA,GPIO_Pin_4);
+		  GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+		  while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+		  SPI_I2S_SendData(SPI1,0x1c);
+		  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+		  spi_rx_data=SPI_I2S_ReceiveData(SPI1);
+		  SPI_I2S_SendData(SPI1,0xff);
+		  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+		  spi_rx_data=SPI_I2S_ReceiveData(SPI1);
+		  while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
+		  GPIO_SetBits(GPIOA, GPIO_Pin_4);
+		  */
+		  pot_rd_data=spi_pot_16b_op(POT0_WR,0x42);
+		  /////////////////////////////////////////////////////////
 
 		  cur_state = lookup_transitions(cur_state, rc);
 		  state_fun = state[cur_state];
@@ -619,7 +627,7 @@ uint16_t spi_pot_16b_op(uint8_t cmd,uint8_t data){
 	uint16_t spi_rx_data;
 	uint8_t byte1,byte2;
 	byte2=data;
-	byte1=spi_cmd_list[cmd];
+	byte1=(spi_cmd_list[cmd])>>8;
 	GPIO_SetBits(GPIOA,GPIO_Pin_4);
 	GPIO_ResetBits(GPIOA,GPIO_Pin_4);
 	while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
