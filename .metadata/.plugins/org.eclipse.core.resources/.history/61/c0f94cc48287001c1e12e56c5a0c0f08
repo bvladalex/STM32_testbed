@@ -129,7 +129,7 @@ uint16_t spi_pot_16b_op(uint8_t cmd, uint8_t data);
 int main(void)
 {
 
-	uint16_t master_vol_lvl,new_pot_lvl; //for balance control
+
 
 	/* System clocks configuration ---------------------------------------------*/
 	RCC_Configuration();
@@ -172,7 +172,7 @@ int main(void)
   {
 	  if(change_state==1){
 
-		  //pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
+		  pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
 
 		  cur_state = lookup_transitions(cur_state, rc);
 		  state_fun = state[cur_state];
@@ -187,24 +187,8 @@ int main(void)
 		  }
 		  if(cur_state==bal){
 			  change_lcd_bal(UP);
-			  //increase balance to right logic starts here
-			  if (lcd_bal_lvl>8){
-				  master_vol_lvl=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				  new_pot_lvl=(master_vol_lvl*(15-lcd_bal_lvl))/7;
-				  spi_pot_16b_op(POT1_WR,new_pot_lvl);
-			  }
-			  else if(lcd_bal_lvl<8){
-				  master_vol_lvl=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				  new_pot_lvl=(master_vol_lvl*((lcd_bal_lvl-1))/7);
-				  spi_pot_16b_op(POT0_WR,new_pot_lvl);
-			  }
-			  else if(lcd_bal_lvl==8){
-				  master_vol_lvl=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				  spi_pot_16b_op(POT0_WR,master_vol_lvl);
-			  }
 			  btn_up_p=0;
 		  }
-		  /////////////////////////////////////////
 		  else
 			  btn_up_p=0;
 	  }
@@ -216,24 +200,8 @@ int main(void)
 		  }
 		  if(cur_state==bal){
 			  change_lcd_bal(DOWN);
-			  //decrease balance to right logic starts here
-			  if (lcd_bal_lvl>8){
-				  master_vol_lvl=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				  new_pot_lvl=(master_vol_lvl*((15-lcd_bal_lvl))/7);
-				  spi_pot_16b_op(POT1_WR,new_pot_lvl);
-			  }
-			  else if(lcd_bal_lvl<8){
-				  master_vol_lvl=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				  new_pot_lvl=(master_vol_lvl*((lcd_bal_lvl-1))/7);
-				  spi_pot_16b_op(POT0_WR,new_pot_lvl);
-			  }
-			  else if(lcd_bal_lvl==8){
-				  master_vol_lvl=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				  spi_pot_16b_op(POT1_WR,master_vol_lvl);
-			  }
 			  btn_down_p=0;
 		  }
-			  /////////////////////////////////////////
 		  else
 			  btn_down_p=0;
 	  }
@@ -599,20 +567,20 @@ void change_lcd_vol(uint8_t direction){
 
 void change_lcd_bal(uint8_t direction){
 	if(direction==UP){
-		if(lcd_bal_lvl<=14){
-			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl-1, 1);
+		if(lcd_bal_lvl<=13){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
 			HD44780_PCF8574_DrawChar(addr,0x10);
+			lcd_bal_lvl+=1;
 			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
 			HD44780_PCF8574_DrawString(addr, bal_symbol);
-			lcd_bal_lvl+=1;
 		}
 	}
 	if(direction==DOWN){
-		if(lcd_bal_lvl>=2){
-			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+		if(lcd_bal_lvl>=1){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl+1, 1);
 			HD44780_PCF8574_DrawChar(addr,0x10);
 			lcd_bal_lvl-=1;
-			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl-1, 1);
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
 			HD44780_PCF8574_DrawString(addr, bal_symbol);
 		}
 	}

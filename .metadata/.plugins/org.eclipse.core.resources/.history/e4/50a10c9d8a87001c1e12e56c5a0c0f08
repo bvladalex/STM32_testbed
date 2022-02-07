@@ -190,12 +190,12 @@ int main(void)
 			  //increase balance to right logic starts here
 			  if (lcd_bal_lvl>8){
 				  master_vol_lvl=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				  new_pot_lvl=(master_vol_lvl*(15-lcd_bal_lvl))/7;
+				  new_pot_lvl=master_vol_lvl*((15-lcd_bal_lvl)*100/7);
 				  spi_pot_16b_op(POT1_WR,new_pot_lvl);
 			  }
 			  else if(lcd_bal_lvl<8){
 				  master_vol_lvl=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				  new_pot_lvl=(master_vol_lvl*((lcd_bal_lvl-1))/7);
+				  new_pot_lvl=master_vol_lvl*((8-lcd_bal_lvl)*100/7);
 				  spi_pot_16b_op(POT0_WR,new_pot_lvl);
 			  }
 			  else if(lcd_bal_lvl==8){
@@ -219,12 +219,12 @@ int main(void)
 			  //decrease balance to right logic starts here
 			  if (lcd_bal_lvl>8){
 				  master_vol_lvl=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				  new_pot_lvl=(master_vol_lvl*((15-lcd_bal_lvl))/7);
+				  new_pot_lvl=master_vol_lvl*((15-lcd_bal_lvl)*100/7);
 				  spi_pot_16b_op(POT1_WR,new_pot_lvl);
 			  }
 			  else if(lcd_bal_lvl<8){
 				  master_vol_lvl=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				  new_pot_lvl=(master_vol_lvl*((lcd_bal_lvl-1))/7);
+				  new_pot_lvl=master_vol_lvl*((8-lcd_bal_lvl)*100/7);
 				  spi_pot_16b_op(POT0_WR,new_pot_lvl);
 			  }
 			  else if(lcd_bal_lvl==8){

@@ -55,7 +55,7 @@ int bal_state(void)
 	// draw char
 	HD44780_PCF8574_DrawString(addr, "L    Center    R");
 	//draw balance position symbol
-	HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl-1, 1);
+	HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
 	HD44780_PCF8574_DrawString(addr, bal_symbol);
 	return ok;
 }

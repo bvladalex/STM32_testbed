@@ -39,18 +39,38 @@ uint8_t a = 1;
 //uint8_t addr=0xD0;
 uint8_t addr=0x4E;
 uint8_t data=0x69;
+uint16_t pot_rd_data;
 uint16_t tmp;
 uint32_t dummy_read, wait;
 uint8_t send_i2c_flag=1;
 uint8_t change_state=0;
 uint8_t btn_up_p=0, btn_down_p=0, update_fan=0;
-uint8_t lcd_vol_lvl=7;
-uint8_t lcd_bal_lvl=7;
+uint8_t lcd_vol_lvl=8;
+uint8_t lcd_bal_lvl=8;
 uint8_t i;
 //char bal_symbol[2]={0x3c,0x3e};
 char *bal_symbol="<>";
-#define UP 			0x04
-#define DOWN		0x03
+
+#define POT0_INC 		0x00
+#define POT1_INC 		0x01
+#define POT0_DEC 		0x02
+#define POT1_DEC 		0x03
+
+#define UP 				0x04
+#define DOWN			0x03
+
+#define SPI_DUMMY_BYTE	0xff
+
+uint8_t pot_commands_8bit[]={0x04,0x14,0x08,0x18};
+
+typedef enum{
+	POT0_RD,
+	POT1_RD,
+	POT0_WR,
+	POT1_WR
+}spi_cmd_16b;
+
+uint16_t spi_cmd_list[]={0x0c,0x1c,0x00,0x10};
 
 //definitions for timer handlers
 __IO uint16_t CCR1_Val = 40961;
@@ -99,6 +119,7 @@ void change_pot_vol(uint8_t direction);
 void change_lcd_bal(uint8_t direction);
 void RCC_Configuration_HSI_64Mhz_without_USBclock(void);
 void SPI_Configuration(void);
+uint16_t spi_pot_16b_op(uint8_t cmd, uint8_t data);
 
 /**
   * @brief  Main program.
@@ -108,7 +129,7 @@ void SPI_Configuration(void);
 int main(void)
 {
 
-
+	uint8_t master_vol_lvl,new_pot_lvl; //for balance control
 
 	/* System clocks configuration ---------------------------------------------*/
 	RCC_Configuration();
@@ -143,10 +164,16 @@ int main(void)
 	state_fun = state[cur_state];
 	rc = state_fun();
 
+	//set volume to half for both channels
+	pot_rd_data=spi_pot_16b_op(POT0_WR,0x7f);
+	pot_rd_data=spi_pot_16b_op(POT1_WR,0x7f);
 
   while (1)
   {
 	  if(change_state==1){
+
+		  //pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
+
 		  cur_state = lookup_transitions(cur_state, rc);
 		  state_fun = state[cur_state];
 		  rc = state_fun();
@@ -154,27 +181,59 @@ int main(void)
 	  }
 	  if(btn_up_p==1){
 		  if(cur_state==vol){
-			  change_lcd_vol(UP);
 			  change_pot_vol(UP);
+			  change_lcd_vol(UP);
 			  btn_up_p=0;
 		  }
 		  if(cur_state==bal){
 			  change_lcd_bal(UP);
+			  //increase balance to right logic starts here
+			  if (lcd_bal_lvl>8){
+				  master_vol_lvl=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
+				  new_pot_lvl=master_vol_lvl*((15-lcd_bal_lvl)/7);
+				  spi_pot_16b_op(POT1_WR,new_pot_lvl);
+			  }
+			  else if(lcd_bal_lvl<8){
+				  master_vol_lvl=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
+				  new_pot_lvl=master_vol_lvl*((8-lcd_bal_lvl)/7);
+				  spi_pot_16b_op(POT0_WR,new_pot_lvl);
+			  }
+			  else if(lcd_bal_lvl==8){
+				  master_vol_lvl=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
+				  spi_pot_16b_op(POT0_WR,master_vol_lvl);
+			  }
 			  btn_up_p=0;
 		  }
+		  /////////////////////////////////////////
 		  else
 			  btn_up_p=0;
 	  }
 	  if(btn_down_p==1){
 		  if(cur_state==vol){
-			  change_lcd_vol(DOWN);
 			  change_pot_vol(DOWN);
+			  change_lcd_vol(DOWN);
 			  btn_down_p=0;
 		  }
 		  if(cur_state==bal){
 			  change_lcd_bal(DOWN);
+			  //decrease balance to right logic starts here
+			  if (lcd_bal_lvl>8){
+				  master_vol_lvl=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
+				  new_pot_lvl=master_vol_lvl*((15-lcd_bal_lvl)/7);
+				  spi_pot_16b_op(POT1_WR,new_pot_lvl);
+			  }
+			  else if(lcd_bal_lvl<8){
+				  master_vol_lvl=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
+				  new_pot_lvl=master_vol_lvl*((8-lcd_bal_lvl)/7);
+				  spi_pot_16b_op(POT0_WR,new_pot_lvl);
+			  }
+			  else if(lcd_bal_lvl==8){
+				  master_vol_lvl=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
+				  spi_pot_16b_op(POT1_WR,master_vol_lvl);
+			  }
 			  btn_down_p=0;
 		  }
+			  /////////////////////////////////////////
 		  else
 			  btn_down_p=0;
 	  }
@@ -525,13 +584,13 @@ void change_lcd_vol(uint8_t direction){
 	if(direction==UP){
 		if(lcd_vol_lvl<=15){
 			lcd_vol_lvl+=1;
-			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl, 1);
+			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl-1, 1);
 			HD44780_PCF8574_DrawChar(addr,0xFF);
 		}
 	}
 	if(direction==DOWN){
 		if(lcd_vol_lvl>=1){
-			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl, 1);
+			HD44780_PCF8574_PositionXY(addr, lcd_vol_lvl-1, 1);
 			HD44780_PCF8574_DrawChar(addr,0x10);
 			lcd_vol_lvl-=1;
 		}
@@ -540,20 +599,20 @@ void change_lcd_vol(uint8_t direction){
 
 void change_lcd_bal(uint8_t direction){
 	if(direction==UP){
-		if(lcd_bal_lvl<=13){
-			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+		if(lcd_bal_lvl<=14){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl-1, 1);
 			HD44780_PCF8574_DrawChar(addr,0x10);
-			lcd_bal_lvl+=1;
 			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
 			HD44780_PCF8574_DrawString(addr, bal_symbol);
+			lcd_bal_lvl+=1;
 		}
 	}
 	if(direction==DOWN){
-		if(lcd_bal_lvl>=1){
-			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl+1, 1);
+		if(lcd_bal_lvl>=2){
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
 			HD44780_PCF8574_DrawChar(addr,0x10);
 			lcd_bal_lvl-=1;
-			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl, 1);
+			HD44780_PCF8574_PositionXY(addr, lcd_bal_lvl-1, 1);
 			HD44780_PCF8574_DrawString(addr, bal_symbol);
 		}
 	}
@@ -565,7 +624,9 @@ void change_pot_vol(uint8_t direction){
 			for(i=1;i<=16;i++){
 				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
 				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
-				SPI_I2S_SendData(SPI1,0x04);
+				//SPI_I2S_SendData(SPI1,0x04);
+				SPI_I2S_SendData(SPI1,pot_commands_8bit[POT0_INC]);
+				SPI_I2S_SendData(SPI1,pot_commands_8bit[POT1_INC]);
 				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
 				GPIO_SetBits(GPIOA, GPIO_Pin_4);
 			}
@@ -576,12 +637,39 @@ void change_pot_vol(uint8_t direction){
 			for(i=1;i<=16;i++){
 				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
 				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
-				SPI_I2S_SendData(SPI1,0x08);
+				//SPI_I2S_SendData(SPI1,0x08);
+				SPI_I2S_SendData(SPI1,pot_commands_8bit[POT0_DEC]);
+				SPI_I2S_SendData(SPI1,pot_commands_8bit[POT1_DEC]);
 				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
 				GPIO_SetBits(GPIOA, GPIO_Pin_4);
 			}
 		}
 	}
+}
+
+void change_pot_bal(){
+
+
+
+}
+
+uint16_t spi_pot_16b_op(uint8_t cmd,uint8_t data){
+	uint16_t spi_rx_data;
+	uint8_t byte1,byte2;
+	byte2=data;
+	byte1=spi_cmd_list[cmd];
+	GPIO_SetBits(GPIOA,GPIO_Pin_4);
+	GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+	while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
+	SPI_I2S_SendData(SPI1,byte1);
+	while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+	spi_rx_data=SPI_I2S_ReceiveData(SPI1);
+	SPI_I2S_SendData(SPI1,byte2);
+	while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+	spi_rx_data=SPI_I2S_ReceiveData(SPI1);
+	while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
+	GPIO_SetBits(GPIOA, GPIO_Pin_4);
+	return spi_rx_data;
 }
 
 void RCC_Configuration_HSI_64Mhz_without_USBclock(void) {
