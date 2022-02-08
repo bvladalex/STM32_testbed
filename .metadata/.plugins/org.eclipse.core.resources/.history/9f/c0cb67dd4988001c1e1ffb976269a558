@@ -622,47 +622,29 @@ void change_lcd_bal(uint8_t direction){
 void change_pot_vol(uint8_t direction){
 	if(direction==UP){
 		if(lcd_vol_lvl<=15){
-			if(lcd_bal_lvl==8){
+			for(i=1;i<=16;i++){
 				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
 				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
-				pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT0_WR,pot_rd_data+16);
-				spi_pot_16b_op(POT1_WR,pot_rd_data+16);
+				SPI_I2S_SendData(SPI1,pot_commands_8bit[POT0_INC]);
+				GPIO_SetBits(GPIOA, GPIO_Pin_4);
+				//DelayMs(1);
+				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+				SPI_I2S_SendData(SPI1,pot_commands_8bit[POT1_INC]);
 				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
 				GPIO_SetBits(GPIOA, GPIO_Pin_4);
-			}
-			else if(lcd_bal_lvl<8){
-				spi_pot_16b_op(POT1_WR,pot_rd_data+16);
-				pot_rd_data=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT0_WR,(pot_rd_data*(lcd_bal_lvl-1))/7);
-			}
-			else if(lcd_bal_lvl>8){
-				spi_pot_16b_op(POT0_WR,pot_rd_data+16);
-				pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT1_WR,(pot_rd_data*(15-lcd_bal_lvl))/7);
 			}
 		}
 	}
 	else{
 		if(lcd_vol_lvl>=1){
-			if(lcd_bal_lvl==8){
+			for(i=1;i<=16;i++){
 				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
 				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
-				pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT0_WR,pot_rd_data-16);
-				spi_pot_16b_op(POT1_WR,pot_rd_data-16);
+				SPI_I2S_SendData(SPI1,pot_commands_8bit[POT0_DEC]);
+				DelayMs(1);
+				SPI_I2S_SendData(SPI1,pot_commands_8bit[POT1_DEC]);
 				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
 				GPIO_SetBits(GPIOA, GPIO_Pin_4);
-			}
-			else if(lcd_bal_lvl<8){
-				spi_pot_16b_op(POT1_WR,pot_rd_data-16);
-				pot_rd_data=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT0_WR,(pot_rd_data*(lcd_bal_lvl-1))/7);
-			}
-			else if(lcd_bal_lvl>8){
-				spi_pot_16b_op(POT0_WR,pot_rd_data-16);
-				pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT1_WR,(pot_rd_data*(15-lcd_bal_lvl))/7);
 			}
 		}
 	}

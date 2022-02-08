@@ -634,12 +634,12 @@ void change_pot_vol(uint8_t direction){
 			else if(lcd_bal_lvl<8){
 				spi_pot_16b_op(POT1_WR,pot_rd_data+16);
 				pot_rd_data=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT0_WR,(pot_rd_data*(lcd_bal_lvl-1))/7);
+				spi_pot_16b_op(POT0_WR,pot_rd_data*((lcd_bal_lvl-1)/7));
 			}
 			else if(lcd_bal_lvl>8){
 				spi_pot_16b_op(POT0_WR,pot_rd_data+16);
 				pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT1_WR,(pot_rd_data*(15-lcd_bal_lvl))/7);
+				spi_pot_16b_op(POT1_WR,pot_rd_data*((15-lcd_bal_lvl)/7));
 			}
 		}
 	}
@@ -657,12 +657,12 @@ void change_pot_vol(uint8_t direction){
 			else if(lcd_bal_lvl<8){
 				spi_pot_16b_op(POT1_WR,pot_rd_data-16);
 				pot_rd_data=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT0_WR,(pot_rd_data*(lcd_bal_lvl-1))/7);
+				spi_pot_16b_op(POT0_WR,pot_rd_data*((lcd_bal_lvl-1)/7));
 			}
 			else if(lcd_bal_lvl>8){
 				spi_pot_16b_op(POT0_WR,pot_rd_data-16);
 				pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT1_WR,(pot_rd_data*(15-lcd_bal_lvl))/7);
+				spi_pot_16b_op(POT1_WR,pot_rd_data*((15-lcd_bal_lvl)/7));
 			}
 		}
 	}
