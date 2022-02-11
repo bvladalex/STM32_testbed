@@ -36,16 +36,6 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-uint16_t capture = 0;
-extern __IO uint16_t CCR1_Val;
-extern __IO uint16_t CCR2_Val;
-extern __IO uint16_t CCR3_Val;
-extern __IO uint16_t CCR4_Val;
-
-__IO uint16_t IC2Value = 0;
-__IO uint16_t DutyCycle = 0;
-__IO uint32_t Frequency = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -149,7 +139,22 @@ void TIM1_CC_IRQHandler(void)
 	    TIM_ClearITPendingBit(TIM1, TIM_IT_CC1);
 
 	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
-	    GPIO_WriteBit(GPIOA, GPIO_Pin_8, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_8)));
+	    GPIO_WriteBit(GPIOA, GPIO_Pin_8, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_6)));
+	    tim_freq=Frequency;
+	    int i=3;
+	    while(tim_freq){
+	    	*(freq_to_print+i)=tim_freq%10+0x30; //the 0x30 is an offset so that we get the ASCII value of the digit
+	    	tim_freq/=10;
+	    	i--;
+	    }
+	    if(i>=0)
+	    	*(freq_to_print+i)=0x10;
+	    if(cur_state==fan){
+	    	//HD44780_PCF8574_PositionXY(addr, 0, 1);
+	    	//HD44780_PCF8574_DrawString(addr, (char*)freq_to_print);
+	    	//HD44780_PCF8574_DrawString(addr, freq_to_print);
+	    	update_fan=1;
+	    }
 	    capture = TIM_GetCapture1(TIM1);
 	    TIM_SetCompare1(TIM1, capture + CCR1_Val);
 	  }

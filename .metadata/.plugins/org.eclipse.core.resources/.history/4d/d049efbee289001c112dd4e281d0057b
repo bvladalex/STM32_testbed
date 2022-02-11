@@ -149,7 +149,7 @@ void TIM1_CC_IRQHandler(void)
 	    TIM_ClearITPendingBit(TIM1, TIM_IT_CC1);
 
 	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
-	    GPIO_WriteBit(GPIOA, GPIO_Pin_8, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_8)));
+	    GPIO_WriteBit(GPIOA, GPIO_Pin_6, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_6)));
 	    capture = TIM_GetCapture1(TIM1);
 	    TIM_SetCompare1(TIM1, capture + CCR1_Val);
 	  }

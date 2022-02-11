@@ -73,12 +73,8 @@ typedef enum{
 uint16_t spi_cmd_list[]={0x0c,0x1c,0x00,0x10};
 
 //definitions for timer handlers
-__IO uint16_t CCR1_Val = 40961;
-uint16_t capture = 0;
+__IO uint16_t CCR1_Val = 32000;
 
-__IO uint16_t IC2Value = 0;
-__IO uint16_t DutyCycle = 0;
-__IO uint32_t Frequency = 0;
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
 uint8_t IC_PrescalerValue=1;
@@ -268,60 +264,6 @@ void EXTI4_IRQHandler(void){
 }
 
 
-void TIM2_IRQHandler(void){
-	if (TIM_GetITStatus(TIM2, TIM_IT_CC1) != RESET)
-	  {
-	    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
-
-	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
-	    GPIO_WriteBit(GPIOA, GPIO_Pin_6, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_6)));
-	    tim_freq=Frequency;
-	    int i=3;
-	    while(tim_freq){
-	    	*(freq_to_print+i)=tim_freq%10+0x30; //the 0x30 is an offset so that we get the ASCII value of the digit
-	    	tim_freq/=10;
-	    	i--;
-	    }
-	    if(i>=0)
-	    	*(freq_to_print+i)=0x10;
-	    if(cur_state==fan){
-	    	//HD44780_PCF8574_PositionXY(addr, 0, 1);
-	    	//HD44780_PCF8574_DrawString(addr, (char*)freq_to_print);
-	    	//HD44780_PCF8574_DrawString(addr, freq_to_print);
-	    	update_fan=1;
-	    }
-	    capture = TIM_GetCapture1(TIM2);
-	    TIM_SetCompare1(TIM2, capture + CCR1_Val);
-	  }
-}
-
-/**
-  * @brief  This function handles TIM3 global interrupt request.
-  * @param  None
-  * @retval None
-  */
-void TIM1_CC_IRQHandler(void)
-{
-  /* Clear TIM1 Capture compare interrupt pending bit */
-  TIM_ClearITPendingBit(TIM1, TIM_IT_CC2);
-
-  /* Get the Input Capture value */
-  IC2Value = TIM_GetCapture2(TIM1);
-
-  if (IC2Value != 0)
-  {
-    /* Duty cycle computation */
-    DutyCycle = (TIM_GetCapture1(TIM1) * 100) / IC2Value;
-
-    /* Frequency computation */
-    Frequency = (SystemCoreClock/(IC_PrescalerValue+1)) / IC2Value;
-  }
-  else
-  {
-    DutyCycle = 0;
-    Frequency = 0;
-  }
-}
 /**
   * @}
   */
@@ -347,7 +289,7 @@ void RCC_Configuration(void){
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_TIM1, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1 , ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 , ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2|RCC_APB1Periph_TIM4 , ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 }
 void GPIO_Configuration(void){
@@ -365,6 +307,11 @@ void GPIO_Configuration(void){
 	//start config for mode, up and down buttons
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+	//PORTB bit8 will be toggled by TIM4 ISR
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	//Enable GPIO usage of PORTB pin 4 otherwise used as JTAG oin
@@ -395,7 +342,8 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+	//PORTA pin 4 is SPI NSS and pin 8 is being toggled by TIM1
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_8;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
@@ -497,11 +445,13 @@ void I2C_Configuration(void){
 }
 
 void TIM_Configuration(void){
+
 	/*
-	* This is where TIM1 config as PWM input begins
+	* This is where TIM1 config as PWM input begins ->artefact before PCB V1
 	*/
 
 		/* Time base configuration */
+	/*
 	TIM_TimeBaseStructure.TIM_Period = 65535;
 	TIM_TimeBaseStructure.TIM_Prescaler = IC_PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
@@ -532,6 +482,7 @@ void TIM_Configuration(void){
 
 	// Enable the CC2 Interrupt Request
 	TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
+	*/
 
 /* ---------------------------------------------------------------
 	TIM2 Configuration: Output Compare Timing Mode:
@@ -548,10 +499,10 @@ void TIM_Configuration(void){
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
 
 	/* Prescaler configuration */
-	TIM_PrescalerConfig(TIM2, PrescalerValue, TIM_PSCReloadMode_Immediate);
+	TIM_PrescalerConfig(TIM1, PrescalerValue, TIM_PSCReloadMode_Immediate);
 
 	/* Output Compare Timing Mode configuration: Channel1 */
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
@@ -559,15 +510,15 @@ void TIM_Configuration(void){
 	TIM_OCInitStructure.TIM_Pulse = CCR1_Val;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
-	TIM_OC1Init(TIM2, &TIM_OCInitStructure);
+	TIM_OC1Init(TIM1, &TIM_OCInitStructure);
 
-	TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Disable);
+	TIM_OC1PreloadConfig(TIM1, TIM_OCPreload_Disable);
 
 	/* TIM IT enable */
-	TIM_ITConfig(TIM2, TIM_IT_CC1, ENABLE);
+	TIM_ITConfig(TIM1, TIM_IT_CC1, ENABLE);
 
 	/* TIM2 enable counter */
-	TIM_Cmd(TIM2, ENABLE);
+	TIM_Cmd(TIM1, ENABLE);
 
 
 }
