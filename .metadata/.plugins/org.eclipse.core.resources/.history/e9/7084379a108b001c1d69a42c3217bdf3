@@ -144,15 +144,15 @@ void PendSV_Handler(void)
 
 void TIM1_CC_IRQHandler(void)
 {
-	/*
 	if (TIM_GetITStatus(TIM1, TIM_IT_CC1) != RESET)
 	  {
 	    TIM_ClearITPendingBit(TIM1, TIM_IT_CC1);
+
+	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
 	    GPIO_WriteBit(GPIOA, GPIO_Pin_8, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_8)));
 	    capture = TIM_GetCapture1(TIM1);
 	    TIM_SetCompare1(TIM1, capture + CCR1_Val);
 	  }
-	  */
 }
 /**
   * @brief  This function handles SysTick Handler.

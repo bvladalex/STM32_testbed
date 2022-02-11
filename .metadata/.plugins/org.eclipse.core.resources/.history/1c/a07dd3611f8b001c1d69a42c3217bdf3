@@ -74,7 +74,6 @@ uint16_t spi_cmd_list[]={0x0c,0x1c,0x00,0x10};
 
 //definitions for timer handlers
 __IO uint16_t CCR1_Val = 333;
-__IO uint16_t CCR3_Val = 120;
 
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
@@ -310,9 +309,9 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	//PORTB bit8 will TIM4C3 PWM output
+	//PORTB bit8 will be toggled by TIM4 ISR
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	//Enable GPIO usage of PORTB pin 4 otherwise used as JTAG oin
@@ -497,7 +496,7 @@ void TIM_Configuration(void){
 	--------------------------------------------------------------- */
 
 	/* Compute the prescaler value */
-	PrescalerValue = (uint16_t) (SystemCoreClock / 8000000) - 1;
+	PrescalerValue = (uint16_t) (SystemCoreClock / 16000000) - 1;
 
 	/* Time base configuration */
 	TIM_TimeBaseStructure.TIM_Period = 665;
@@ -522,44 +521,11 @@ void TIM_Configuration(void){
 	TIM_ARRPreloadConfig(TIM1, ENABLE);
 	/* TIM IT enable */
 	//TIM_ITConfig(TIM1, TIM_IT_CC1, ENABLE);
-	TIM_PrescalerConfig(TIM1, PrescalerValue, TIM_PSCReloadMode_Immediate);
+
 
 	/* TIM1 enable counter */
 	TIM_Cmd(TIM1, ENABLE);
 
-/* ---------------------------------------------------------------
-	TIM4 Configuration: PWM output mod eon C3:
-	TIM2 counter clock at 8 MHz
-	ARR val is 500
-	Freq = Timer freq/arr = 8Mhz / 500 = 16khz
-	Duty cycle = ccrx/arr value = 300 / 500 *100 = 60%
-	--------------------------------------------------------------- */
-
-	/* Time base configuration */
-	//PrescalerValue=63;
-	PrescalerValue = (uint16_t) (64000000 / 10000000) - 1;
-	TIM_TimeBaseStructure.TIM_Period = 425;
-	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
-	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-
-	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
-
-	/* Output Compare Timing Mode configuration: Channel1 */
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = CCR3_Val;
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-
-	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
-
-	TIM_OC3PreloadConfig(TIM4, TIM_OCPreload_Enable);
-	TIM_ARRPreloadConfig(TIM4, ENABLE);
-
-	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
-
-	/* TIM1 enable counter */
-	TIM_Cmd(TIM4, ENABLE);
 
 }
 

@@ -7389,3 +7389,21 @@ javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
 
 !ENTRY fr.ac6.mcu.ide 1 1 2022-02-11 08:45:58.858
 !MESSAGE Started RMI Server, listening on port 21112
+
+!ENTRY org.eclipse.launchbar.core 2 0 2022-02-11 11:46:29.813
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2022-02-11 11:46:29.813
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.core.resources 4 372 2022-02-11 11:46:29.816
+!MESSAGE Resource '/i2c_lcd_test' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2022-02-11 11:46:29.836
+!MESSAGE Resource '/test1_project' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2022-02-11 11:46:29.837
+!MESSAGE Resource '/toggle_led' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2022-02-11 11:46:29.838
+!MESSAGE Resource '/toggle_led_int' is not open.
