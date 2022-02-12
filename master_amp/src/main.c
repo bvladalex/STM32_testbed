@@ -48,8 +48,11 @@ uint8_t btn_up_p=0, btn_down_p=0, update_fan=0;
 uint8_t lcd_vol_lvl=8;
 uint8_t lcd_bal_lvl=8;
 uint8_t i;
+uint8_t check_temp=0;
 //char bal_symbol[2]={0x3c,0x3e};
 char *bal_symbol="<>";
+uint16_t DutyCycle=0;
+uint32_t Frequency=0;
 
 #define POT0_INC 		0x00
 #define POT1_INC 		0x01
@@ -73,12 +76,12 @@ typedef enum{
 uint16_t spi_cmd_list[]={0x0c,0x1c,0x00,0x10};
 
 //definitions for timer handlers
-__IO uint16_t CCR1_Val = 800;
-__IO uint16_t CCR3_Val = 120;
+__IO uint16_t CCR1_Val_t1c1 = 800;
+__IO uint16_t CCR3_Val_t4c3 = 800;
 
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
-uint8_t IC_PrescalerValue=1;
+uint8_t IC_PrescalerValue=1940;
 
 uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 
@@ -285,12 +288,13 @@ void RCC_Configuration(void){
 
 	RCC_Configuration_HSI_64Mhz_without_USBclock();
 
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_TIM1, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1 , ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2|RCC_APB1Periph_TIM4 , ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 | RCC_APB1Periph_TIM4, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 }
 void GPIO_Configuration(void){
@@ -453,17 +457,16 @@ void I2C_Configuration(void){
 void TIM_Configuration(void){
 
 	/*
-	* This is where TIM1 config as PWM input begins ->artefact before PCB V1
+	* This is where TIM2C2 config as PWM input begins
 	*/
 
 		/* Time base configuration */
-	/*
 	TIM_TimeBaseStructure.TIM_Period = 65535;
 	TIM_TimeBaseStructure.TIM_Prescaler = IC_PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
+	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 		////////////////////////////////////////////////////
 
 	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
@@ -472,35 +475,36 @@ void TIM_Configuration(void){
 	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
 	TIM_ICInitStructure.TIM_ICFilter = 0x0;
 
-	TIM_PWMIConfig(TIM1, &TIM_ICInitStructure);
+	TIM_PWMIConfig(TIM2, &TIM_ICInitStructure);
 
-	// Select the TIM3 Input Trigger: TI2FP2
-	TIM_SelectInputTrigger(TIM1, TIM_TS_TI2FP2);
+	// Select the TIM2 Input Trigger: TI2FP2
+	TIM_SelectInputTrigger(TIM2, TIM_TS_TI2FP2);
 
 	// Select the slave Mode: Reset Mode
-	TIM_SelectSlaveMode(TIM1, TIM_SlaveMode_Reset);
+	TIM_SelectSlaveMode(TIM2, TIM_SlaveMode_Reset);
 
 	// Enable the Master/Slave Mode
-	TIM_SelectMasterSlaveMode(TIM1, TIM_MasterSlaveMode_Enable);
-
-	// TIM3 enable counter
-	TIM_Cmd(TIM1, ENABLE);
+	TIM_SelectMasterSlaveMode(TIM2, TIM_MasterSlaveMode_Enable);
 
 	// Enable the CC2 Interrupt Request
-	TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
-	*/
+	TIM_ITConfig(TIM2, TIM_IT_CC2, ENABLE);
+
+	// TIM3 enable counter
+	TIM_Cmd(TIM2, ENABLE);
+
 
 /* ---------------------------------------------------------------
-	TIM2 Configuration: Output Compare Timing Mode:
-	TIM2 counter clock at 6 MHz
-	CC1 update rate = TIM2 counter clock / CCR1_Val = 146.48 Hz
+	TIM1 Configuration: Output Compare Timing Mode:
+	TIM1 counter clock at 64 MHz
+	CC1 update rate = TIM1 counter clock / Tim_per = 25kHz
 	--------------------------------------------------------------- */
 
 	/* Compute the prescaler value */
 	PrescalerValue = (uint16_t) (SystemCoreClock / 64000000) - 1;
 
 	/* Time base configuration */
-	TIM_TimeBaseStructure.TIM_Period = 2560;
+	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm
+	TIM_TimeBaseStructure.TIM_Period = 15000; //value for fan rpm
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -513,7 +517,8 @@ void TIM_Configuration(void){
 	/* Output Compare Timing Mode configuration: Channel1 */
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = CCR1_Val;
+	//TIM_OCInitStructure.TIM_Pulse = CCR1_Val_t1c1; //value for fan pwm
+	TIM_OCInitStructure.TIM_Pulse = 6000; //value for fan rpm
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC1Init(TIM1, &TIM_OCInitStructure);
@@ -523,6 +528,22 @@ void TIM_Configuration(void){
 
 	/* enable the Brake and Dead Zone Registers for some reason :/ */
 	TIM_CtrlPWMOutputs(TIM1,ENABLE);
+	///////////////////start config for 2s isr///
+	/* Output Compare Timing Mode configuration: Channel1 */
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = CCR1_Val_t1c1;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+
+	TIM_OC2Init(TIM1, &TIM_OCInitStructure);
+
+	TIM_OC2PreloadConfig(TIM1, TIM_OCPreload_Disable);
+
+	/* TIM IT enable */
+	TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
+
+
+
 	/* TIM1 enable counter */
 	TIM_Cmd(TIM1, ENABLE);
 
@@ -536,8 +557,9 @@ void TIM_Configuration(void){
 
 	/* Time base configuration */
 	//PrescalerValue=63;
-	PrescalerValue = (uint16_t) (64000000 / 10000000) - 1;
-	TIM_TimeBaseStructure.TIM_Period = 425;
+	PrescalerValue = (uint16_t) (64000000 / 64000000) - 1;
+	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm
+	TIM_TimeBaseStructure.TIM_Period = 15000; //value for fan rpm
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -547,17 +569,32 @@ void TIM_Configuration(void){
 	/* Output Compare Timing Mode configuration: Channel1 */
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = CCR3_Val;
+	//TIM_OCInitStructure.TIM_Pulse = CCR3_Val_t4c3; //value for fan pwm
+	TIM_OCInitStructure.TIM_Pulse = 6000; //value for fan rpm
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
 
 	TIM_OC3PreloadConfig(TIM4, TIM_OCPreload_Enable);
+	/*
+	////////////////////finish pwm out/////
+	/////////begin 2 second fan update counter///
+	// Output Compare Timing Mode configuration: Channel1 //
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 50;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+
+	TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+	TIM_OC1PreloadConfig(TIM4, TIM_OCPreload_Disable);
+
+	TIM_ITConfig(TIM4, TIM_IT_CC1, ENABLE);
+	*/
 	TIM_ARRPreloadConfig(TIM4, ENABLE);
 
 	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
 
-	/* TIM1 enable counter */
+	/* TIM4 enable counter */
 	TIM_Cmd(TIM4, ENABLE);
 
 }
