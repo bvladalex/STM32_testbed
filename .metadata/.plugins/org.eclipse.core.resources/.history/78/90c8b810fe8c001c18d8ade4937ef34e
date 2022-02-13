@@ -49,9 +49,7 @@ extern __IO uint16_t IC_PrescalerValue;
 extern __IO uint16_t DutyCycle;
 extern __IO uint32_t Frequency;
 uint8_t update_fan=0;
-//extern int (*state[])(void);
-
-extern enum state_codes cur_state;
+extern int (*state[])(void);
 
 __IO uint16_t IC2Value=0;
 __IO uint16_t tmp_IC2Value=0;

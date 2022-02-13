@@ -44,7 +44,7 @@ uint16_t tmp;
 uint32_t dummy_read, wait;
 uint8_t send_i2c_flag=1;
 uint8_t change_state=0;
-uint8_t btn_up_p=0, btn_down_p=0;
+uint8_t btn_up_p=0, btn_down_p=0, update_fan=0;
 uint8_t lcd_vol_lvl=8;
 uint8_t lcd_bal_lvl=8;
 uint8_t i;
@@ -55,7 +55,6 @@ uint16_t DutyCycle=0;
 uint32_t Frequency=0;
 
 extern __IO uint32_t TIM2Freq,TIM3Freq;
-extern uint8_t update_fan;
 
 #define POT0_INC 		0x00
 #define POT1_INC 		0x01
@@ -86,7 +85,7 @@ uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
 uint16_t IC_PrescalerValue=1940;
 
-uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
+
 
 TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 TIM_OCInitTypeDef  TIM_OCInitStructure;
@@ -761,10 +760,8 @@ uint16_t spi_pot_16b_op(uint8_t cmd,uint8_t data){
 
 uint8_t* convert2pr(uint16_t freq){
 
-	//uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
-	for (i=0;i<=3;i++)
-		freq_to_print[i]=0x10;
-	//i=3;
+	uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
+	i=3;
     while(freq){
     	*(freq_to_print+i)=freq%10+0x30; //the 0x30 is an offset so that we get the ASCII value of the digit
     	freq/=10;
