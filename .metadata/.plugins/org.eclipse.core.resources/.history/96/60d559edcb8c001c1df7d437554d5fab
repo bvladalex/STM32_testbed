@@ -514,8 +514,6 @@ void TIM_Configuration(void){
 	CC1 update rate = TIM1 counter clock / Tim_per = xxkHz
 		--------------------------------------------------------------- */
 
-	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
-
 	TIM_ICInitStructure.TIM_Channel = TIM_Channel_3;
 	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
 	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;

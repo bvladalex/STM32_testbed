@@ -319,15 +319,9 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	/*2s timer control output -> temporary
+	//2s timer control output -> temporary
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
-	*/
-
-	//pwm input for tim3c3
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	//Enable GPIO usage of PORTB pin 4 otherwise used as JTAG oin
@@ -368,7 +362,7 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-	//pwm input for tim2c2
+	//pwm config for tim1c
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
@@ -480,18 +474,20 @@ void I2C_Configuration(void){
 void TIM_Configuration(void){
 
 	/*
-	* This is where TIM2C2 config as IC and timebase begins
+	* This is where TIM2C2 config as PWM input begins
 	*/
 
 		/* Time base configuration */
 	TIM_TimeBaseStructure.TIM_Period = 65535;
-	TIM_TimeBaseStructure.TIM_Prescaler = IC_PrescalerValue;
+	//TIM_TimeBaseStructure.TIM_Prescaler = IC_PrescalerValue;
+	TIM_TimeBaseStructure.TIM_Prescaler = 1940;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
 	/* Prescaler configuration */
+	//TIM_PrescalerConfig(TIM2, 1940, TIM_PSCReloadMode_Update);
 		////////////////////////////////////////////////////
 
 	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
@@ -502,7 +498,33 @@ void TIM_Configuration(void){
 
 	TIM_ICInit(TIM2,&TIM_ICInitStructure);
 
-	// Enable the TIM2 counter overflow Interrupt Request
+	/*PWM input config not desirable; CNR reset means no 2s timebase
+	//Config in PWM input mode -> CNT will reset each period
+	TIM_PWMIConfig(TIM2, &TIM_ICInitStructure);
+
+	// Select the TIM2 Input Trigger: TI2FP2
+	TIM_SelectInputTrigger(TIM2, TIM_TS_TI2FP2);
+
+	// Select the slave Mode: Reset Mode
+	TIM_SelectSlaveMode(TIM2, TIM_SlaveMode_Reset);
+
+	// Enable the Master/Slave Mode
+	TIM_SelectMasterSlaveMode(TIM2, TIM_MasterSlaveMode_Enable);
+	*/
+
+	/*Begin config for 2s update timer*/
+	/* Output Compare Timing Mode configuration: Channel1 */
+/*
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 30000;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+
+	TIM_OC4Init(TIM2, &TIM_OCInitStructure);
+
+	TIM_OC4PreloadConfig(TIM2, TIM_OCPreload_Disable);
+*/
+	// Enable the CC4 Interrupt Request
 	TIM_ITConfig(TIM2, TIM_IT_CC2 | TIM_IT_Update, ENABLE);
 
 	// TIM2 enable counter
@@ -513,21 +535,35 @@ void TIM_Configuration(void){
 	TIM3 counter clock at xx MHz
 	CC1 update rate = TIM1 counter clock / Tim_per = xxkHz
 		--------------------------------------------------------------- */
+	/* Compute the prescaler value */
+
+	/* Time base configuration */
+	TIM_TimeBaseStructure.TIM_Period = 40000;
+	TIM_TimeBaseStructure.TIM_Prescaler = 1940;
+	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
-	TIM_ICInitStructure.TIM_Channel = TIM_Channel_3;
-	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
-	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
-	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
-	TIM_ICInitStructure.TIM_ICFilter = 0x0;
+	/* Prescaler configuration */
+	TIM_PrescalerConfig(TIM3, 1940, TIM_PSCReloadMode_Immediate);
 
-	TIM_ICInit(TIM3,&TIM_ICInitStructure);
+	/* Output Compare Timing Mode configuration: Channel1 */
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 30000;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
-	// Enable the TIM2 counter overflow Interrupt Request
-	TIM_ITConfig(TIM3, TIM_IT_CC3 | TIM_IT_Update, ENABLE);
+	TIM_OC1Init(TIM3, &TIM_OCInitStructure);
 
-	// TIM2 enable counter
+	TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Disable);
+
+	// Enable the CC1 Interrupt Request
+	TIM_ITConfig(TIM3, TIM_IT_CC1, ENABLE);
+
+	TIM_ARRPreloadConfig(TIM3, ENABLE);
+
+	// TIM3 enable counter
 	TIM_Cmd(TIM3, ENABLE);
 
 /* ---------------------------------------------------------------
