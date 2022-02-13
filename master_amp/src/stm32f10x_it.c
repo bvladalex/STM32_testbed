@@ -23,7 +23,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
-
+#include "stm32f10x_tim.h"
+#include "stm32f10x_gpio.h"
 /** @addtogroup STM32F10x_StdPeriph_Examples
   * @{
   */
@@ -48,7 +49,11 @@ extern __IO uint16_t DutyCycle;
 extern __IO uint32_t Frequency;
 
 __IO uint16_t IC2Value=0;
-
+__IO uint16_t tmp_IC2Value=0;
+__IO uint16_t IC2ReadValue1 = 0, IC2ReadValue2 = 0;
+__IO uint16_t CaptureNumber = 0;
+__IO uint32_t Capture = 0;
+__IO uint32_t TIM3Freq = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -142,50 +147,108 @@ void DebugMon_Handler(void)
   */
 void PendSV_Handler(void)
 {
+
+}
+
+void TIM3_IRQHandler(void)
+{
+/*
+	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET){
+		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_0, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_0)));
+	}
+	*/
+
+	if (TIM_GetITStatus(TIM3, TIM_IT_CC1) != RESET){
+		TIM_ClearITPendingBit(TIM3, TIM_IT_CC1);
+
+		/* Pin PC.06 toggling with frequency = 73.24 Hz */
+		//GPIO_WriteBit(GPIOB, GPIO_Pin_0, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_0)));
+		//capture = TIM_GetCapture1(TIM1);
+		//TIM_SetCompare1(TIM1, capture + CCR1_Val);
+	}
+
 }
 
 void TIM2_IRQHandler(void)
 {
-  /* Clear TIM1 Capture compare interrupt pending bit */
-  TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET){
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 
-  /* Get the Input Capture value */
-  IC2Value = TIM_GetCapture2(TIM2);
+		/* Pin PC.06 toggling with frequency = 73.24 Hz */
+		GPIO_WriteBit(GPIOB, GPIO_Pin_0, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_0)));
+		//capture = TIM_GetCapture1(TIM1);
+		//TIM_SetCompare1(TIM1, capture + CCR1_Val);
+	}
+	if (TIM_GetITStatus(TIM2, TIM_IT_CC4) != RESET){
+		TIM_ClearITPendingBit(TIM2, TIM_IT_CC4);
 
-  if (IC2Value != 0)
-  {
-    /* Duty cycle computation */
-    DutyCycle = (TIM_GetCapture1(TIM2) * 100) / IC2Value;
+		/* Pin PC.06 toggling with frequency = 73.24 Hz */
+		//GPIO_WriteBit(GPIOB, GPIO_Pin_0, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_0)));
+		//capture = TIM_GetCapture1(TIM1);
+		//TIM_SetCompare1(TIM1, capture + CCR1_Val);
+	}
 
-    /* Frequency computation */
-    Frequency = (SystemCoreClock/(IC_PrescalerValue+1)) / IC2Value;
-  }
-  else
-  {
-    DutyCycle = 0;
-    Frequency = 0;
-  }
+	if (TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET){
+		/* Clear TIM1 Capture compare interrupt pending	 bit */
+		TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
+
+	    if(CaptureNumber == 0)
+	    {
+	      /* Get the Input Capture value */
+	      IC2ReadValue1 = TIM_GetCapture2(TIM2);
+	      CaptureNumber = 1;
+	    }
+	    else if(CaptureNumber == 1)
+	    {
+	      /* Get the Input Capture value */
+	      IC2ReadValue2 = TIM_GetCapture2(TIM2);
+
+	      /* Capture computation */
+	      if (IC2ReadValue2 > IC2ReadValue1)
+	      {
+	        Capture = (IC2ReadValue2 - IC2ReadValue1);
+	      }
+	      else
+	      {
+	        Capture = ((0xFFFF - IC2ReadValue1) + IC2ReadValue2);
+	      }
+	      /* Frequency computation */
+	      TIM3Freq = (uint32_t) SystemCoreClock/(IC_PrescalerValue+1) / Capture;
+	      CaptureNumber = 0;
+	    }
+		/* Get the Input Capture value */
+		/*
+		tmp_IC2Value=IC2Value;
+		IC2Value = TIM_GetCapture2(TIM2);
+		Frequency=(SystemCoreClock/(IC_PrescalerValue+1)) / (IC2Value-tmp_IC2Value);
+		*/
+		/*
+		if (IC2Value != 0)
+		{
+			// Duty cycle computation //
+			DutyCycle = (TIM_GetCapture1(TIM2) * 100) / IC2Value;
+
+			// Frequency computation //
+			Frequency = (SystemCoreClock/(IC_PrescalerValue+1)) / IC2Value;
+		}
+		else
+		{
+			DutyCycle = 0;
+			Frequency = 0;
+		}
+	*/
+	}
 }
 
 void TIM1_CC_IRQHandler(void)
 {
-	if (TIM_GetITStatus(TIM1, TIM_IT_CC2) != RESET)
-	  {
-	    TIM_ClearITPendingBit(TIM1, TIM_IT_CC2);
 
-	    /* Pin PC.06 toggling with frequency = 73.24 Hz */
-	    //GPIO_WriteBit(GPIOA, GPIO_Pin_8, (BitAction)(1 - GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_8)));
-	    //capture = TIM_GetCapture1(TIM1);
-	    //TIM_SetCompare1(TIM1, capture + CCR1_Val);
-	  }
 }
 
 void TIM4_IRQHandler(void)
 {
-  if (TIM_GetITStatus(TIM4, 2) != RESET)
-  {
-    TIM_ClearITPendingBit(TIM4, 2);
-  }
+
 }
 /**
   * @brief  This function handles SysTick Handler.

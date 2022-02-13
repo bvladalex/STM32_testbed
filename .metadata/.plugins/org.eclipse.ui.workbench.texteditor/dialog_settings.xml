@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="TIM_IT_CC1" key="selection"/>
+		<item value="IS_TIM_TRIGGER_SELECTION" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="IS_TIM_TRIGGER_SELECTION"/>
+			<item value="IS_TIM_PRESCALER_RELOAD"/>
+			<item value="EGR"/>
+			<item value="timebase"/>
+			<item value="TIM_OCMode_Timing"/>
 			<item value="TIM_IT_CC1"/>
-			<item value="TIMx-&gt;CNT"/>
-			<item value="tim6"/>
-			<item value="tim"/>
-			<item value="TIM_CtrlPWMOutputs"/>
-			<item value="UG"/>
-			<item value="egr"/>
-			<item value="CCR1_Val"/>
+			<item value="Frequency"/>
+			<item value="IC2Value"/>
 		</list>
 		<list key="replacehistory">
 		</list>
@@ -24,7 +24,7 @@
 		<item value="284" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="391" key="DIALOG_HEIGHT"/>
-		<item value="682" key="DIALOG_X_ORIGIN"/>
-		<item value="458" key="DIALOG_Y_ORIGIN"/>
+		<item value="1276" key="DIALOG_X_ORIGIN"/>
+		<item value="408" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

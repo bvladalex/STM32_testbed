@@ -81,7 +81,7 @@ __IO uint16_t CCR3_Val_t4c3 = 800;
 
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
-uint8_t IC_PrescalerValue=1940;
+uint16_t IC_PrescalerValue=1940;
 
 uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 
@@ -288,13 +288,13 @@ void RCC_Configuration(void){
 
 	RCC_Configuration_HSI_64Mhz_without_USBclock();
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
+	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_TIM1, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1 , ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 | RCC_APB1Periph_TIM4, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 | RCC_APB1Periph_TIM3 | RCC_APB1Periph_TIM4, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 }
 void GPIO_Configuration(void){
@@ -317,6 +317,11 @@ void GPIO_Configuration(void){
 	//PORTB bit8 will TIM4C3 PWM output
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+	//2s timer control output -> temporary
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	//Enable GPIO usage of PORTB pin 4 otherwise used as JTAG oin
@@ -357,6 +362,10 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
+	//pwm config for tim1c
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 }
 
@@ -408,6 +417,14 @@ void NVIC_Configuration(void){
 	NVIC_Init(&NVIC_InitStruct);
 
 	NVIC_InitStruct.NVIC_IRQChannel = TIM1_CC_IRQn;
+
+	NVIC_Init(&NVIC_InitStruct);
+
+	NVIC_InitStruct.NVIC_IRQChannel = TIM3_IRQn;
+
+	NVIC_Init(&NVIC_InitStruct);
+
+	NVIC_InitStruct.NVIC_IRQChannel = TIM4_IRQn;
 
 	NVIC_Init(&NVIC_InitStruct);
 }
@@ -462,11 +479,15 @@ void TIM_Configuration(void){
 
 		/* Time base configuration */
 	TIM_TimeBaseStructure.TIM_Period = 65535;
-	TIM_TimeBaseStructure.TIM_Prescaler = IC_PrescalerValue;
+	//TIM_TimeBaseStructure.TIM_Prescaler = IC_PrescalerValue;
+	TIM_TimeBaseStructure.TIM_Prescaler = 1940;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+
+	/* Prescaler configuration */
+	//TIM_PrescalerConfig(TIM2, 1940, TIM_PSCReloadMode_Update);
 		////////////////////////////////////////////////////
 
 	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
@@ -475,6 +496,10 @@ void TIM_Configuration(void){
 	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
 	TIM_ICInitStructure.TIM_ICFilter = 0x0;
 
+	TIM_ICInit(TIM2,&TIM_ICInitStructure);
+
+	/*PWM input config not desirable; CNR reset means no 2s timebase
+	//Config in PWM input mode -> CNT will reset each period
 	TIM_PWMIConfig(TIM2, &TIM_ICInitStructure);
 
 	// Select the TIM2 Input Trigger: TI2FP2
@@ -485,13 +510,61 @@ void TIM_Configuration(void){
 
 	// Enable the Master/Slave Mode
 	TIM_SelectMasterSlaveMode(TIM2, TIM_MasterSlaveMode_Enable);
+	*/
 
-	// Enable the CC2 Interrupt Request
-	TIM_ITConfig(TIM2, TIM_IT_CC2, ENABLE);
+	/*Begin config for 2s update timer*/
+	/* Output Compare Timing Mode configuration: Channel1 */
+/*
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 30000;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
-	// TIM3 enable counter
+	TIM_OC4Init(TIM2, &TIM_OCInitStructure);
+
+	TIM_OC4PreloadConfig(TIM2, TIM_OCPreload_Disable);
+*/
+	// Enable the CC4 Interrupt Request
+	TIM_ITConfig(TIM2, TIM_IT_CC2 | TIM_IT_Update, ENABLE);
+
+	// TIM2 enable counter
 	TIM_Cmd(TIM2, ENABLE);
 
+	/* ---------------------------------------------------------------
+	TIM3 Configuration: Output Compare Timing Mode:
+	TIM3 counter clock at xx MHz
+	CC1 update rate = TIM1 counter clock / Tim_per = xxkHz
+		--------------------------------------------------------------- */
+	/* Compute the prescaler value */
+
+	/* Time base configuration */
+	TIM_TimeBaseStructure.TIM_Period = 40000;
+	TIM_TimeBaseStructure.TIM_Prescaler = 1940;
+	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+
+	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+
+	/* Prescaler configuration */
+	TIM_PrescalerConfig(TIM3, 1940, TIM_PSCReloadMode_Immediate);
+
+	/* Output Compare Timing Mode configuration: Channel1 */
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 30000;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+
+	TIM_OC1Init(TIM3, &TIM_OCInitStructure);
+
+	TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Disable);
+
+	// Enable the CC1 Interrupt Request
+	TIM_ITConfig(TIM3, TIM_IT_CC1, ENABLE);
+
+	TIM_ARRPreloadConfig(TIM3, ENABLE);
+
+	// TIM3 enable counter
+	TIM_Cmd(TIM3, ENABLE);
 
 /* ---------------------------------------------------------------
 	TIM1 Configuration: Output Compare Timing Mode:
@@ -504,7 +577,7 @@ void TIM_Configuration(void){
 
 	/* Time base configuration */
 	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm
-	TIM_TimeBaseStructure.TIM_Period = 15000; //value for fan rpm
+	TIM_TimeBaseStructure.TIM_Period = 12000; //value for fan rpm
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -540,9 +613,7 @@ void TIM_Configuration(void){
 	TIM_OC2PreloadConfig(TIM1, TIM_OCPreload_Disable);
 
 	/* TIM IT enable */
-	TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
-
-
+	//TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
 
 	/* TIM1 enable counter */
 	TIM_Cmd(TIM1, ENABLE);
