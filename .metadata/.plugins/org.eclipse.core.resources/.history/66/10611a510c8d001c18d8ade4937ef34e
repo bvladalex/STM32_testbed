@@ -193,7 +193,7 @@ void TIM3_IRQHandler(void)
 	      }
 	      else
 	      {
-	        Capture_tim3 = ((0xFFFF - IC2ReadValue1_tim3) + IC2ReadValue2_tim3)+1;
+	        Capture_tim3 = ((0xFFFF - IC2ReadValue1_tim3) + IC2ReadValue2_tim3);
 	      }
 	      /* Frequency computation */
 	      TIM3Freq = (uint32_t) SystemCoreClock/(IC_PrescalerValue+1) / Capture_tim3;
@@ -237,7 +237,7 @@ void TIM2_IRQHandler(void)
 	      }
 	      else
 	      {
-	        Capture_tim2 = ((0xFFFF - IC2ReadValue1_tim2) + IC2ReadValue2_tim2)+1;
+	        Capture_tim2 = ((0xFFFF - IC2ReadValue1_tim2) + IC2ReadValue2_tim2+1);
 	      }
 	      /* Frequency computation */
 	      TIM2Freq = (uint32_t) SystemCoreClock/(IC_PrescalerValue+1) / Capture_tim2;

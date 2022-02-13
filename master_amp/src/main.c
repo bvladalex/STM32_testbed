@@ -49,6 +49,8 @@ uint8_t lcd_vol_lvl=8;
 uint8_t lcd_bal_lvl=8;
 uint8_t i;
 uint8_t check_temp=0;
+uint16_t RPM_fan1=30000;
+uint16_t RPM_fan2=30000;
 //char bal_symbol[2]={0x3c,0x3e};
 char *bal_symbol="<>";
 uint16_t DutyCycle=0;
@@ -84,7 +86,8 @@ __IO uint16_t CCR3_Val_t4c3 = 800;
 
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
-uint16_t IC_PrescalerValue=1940;
+//uint16_t IC_PrescalerValue=1940;
+uint16_t IC_PrescalerValue=0; //for better precision, just for tests
 
 uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 
@@ -242,6 +245,8 @@ int main(void)
 			  btn_down_p=0;
 	  }
 	  if(update_fan==1){
+		  HD44780_PCF8574_PositionXY(addr, 8, 0);
+		  HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
 		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq));
 		  HD44780_PCF8574_PositionXY(addr, 6, 1);
@@ -547,7 +552,7 @@ void TIM_Configuration(void){
 
 	/* Time base configuration */
 	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm
-	TIM_TimeBaseStructure.TIM_Period = 30000; //value for fan rpm
+	TIM_TimeBaseStructure.TIM_Period = RPM_fan1; //value for fan rpm
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -589,7 +594,7 @@ void TIM_Configuration(void){
 	TIM_Cmd(TIM1, ENABLE);
 
 /* ---------------------------------------------------------------
-	TIM4 Configuration: PWM output mod eon C3:
+	TIM4 Configuration: PWM output mode on C3:
 	TIM2 counter clock at 8 MHz
 	ARR val is 500
 	Freq = Timer freq/arr = 8Mhz / 500 = 16khz
@@ -600,7 +605,7 @@ void TIM_Configuration(void){
 	//PrescalerValue=63;
 	PrescalerValue = (uint16_t) (64000000 / 64000000) - 1;
 	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm
-	TIM_TimeBaseStructure.TIM_Period = 30000; //value for fan rpm
+	TIM_TimeBaseStructure.TIM_Period = RPM_fan2; //value for fan rpm
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -764,7 +769,7 @@ uint8_t* convert2pr(uint16_t freq){
 	//uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 	for (i=0;i<=3;i++)
 		freq_to_print[i]=0x10;
-	//i=3;
+	i=3;
     while(freq){
     	*(freq_to_print+i)=freq%10+0x30; //the 0x30 is an offset so that we get the ASCII value of the digit
     	freq/=10;

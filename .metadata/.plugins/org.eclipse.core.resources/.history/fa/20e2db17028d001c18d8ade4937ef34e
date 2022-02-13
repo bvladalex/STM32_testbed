@@ -44,7 +44,7 @@ uint16_t tmp;
 uint32_t dummy_read, wait;
 uint8_t send_i2c_flag=1;
 uint8_t change_state=0;
-uint8_t btn_up_p=0, btn_down_p=0, update_fan=0;
+uint8_t btn_up_p=0, btn_down_p=0;
 uint8_t lcd_vol_lvl=8;
 uint8_t lcd_bal_lvl=8;
 uint8_t i;
@@ -53,6 +53,9 @@ uint8_t check_temp=0;
 char *bal_symbol="<>";
 uint16_t DutyCycle=0;
 uint32_t Frequency=0;
+
+extern __IO uint32_t TIM2Freq,TIM3Freq;
+extern uint8_t update_fan;
 
 #define POT0_INC 		0x00
 #define POT1_INC 		0x01
@@ -81,7 +84,7 @@ __IO uint16_t CCR3_Val_t4c3 = 800;
 
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
-uint8_t IC_PrescalerValue=1940;
+uint16_t IC_PrescalerValue=1940;
 
 uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 
@@ -119,6 +122,7 @@ void change_pot_vol(uint8_t direction);
 void change_lcd_bal(uint8_t direction);
 void RCC_Configuration_HSI_64Mhz_without_USBclock(void);
 void SPI_Configuration(void);
+uint8_t* convert2pr(uint16_t freq);
 uint16_t spi_pot_16b_op(uint8_t cmd, uint8_t data);
 
 /**
@@ -239,7 +243,9 @@ int main(void)
 	  }
 	  if(update_fan==1){
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
-		  HD44780_PCF8574_DrawString(addr, freq_to_print);
+		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq));
+		  HD44780_PCF8574_PositionXY(addr, 6, 1);
+		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM3Freq));
 		  update_fan=0;
 	  }
 
@@ -288,13 +294,13 @@ void RCC_Configuration(void){
 
 	RCC_Configuration_HSI_64Mhz_without_USBclock();
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
+	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_TIM1, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1 , ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 | RCC_APB1Periph_TIM4, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2 | RCC_APB1Periph_TIM3 | RCC_APB1Periph_TIM4, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 }
 void GPIO_Configuration(void){
@@ -319,9 +325,15 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	//2s timer control output -> temporary
+	/*2s timer control output -> temporary
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	*/
+
+	//pwm input for tim3c3
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	//Enable GPIO usage of PORTB pin 4 otherwise used as JTAG oin
@@ -362,6 +374,10 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
+	//pwm input for tim2c2
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 }
 
@@ -415,6 +431,14 @@ void NVIC_Configuration(void){
 	NVIC_InitStruct.NVIC_IRQChannel = TIM1_CC_IRQn;
 
 	NVIC_Init(&NVIC_InitStruct);
+
+	NVIC_InitStruct.NVIC_IRQChannel = TIM3_IRQn;
+
+	NVIC_Init(&NVIC_InitStruct);
+
+	NVIC_InitStruct.NVIC_IRQChannel = TIM4_IRQn;
+
+	NVIC_Init(&NVIC_InitStruct);
 }
 void EXTI_Configuration(void){
 
@@ -462,7 +486,7 @@ void I2C_Configuration(void){
 void TIM_Configuration(void){
 
 	/*
-	* This is where TIM2C2 config as PWM input begins
+	* This is where TIM2C2 config as IC and timebase begins
 	*/
 
 		/* Time base configuration */
@@ -472,6 +496,8 @@ void TIM_Configuration(void){
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+
+	/* Prescaler configuration */
 		////////////////////////////////////////////////////
 
 	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
@@ -480,36 +506,35 @@ void TIM_Configuration(void){
 	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
 	TIM_ICInitStructure.TIM_ICFilter = 0x0;
 
-	TIM_PWMIConfig(TIM2, &TIM_ICInitStructure);
+	TIM_ICInit(TIM2,&TIM_ICInitStructure);
 
-	// Select the TIM2 Input Trigger: TI2FP2
-	TIM_SelectInputTrigger(TIM2, TIM_TS_TI2FP2);
+	// Enable the TIM2 counter overflow Interrupt Request
+	TIM_ITConfig(TIM2, TIM_IT_CC2 | TIM_IT_Update, ENABLE);
 
-	// Select the slave Mode: Reset Mode
-	TIM_SelectSlaveMode(TIM2, TIM_SlaveMode_Reset);
-
-	// Enable the Master/Slave Mode
-	TIM_SelectMasterSlaveMode(TIM2, TIM_MasterSlaveMode_Enable);
-
-	/*Begin config for 2s update timer*/
-	/* Output Compare Timing Mode configuration: Channel1 */
-
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
-	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = 65000;
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-
-	TIM_OC4Init(TIM2, &TIM_OCInitStructure);
-
-	TIM_OC4PreloadConfig(TIM2, TIM_OCPreload_Disable);
-
-
-	// Enable the CC2 Interrupt Request
-	TIM_ITConfig(TIM2, TIM_IT_CC2 | TIM_IT_CC4, ENABLE);
-
-	// TIM3 enable counter
+	// TIM2 enable counter
 	TIM_Cmd(TIM2, ENABLE);
 
+	/* ---------------------------------------------------------------
+	TIM3 Configuration: Output Compare Timing Mode:
+	TIM3 counter clock at xx MHz
+	CC1 update rate = TIM1 counter clock / Tim_per = xxkHz
+		--------------------------------------------------------------- */
+
+	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+
+	TIM_ICInitStructure.TIM_Channel = TIM_Channel_3;
+	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
+	TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;
+	TIM_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;
+	TIM_ICInitStructure.TIM_ICFilter = 0x0;
+
+	TIM_ICInit(TIM3,&TIM_ICInitStructure);
+
+	// Enable the TIM2 counter overflow Interrupt Request
+	TIM_ITConfig(TIM3, TIM_IT_CC3, ENABLE);
+
+	// TIM2 enable counter
+	TIM_Cmd(TIM3, ENABLE);
 
 /* ---------------------------------------------------------------
 	TIM1 Configuration: Output Compare Timing Mode:
@@ -522,7 +547,7 @@ void TIM_Configuration(void){
 
 	/* Time base configuration */
 	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm
-	TIM_TimeBaseStructure.TIM_Period = 15000; //value for fan rpm
+	TIM_TimeBaseStructure.TIM_Period = 30000; //value for fan rpm
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -536,7 +561,7 @@ void TIM_Configuration(void){
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	//TIM_OCInitStructure.TIM_Pulse = CCR1_Val_t1c1; //value for fan pwm
-	TIM_OCInitStructure.TIM_Pulse = 6000; //value for fan rpm
+	TIM_OCInitStructure.TIM_Pulse = 15000; //value for fan rpm
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC1Init(TIM1, &TIM_OCInitStructure);
@@ -558,9 +583,7 @@ void TIM_Configuration(void){
 	TIM_OC2PreloadConfig(TIM1, TIM_OCPreload_Disable);
 
 	/* TIM IT enable */
-	TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
-
-
+	//TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
 
 	/* TIM1 enable counter */
 	TIM_Cmd(TIM1, ENABLE);
@@ -577,7 +600,7 @@ void TIM_Configuration(void){
 	//PrescalerValue=63;
 	PrescalerValue = (uint16_t) (64000000 / 64000000) - 1;
 	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm
-	TIM_TimeBaseStructure.TIM_Period = 15000; //value for fan rpm
+	TIM_TimeBaseStructure.TIM_Period = 30000; //value for fan rpm
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -588,7 +611,7 @@ void TIM_Configuration(void){
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	//TIM_OCInitStructure.TIM_Pulse = CCR3_Val_t4c3; //value for fan pwm
-	TIM_OCInitStructure.TIM_Pulse = 6000; //value for fan rpm
+	TIM_OCInitStructure.TIM_Pulse = 15000; //value for fan rpm
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
@@ -734,6 +757,25 @@ uint16_t spi_pot_16b_op(uint8_t cmd,uint8_t data){
 	GPIO_SetBits(GPIOA, GPIO_Pin_4);
 	return spi_rx_data;
 }
+
+
+uint8_t* convert2pr(uint16_t freq){
+
+	//uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
+	for (i=0;i<=3;i++)
+		freq_to_print[i]=0x10;
+	//i=3;
+    while(freq){
+    	*(freq_to_print+i)=freq%10+0x30; //the 0x30 is an offset so that we get the ASCII value of the digit
+    	freq/=10;
+    	i--;
+    }
+    if(i>=0)
+    	*(freq_to_print+i)=0x10;
+
+	return freq_to_print;
+}
+
 
 void RCC_Configuration_HSI_64Mhz_without_USBclock(void) {
 	ErrorStatus HSIStartUpStatus;

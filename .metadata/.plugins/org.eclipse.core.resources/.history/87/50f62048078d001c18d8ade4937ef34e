@@ -49,7 +49,6 @@ extern __IO uint16_t IC_PrescalerValue;
 extern __IO uint16_t DutyCycle;
 extern __IO uint32_t Frequency;
 uint8_t update_fan=0;
-extern uint8_t lcd_vol_lvl;
 
 extern enum state_codes cur_state;
 
@@ -193,7 +192,7 @@ void TIM3_IRQHandler(void)
 	      }
 	      else
 	      {
-	        Capture_tim3 = ((0xFFFF - IC2ReadValue1_tim3) + IC2ReadValue2_tim3)+1;
+	        Capture_tim3 = ((0xFFFF - IC2ReadValue1_tim3) + IC2ReadValue2_tim3);
 	      }
 	      /* Frequency computation */
 	      TIM3Freq = (uint32_t) SystemCoreClock/(IC_PrescalerValue+1) / Capture_tim3;
@@ -237,7 +236,7 @@ void TIM2_IRQHandler(void)
 	      }
 	      else
 	      {
-	        Capture_tim2 = ((0xFFFF - IC2ReadValue1_tim2) + IC2ReadValue2_tim2)+1;
+	        Capture_tim2 = ((0xFFFF - IC2ReadValue1_tim2) + IC2ReadValue2_tim2);
 	      }
 	      /* Frequency computation */
 	      TIM2Freq = (uint32_t) SystemCoreClock/(IC_PrescalerValue+1) / Capture_tim2;
