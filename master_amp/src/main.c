@@ -525,7 +525,7 @@ void TIM_Configuration(void){
 	TIM_ICInit(TIM3,&TIM_ICInitStructure);
 
 	// Enable the TIM2 counter overflow Interrupt Request
-	TIM_ITConfig(TIM3, TIM_IT_CC3 | TIM_IT_Update, ENABLE);
+	TIM_ITConfig(TIM3, TIM_IT_CC3, ENABLE);
 
 	// TIM2 enable counter
 	TIM_Cmd(TIM3, ENABLE);
@@ -541,7 +541,7 @@ void TIM_Configuration(void){
 
 	/* Time base configuration */
 	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm
-	TIM_TimeBaseStructure.TIM_Period = 12000; //value for fan rpm
+	TIM_TimeBaseStructure.TIM_Period = 30000; //value for fan rpm
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -555,7 +555,7 @@ void TIM_Configuration(void){
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	//TIM_OCInitStructure.TIM_Pulse = CCR1_Val_t1c1; //value for fan pwm
-	TIM_OCInitStructure.TIM_Pulse = 6000; //value for fan rpm
+	TIM_OCInitStructure.TIM_Pulse = 15000; //value for fan rpm
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC1Init(TIM1, &TIM_OCInitStructure);
@@ -594,7 +594,7 @@ void TIM_Configuration(void){
 	//PrescalerValue=63;
 	PrescalerValue = (uint16_t) (64000000 / 64000000) - 1;
 	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm
-	TIM_TimeBaseStructure.TIM_Period = 15000; //value for fan rpm
+	TIM_TimeBaseStructure.TIM_Period = 30000; //value for fan rpm
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -605,7 +605,7 @@ void TIM_Configuration(void){
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	//TIM_OCInitStructure.TIM_Pulse = CCR3_Val_t4c3; //value for fan pwm
-	TIM_OCInitStructure.TIM_Pulse = 6000; //value for fan rpm
+	TIM_OCInitStructure.TIM_Pulse = 15000; //value for fan rpm
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
