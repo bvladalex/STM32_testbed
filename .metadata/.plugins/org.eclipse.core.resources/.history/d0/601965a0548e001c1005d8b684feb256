@@ -57,7 +57,6 @@ uint16_t DutyCycle=0;
 uint32_t Frequency=0;
 
 extern __IO uint32_t TIM2Freq,TIM3Freq;
-extern uint8_t update_fan_screen;
 extern uint8_t update_fan;
 
 #define POT0_INC 		0x00
@@ -256,20 +255,18 @@ int main(void)
 		  else
 			  btn_down_p=0;
 	  }
-	  if(update_fan_screen==1){
+	  if(update_fan==1){
 		  HD44780_PCF8574_PositionXY(addr, 8, 0);
 		  HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
 		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq));
 		  HD44780_PCF8574_PositionXY(addr, 6, 1);
 		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM3Freq));
-		  //update_cool_state();
-		  update_fan_screen=0;
-	  }
-	  if(update_fan==1){
 		  update_cool_state();
 		  update_fan=0;
 	  }
+
+
   }
 
 
@@ -798,40 +795,40 @@ uint8_t* convert2pr(uint16_t freq){
 
 void update_fan_set(TIM_TypeDef* TIMx1, TIM_TypeDef* TIMx2, uint8_t t_state_no){
 	TIMx1->ARR=arr_val[t_state_no];
-	TIMx2->ARR=arr_val[t_state_no];
+	TIMx1->ARR=arr_val[t_state_no];
 }
 
 void update_cool_state(void){
 	if (t_state==t_state1){
 		if(lcd_vol_lvl>5){
-			t_state=t_state2;
-			update_fan_set(TIM1, TIM4, t_state2);
+			state=t_state2;
+			update_fan_set(TIM2, TIM3, t_state2);
 		}
 	}
 	if (t_state==t_state2){
 		if(lcd_vol_lvl>8){
-			t_state=t_state3;
-			update_fan_set(TIM1, TIM4, t_state3);
+			state=t_state3;
+			update_fan_set(TIM2, TIM3, t_state3);
 		}
 		if(lcd_vol_lvl<4){
-			t_state=t_state1;
-			update_fan_set(TIM1, TIM4, t_state1);
+			state=t_state1;
+			update_fan_set(TIM2, TIM3, t_state1);
 		}
 	}
 	if (t_state==t_state3){
 		if(lcd_vol_lvl>11){
-			t_state=t_state4;
-			update_fan_set(TIM1, TIM4, t_state4);
+			state=t_state4;
+			update_fan_set(TIM2, TIM3, t_state4);
 		}
 		if(lcd_vol_lvl<6){
-			t_state=t_state2;
-			update_fan_set(TIM1, TIM4, t_state2);
+			state=t_state2;
+			update_fan_set(TIM2, TIM3, t_state2);
 		}
 	}
 	if (t_state==t_state4){
 		if(lcd_vol_lvl<9){
-			t_state=t_state3;
-			update_fan_set(TIM1, TIM4, t_state3);
+			state=t_state3;
+			update_fan_set(t_state3);
 		}
 	}
 }

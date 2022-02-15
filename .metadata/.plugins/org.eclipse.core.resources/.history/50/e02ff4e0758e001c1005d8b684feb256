@@ -805,33 +805,33 @@ void update_cool_state(void){
 	if (t_state==t_state1){
 		if(lcd_vol_lvl>5){
 			t_state=t_state2;
-			update_fan_set(TIM1, TIM4, t_state2);
+			//update_fan_set(TIM2, TIM3, t_state2);
 		}
 	}
 	if (t_state==t_state2){
 		if(lcd_vol_lvl>8){
 			t_state=t_state3;
-			update_fan_set(TIM1, TIM4, t_state3);
+			//update_fan_set(TIM2, TIM3, t_state3);
 		}
 		if(lcd_vol_lvl<4){
 			t_state=t_state1;
-			update_fan_set(TIM1, TIM4, t_state1);
+			//update_fan_set(TIM2, TIM3, t_state1);
 		}
 	}
 	if (t_state==t_state3){
 		if(lcd_vol_lvl>11){
 			t_state=t_state4;
-			update_fan_set(TIM1, TIM4, t_state4);
+			//update_fan_set(TIM2, TIM3, t_state4);
 		}
 		if(lcd_vol_lvl<6){
 			t_state=t_state2;
-			update_fan_set(TIM1, TIM4, t_state2);
+			//update_fan_set(TIM2, TIM3, t_state2);
 		}
 	}
 	if (t_state==t_state4){
 		if(lcd_vol_lvl<9){
 			t_state=t_state3;
-			update_fan_set(TIM1, TIM4, t_state3);
+			//update_fan_set(TIM2, TIM3, t_state3);
 		}
 	}
 }
