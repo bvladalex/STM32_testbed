@@ -1,4 +1,3 @@
-#include "stm32f10x.h"
 #include "state_machine.h"
 #include "lcd1602_i2c.h"
 #include "stdint.h"
@@ -8,7 +7,6 @@ extern struct transition state_transitions[];
 //extern char bal_symbol[2];
 extern char *bal_symbol;
 extern uint8_t freq_to_print[]; // extern uint8_t *freq_to_print does not work. why??
-extern __IO uint32_t TIM2Freq, TIM3Freq;
 
 int start_state(void)
 {
@@ -70,14 +68,8 @@ int fan_state(void)
 	// draw char
 	HD44780_PCF8574_DrawString(addr, "Temp is:");
 	//draw current tacho value
-	//HD44780_PCF8574_PositionXY(addr, 0, 1);
-	//HD44780_PCF8574_DrawString(addr, freq_to_print);
-	HD44780_PCF8574_PositionXY(addr, 8, 0);
-	HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
 	HD44780_PCF8574_PositionXY(addr, 0, 1);
-	HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq));
-	HD44780_PCF8574_PositionXY(addr, 6, 1);
-	HD44780_PCF8574_DrawString(addr, convert2pr(TIM3Freq));
+	HD44780_PCF8574_DrawString(addr, freq_to_print);
 
 	return ok;
 }
