@@ -97,8 +97,8 @@ __IO uint16_t CCR3_Val_t4c3 = 800;
 
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
-uint16_t IC_PrescalerValue=1940;
-//uint16_t IC_PrescalerValue=0; //for better precision, just for tests
+//uint16_t IC_PrescalerValue=1940;
+uint16_t IC_PrescalerValue=0; //for better precision, just for tests
 
 uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 
@@ -840,7 +840,7 @@ void update_cool_state(void){
 }
 
 void get_temp(void){
-	//while(I2C_GetFlagStatus(I2C1,I2C_FLAG_BUSY));
+	while(I2C_GetFlagStatus(I2C1,I2C_FLAG_BUSY));
 	I2C_GenerateSTART(I2C1,ENABLE);
 	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_SB));
 
@@ -851,36 +851,26 @@ void get_temp(void){
 	dummy_read=I2C1->SR2;
 
 	//phase2 -> send data byte representing temp reg
-	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
 	I2C_SendData(I2C1,0x00);
-	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_BTF));
-	//stop for dev and reg select
-	I2C_GenerateSTOP(I2C1, ENABLE);
+	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
 
-	//start for read portion
-	while(I2C_GetFlagStatus(I2C1,I2C_FLAG_BUSY));
-	I2C_GenerateSTART(I2C1,ENABLE);
-	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_SB));
-
-	//send another address byte due to flow direction change
+	//send another add byte due to flow direction change
 	I2C_Send7bitAddress(I2C1,(tc74_sensor_add_7b<<1),I2C_Direction_Receiver);
-	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_ADDR));
-	I2C_AcknowledgeConfig(I2C1,DISABLE);
-	dummy_read=I2C1->SR1;
-	dummy_read=I2C1->SR2;
-	I2C_GenerateSTOP(I2C1, ENABLE);
+	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
+	//while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_ADDR));
+	//dummy_read=I2C1->SR1;
+	//dummy_read=I2C1->SR2;
+
 	//phase4-send dummy byte for clocking in temp read
 	//I2C_SendData(I2C1,0x00);
 	//while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
-	//I2C_ReceiveData(I2C1);
-
-
-	//receive, first wait for buff to have something
-	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_RXNE));
-	//*temp=I2C_ReceiveData(I2C1);
 	I2C_ReceiveData(I2C1);
-	//generate stop
-	//I2C_GenerateSTOP(I2C1,ENABLE);
+
+	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_RXNE));
+	//receive
+	*temp=I2C_ReceiveData(I2C1);
+	//wait till tx buff is empty
+	I2C_GenerateSTOP(I2C1,ENABLE);
 }
 
 

@@ -53,7 +53,6 @@ uint8_t update_fan=0;
 extern uint8_t lcd_vol_lvl;
 
 extern enum state_codes cur_state;
-extern void get_temp(void);
 
 __IO uint16_t IC2Value=0;
 __IO uint16_t tmp_IC2Value=0;
@@ -216,8 +215,6 @@ void TIM2_IRQHandler(void)
 		if(cur_state==fan)
 		update_fan_screen=1;
 		update_fan=1;
-		//get temperature update
-		get_temp();
 	}
 
 	if (TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET){
