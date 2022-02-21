@@ -56,7 +56,7 @@ char *bal_symbol="<>";
 uint16_t DutyCycle=0;
 uint32_t Frequency=0;
 uint8_t tc74_sensor_add_7b=0x48;
-uint8_t temp;
+uint8_t* temp;
 
 extern __IO uint32_t TIM2Freq,TIM3Freq;
 extern uint8_t update_fan_screen;
@@ -261,8 +261,7 @@ int main(void)
 	  }
 	  if(update_fan_screen==1){
 		  HD44780_PCF8574_PositionXY(addr, 8, 0);
-		  //HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
-		  HD44780_PCF8574_DrawString(addr, convert2pr(temp));
+		  HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
 		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq));
 		  HD44780_PCF8574_PositionXY(addr, 6, 1);
@@ -879,7 +878,7 @@ void get_temp(void){
 	//receive, first wait for buff to have something
 	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_RXNE));
 	//*temp=I2C_ReceiveData(I2C1);
-	temp=I2C_ReceiveData(I2C1);
+	I2C_ReceiveData(I2C1);
 	//generate stop
 	//I2C_GenerateSTOP(I2C1,ENABLE);
 }

@@ -74,7 +74,7 @@ int fan_state(void)
 	//HD44780_PCF8574_PositionXY(addr, 0, 1);
 	//HD44780_PCF8574_DrawString(addr, freq_to_print);
 	HD44780_PCF8574_PositionXY(addr, 8, 0);
-	HD44780_PCF8574_DrawString(addr, convert2pr(temp));
+	HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
 	HD44780_PCF8574_PositionXY(addr, 0, 1);
 	HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq));
 	HD44780_PCF8574_PositionXY(addr, 6, 1);
