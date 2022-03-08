@@ -1,5 +1,5 @@
-21:32:09 **** Programming project master_amp on chip ****
-"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.4316584095394903688.cfg -s "D:\\stm_workspace\\master_amp" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/master_amp.elf verify reset " -c shutdown 
+21:58:06 **** Programming project master_amp on chip ****
+"C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.externaltools.openocd.win32_1.23.0.201904120827\\tools\\openocd\\bin\\openocd.exe" -f stm32.flash.5955807603095498388.cfg -s "D:\\stm_workspace\\master_amp" -s "C:\\Ac6\\SystemWorkbench\\plugins\\fr.ac6.mcu.debug_2.5.0.201904120827\\resources\\openocd\\st_scripts" -c "program Debug/master_amp.elf verify reset " -c shutdown 
 Open On-Chip Debugger 0.10.0+dev-00021-g524e8c8 (2019-04-12-08:48)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -28,17 +28,17 @@ Info : device id = 0x20036410
 Info : flash size = 128kbytes
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000003a msp: 0x20005000
-wrote 16384 bytes from file Debug/master_amp.elf in 1.128151s (14.182 KiB/s)
+wrote 16384 bytes from file Debug/master_amp.elf in 1.106588s (14.459 KiB/s)
 ** Programming Finished **
 ** Verify Started **
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
 target halted due to breakpoint, current mode: Thread 
 xPSR: 0x61000000 pc: 0x2000002e msp: 0x20005000
-verified 16048 bytes in 0.252939s (61.959 KiB/s)
+verified 16076 bytes in 0.254450s (61.699 KiB/s)
 ** Verified OK **
 ** Resetting Target **
 shutdown command invoked
 
-21:32:11 Build Finished (took 1s.618ms)
+21:58:07 Build Finished (took 1s.584ms)
 
