@@ -264,9 +264,9 @@ int main(void)
 		  //HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
 		  HD44780_PCF8574_DrawString(addr, convert2pr(temp));
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
-		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq*30));
+		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq));
 		  HD44780_PCF8574_PositionXY(addr, 6, 1);
-		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM3Freq*30));
+		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM3Freq));
 		  //update_cool_state();
 		  update_fan_screen=0;
 	  }
@@ -636,7 +636,7 @@ void TIM_Configuration(void){
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	//TIM_OCInitStructure.TIM_Pulse = CCR3_Val_t4c3; //value for fan pwm
-	TIM_OCInitStructure.TIM_Pulse = 200; //value for fan rpm -> loop test
+	TIM_OCInitStructure.TIM_Pulse = 630; //value for fan rpm -> loop test
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC3Init(TIM4, &TIM_OCInitStructure);

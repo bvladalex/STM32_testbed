@@ -264,9 +264,9 @@ int main(void)
 		  //HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
 		  HD44780_PCF8574_DrawString(addr, convert2pr(temp));
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
-		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq*30));
+		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq));
 		  HD44780_PCF8574_PositionXY(addr, 6, 1);
-		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM3Freq*30));
+		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM3Freq));
 		  //update_cool_state();
 		  update_fan_screen=0;
 	  }
@@ -346,8 +346,8 @@ void GPIO_Configuration(void){
 
 	//PORTB bit8 will TIM4C3 PWM output
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	/*2s timer control output -> temporary

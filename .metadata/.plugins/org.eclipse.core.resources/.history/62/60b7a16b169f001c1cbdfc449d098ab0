@@ -636,7 +636,7 @@ void TIM_Configuration(void){
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	//TIM_OCInitStructure.TIM_Pulse = CCR3_Val_t4c3; //value for fan pwm
-	TIM_OCInitStructure.TIM_Pulse = 200; //value for fan rpm -> loop test
+	TIM_OCInitStructure.TIM_Pulse = 630; //value for fan rpm -> loop test
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC3Init(TIM4, &TIM_OCInitStructure);

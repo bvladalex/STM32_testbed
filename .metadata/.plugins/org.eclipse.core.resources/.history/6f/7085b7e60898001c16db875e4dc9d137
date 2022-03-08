@@ -264,9 +264,9 @@ int main(void)
 		  //HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
 		  HD44780_PCF8574_DrawString(addr, convert2pr(temp));
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
-		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq*30));
+		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq));
 		  HD44780_PCF8574_PositionXY(addr, 6, 1);
-		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM3Freq*30));
+		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM3Freq));
 		  //update_cool_state();
 		  update_fan_screen=0;
 	  }
@@ -347,7 +347,6 @@ void GPIO_Configuration(void){
 	//PORTB bit8 will TIM4C3 PWM output
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	/*2s timer control output -> temporary
@@ -636,7 +635,7 @@ void TIM_Configuration(void){
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	//TIM_OCInitStructure.TIM_Pulse = CCR3_Val_t4c3; //value for fan pwm
-	TIM_OCInitStructure.TIM_Pulse = 200; //value for fan rpm -> loop test
+	TIM_OCInitStructure.TIM_Pulse = 300; //value for fan rpm -> loop test
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
@@ -802,8 +801,8 @@ uint8_t* convert2pr(uint16_t freq){
 }
 
 void update_fan_set(TIM_TypeDef* TIMx1, TIM_TypeDef* TIMx2, uint8_t t_state_no){
-	//TIMx1->ARR=arr_val[t_state_no];
-	//TIMx2->ARR=arr_val[t_state_no];
+	TIMx1->ARR=arr_val[t_state_no];
+	TIMx2->ARR=arr_val[t_state_no];
 }
 
 void update_cool_state(void){
