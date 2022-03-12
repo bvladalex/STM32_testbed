@@ -6,6 +6,11 @@
  */
 
 /* Includes ------------------------------------------------------------------*/
+//#include "stm32f10x.h"
+//#include "stm32f10x_gpio.h"
+//#include "stm32f10x_rcc.h"
+//#include "stm32f10x_conf.h"
+//#include "stm32_eval.h"
 #include "stm32f10x_conf.h"
 #include "stm32f10x_i2c.h"
 #include "lcd1602_i2c.h"
@@ -31,6 +36,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint8_t a = 1;
+//uint8_t addr=0xD0;
 uint8_t addr=0x4E;
 uint8_t data=0x69;
 uint16_t pot_rd_data;
@@ -48,8 +54,10 @@ uint16_t RPM_fan2=640;
 //frequency and duty cycles for fan control
 uint16_t freq_tim1=640;
 uint16_t freq_tim4=640;
-uint16_t duty_cycle_tim1=40;
-uint16_t duty_cycle_tim4=40;
+uint16_t duty_cycle_tim1=0.4;
+uint16_t duty_cycle_tim4=0.4;
+//////////////////////
+//char bal_symbol[2]={0x3c,0x3e};
 char *bal_symbol="<>";
 uint16_t DutyCycle=0;
 uint32_t Frequency=0;
@@ -71,6 +79,7 @@ extern uint8_t update_fan;
 #define SPI_DUMMY_BYTE	0xff
 
 uint8_t pot_commands_8bit[]={0x04,0x14,0x08,0x18};
+//uint16_t arr_val[]={30000, 25000, 20000, 17000};
 uint16_t arr_val[]={200, 315, 470, 600};
 
 typedef enum{
@@ -96,6 +105,7 @@ __IO uint16_t CCR3_Val_t4c3 = 150;
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
 uint16_t IC_PrescalerValue=1940;
+//uint16_t IC_PrescalerValue=0; //for better precision, just for tests
 
 uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 
@@ -258,6 +268,7 @@ int main(void)
 	  }
 	  if(update_fan_screen==1){
 		  HD44780_PCF8574_PositionXY(addr, 8, 0);
+		  //HD44780_PCF8574_DrawString(addr, convert2pr(lcd_vol_lvl));
 		  HD44780_PCF8574_DrawString(addr, convert2pr(temp));
 		  HD44780_PCF8574_PositionXY(addr, 0, 1);
 		  HD44780_PCF8574_DrawString(addr, convert2pr(TIM2Freq*30));
@@ -304,8 +315,17 @@ void EXTI4_IRQHandler(void){
 
 void RCC_Configuration(void){
 
+	/*Routing clock*/
+	/*
+	RCC_HSICmd(ENABLE);
+	RCC_PLLConfig(RCC_PLLSource_HSI_Div2,RCC_PLLMul_16);
+	RCC_PLLCmd(ENABLE);
+	RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+	*/
+
 	RCC_Configuration_HSI_64Mhz_without_USBclock();
 
+	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_TIM1, ENABLE);
@@ -323,6 +343,7 @@ void GPIO_Configuration(void){
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
 	//start config for mode, up and down buttons
@@ -333,7 +354,14 @@ void GPIO_Configuration(void){
 	//PORTB bit8 will TIM4C3 PWM output
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+	/*2s timer control output -> temporary
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	*/
 
 	//pwm input for tim3c3
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
@@ -342,6 +370,20 @@ void GPIO_Configuration(void){
 
 	//Enable GPIO usage of PORTB pin 4 otherwise used as JTAG oin
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+
+	/*
+	//config for the tim1c2 pwm input read
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+	//2s timer monitor
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	*/
 
 	//Potentiometer SPI config
 	//start configuration for SPI1 on PORTA
@@ -384,6 +426,8 @@ void SPI_Configuration(void){
 	SPI_InitStruct.SPI_Mode=SPI_Mode_Master;
 	SPI_InitStruct.SPI_NSS=SPI_NSS_Soft;
 
+	//SPI_SSOutputCmd(SPI1,ENABLE);
+
 	SPI_Init(SPI1,&SPI_InitStruct);
 
 	SPI_Cmd(SPI1,ENABLE);
@@ -411,6 +455,8 @@ void NVIC_Configuration(void){
 
 	/* Enable the TIM2 global Interrupt */
 	NVIC_InitStruct.NVIC_IRQChannel = TIM2_IRQn;
+	//NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
+	//NVIC_InitStruct.NVIC_IRQChannelSubPriority = 1;
 
 	NVIC_Init(&NVIC_InitStruct);
 
@@ -484,6 +530,7 @@ void TIM_Configuration(void){
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
 	/* Prescaler configuration */
+		////////////////////////////////////////////////////
 
 	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
 	TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
@@ -539,10 +586,14 @@ void TIM_Configuration(void){
 
 	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
 
+	/* Prescaler configuration */
+	//TIM_PrescalerConfig(TIM1, PrescalerValue, TIM_PSCReloadMode_Immediate);
+
 	/* Output Compare Timing Mode configuration: Channel1 */
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = 0;
+	//TIM_OCInitStructure.TIM_Pulse = CCR1_Val_t1c1; //value for fan pwm
+	TIM_OCInitStructure.TIM_Pulse = freq_tim1*duty_cycle_tim1; //value for fan rpm
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC1Init(TIM1, &TIM_OCInitStructure);
@@ -552,6 +603,19 @@ void TIM_Configuration(void){
 
 	/* enable the Brake and Dead Zone Registers for some reason :/ */
 	TIM_CtrlPWMOutputs(TIM1,ENABLE);
+	///////////////////start config for 2s isr -> check if still needed///
+	/* Output Compare Timing Mode configuration: Channel1 */
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = CCR1_Val_t1c1;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+
+	TIM_OC2Init(TIM1, &TIM_OCInitStructure);
+
+	TIM_OC2PreloadConfig(TIM1, TIM_OCPreload_Disable);
+
+	/* TIM IT enable */
+	//TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);
 
 	/* TIM1 enable counter */
 	TIM_Cmd(TIM1, ENABLE);
@@ -565,7 +629,9 @@ void TIM_Configuration(void){
 	--------------------------------------------------------------- */
 
 	/* Time base configuration */
+	//PrescalerValue=63;
 	PrescalerValue = (uint16_t) (64000000 / 16000000) - 1;
+	//TIM_TimeBaseStructure.TIM_Period = 25600; //value for fan pwm
 	TIM_TimeBaseStructure.TIM_Period = freq_tim4; //value for fan rpm-> loop test
 	TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
@@ -576,12 +642,27 @@ void TIM_Configuration(void){
 	/* Output Compare Timing Mode configuration: Channel1 */
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = 0;
+	//TIM_OCInitStructure.TIM_Pulse = CCR3_Val_t4c3; //value for fan pwm
+	TIM_OCInitStructure.TIM_Pulse = freq_tim4*duty_cycle_tim4; //value for fan rpm -> loop test
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
 
 	TIM_OC3PreloadConfig(TIM4, TIM_OCPreload_Enable);
+	/*
+	////////////////////finish pwm out/////
+	/////////begin 2 second fan update counter///
+	// Output Compare Timing Mode configuration: Channel1 //
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 50;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+
+	TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+	TIM_OC1PreloadConfig(TIM4, TIM_OCPreload_Disable);
+
+	TIM_ITConfig(TIM4, TIM_IT_CC1, ENABLE);
+	*/
 	TIM_ARRPreloadConfig(TIM4, ENABLE);
 
 	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
@@ -677,11 +758,13 @@ void change_pot_vol(uint8_t direction){
 			else if(lcd_bal_lvl<8){
 				pot_rd_data=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);//
 				spi_pot_16b_op(POT1_WR,pot_rd_data-decrement);
+				//pot_rd_data=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
 				spi_pot_16b_op(POT0_WR,((pot_rd_data-16)*(lcd_bal_lvl-1))/7);
 			}
 			else if(lcd_bal_lvl>8){
 				pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);//
 				spi_pot_16b_op(POT0_WR,pot_rd_data-decrement);
+				//pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
 				spi_pot_16b_op(POT1_WR,((pot_rd_data-16)*(15-lcd_bal_lvl))/7);
 			}
 		}
@@ -710,6 +793,7 @@ uint16_t spi_pot_16b_op(uint8_t cmd,uint8_t data){
 
 uint8_t* convert2pr(uint16_t freq){
 
+	//uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 	for (i=0;i<=3;i++)
 		freq_to_print[i]=0x10;
 	i=3;
@@ -727,38 +811,39 @@ uint8_t* convert2pr(uint16_t freq){
 void update_fan_set(TIM_TypeDef* TIMx1, TIM_TypeDef* TIMx2, uint8_t t_state_no){
 	TIM_OCInitStructure.TIM_Pulse = arr_val[t_state_no];
 	TIM_OC3Init(TIMx2, &TIM_OCInitStructure);
-	TIM_OC1Init(TIMx1, &TIM_OCInitStructure);
+	//TIMx1->ARR=arr_val[t_state_no];
+	//TIMx2->ARR=arr_val[t_state_no];
 }
 
 void update_cool_state(void){
 	if (t_state==t_state1){
-		if(temp>30){
+		if(lcd_vol_lvl>5){
 			t_state=t_state2;
 			update_fan_set(TIM1, TIM4, t_state2);
 		}
 	}
 	if (t_state==t_state2){
-		if(temp>40){
+		if(lcd_vol_lvl>8){
 			t_state=t_state3;
 			update_fan_set(TIM1, TIM4, t_state3);
 		}
-		if(temp<25){
+		if(lcd_vol_lvl<4){
 			t_state=t_state1;
 			update_fan_set(TIM1, TIM4, t_state1);
 		}
 	}
 	if (t_state==t_state3){
-		if(temp>50){
+		if(lcd_vol_lvl>11){
 			t_state=t_state4;
 			update_fan_set(TIM1, TIM4, t_state4);
 		}
-		if(temp<35){
+		if(lcd_vol_lvl<6){
 			t_state=t_state2;
 			update_fan_set(TIM1, TIM4, t_state2);
 		}
 	}
 	if (t_state==t_state4){
-		if(temp<45){
+		if(lcd_vol_lvl<9){
 			t_state=t_state3;
 			update_fan_set(TIM1, TIM4, t_state3);
 		}
@@ -766,7 +851,7 @@ void update_cool_state(void){
 }
 
 void get_temp(void){
-
+	//while(I2C_GetFlagStatus(I2C1,I2C_FLAG_BUSY));
 	I2C_GenerateSTART(I2C1,ENABLE);
 	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_SB));
 
@@ -794,15 +879,19 @@ void get_temp(void){
 	I2C_AcknowledgeConfig(I2C1,DISABLE);
 	dummy_read=I2C1->SR1;
 	dummy_read=I2C1->SR2;
-	//generate stop
 	I2C_GenerateSTOP(I2C1, ENABLE);
+	//phase4-send dummy byte for clocking in temp read
+	//I2C_SendData(I2C1,0x00);
+	//while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_TXE));
+	//I2C_ReceiveData(I2C1);
+
 
 	//receive, first wait for buff to have something
 	while(!I2C_GetFlagStatus(I2C1,I2C_FLAG_RXNE));
 	//*temp=I2C_ReceiveData(I2C1);
 	temp=I2C_ReceiveData(I2C1);
-
-
+	//generate stop
+	//I2C_GenerateSTOP(I2C1,ENABLE);
 }
 
 

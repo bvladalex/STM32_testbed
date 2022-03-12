@@ -6,6 +6,11 @@
  */
 
 /* Includes ------------------------------------------------------------------*/
+//#include "stm32f10x.h"
+//#include "stm32f10x_gpio.h"
+//#include "stm32f10x_rcc.h"
+//#include "stm32f10x_conf.h"
+//#include "stm32_eval.h"
 #include "stm32f10x_conf.h"
 #include "stm32f10x_i2c.h"
 #include "lcd1602_i2c.h"
@@ -31,6 +36,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint8_t a = 1;
+//uint8_t addr=0xD0;
 uint8_t addr=0x4E;
 uint8_t data=0x69;
 uint16_t pot_rd_data;
@@ -50,6 +56,8 @@ uint16_t freq_tim1=640;
 uint16_t freq_tim4=640;
 uint16_t duty_cycle_tim1=40;
 uint16_t duty_cycle_tim4=40;
+//////////////////////
+//char bal_symbol[2]={0x3c,0x3e};
 char *bal_symbol="<>";
 uint16_t DutyCycle=0;
 uint32_t Frequency=0;
@@ -71,6 +79,7 @@ extern uint8_t update_fan;
 #define SPI_DUMMY_BYTE	0xff
 
 uint8_t pot_commands_8bit[]={0x04,0x14,0x08,0x18};
+//uint16_t arr_val[]={30000, 25000, 20000, 17000};
 uint16_t arr_val[]={200, 315, 470, 600};
 
 typedef enum{
@@ -96,6 +105,7 @@ __IO uint16_t CCR3_Val_t4c3 = 150;
 uint16_t PrescalerValue = 0;
 uint32_t tim_freq;
 uint16_t IC_PrescalerValue=1940;
+//uint16_t IC_PrescalerValue=0; //for better precision, just for tests
 
 uint8_t freq_to_print[5]={0x10,0x10,0x10,0x10,0}; //can support maximum 4 digit rpm, 0x10 is blank, 0 is null terminator
 
