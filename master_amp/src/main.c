@@ -528,7 +528,7 @@ void TIM_Configuration(void){
 	--------------------------------------------------------------- */
 
 	/* Compute the prescaler value */
-	PrescalerValue = (uint16_t) (SystemCoreClock / 64000000) - 1;
+	PrescalerValue = (uint16_t) (SystemCoreClock / 16000000) - 1;
 
 	/* Time base configuration */
 	//TIM_TimeBaseStructure.TIM_Period = 2560; //value for fan pwm

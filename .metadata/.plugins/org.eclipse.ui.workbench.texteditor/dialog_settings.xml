@@ -2,28 +2,28 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="CCR1_Val_t1c1" key="selection"/>
+		<item value="update_fan_set" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="update_fan_set"/>
+			<item value="state_transitions"/>
+			<item value="hla_vid_pid 0x0483 0x374b"/>
 			<item value="CCR1_Val_t1c1"/>
 			<item value="duty_cycle_tim4"/>
 			<item value="duty_cycle_tim1"/>
 			<item value="update_cool_state"/>
 			<item value="RTC_IRQHandler"/>
-			<item value="IC_PrescalerValue"/>
-			<item value="PrescalerValue"/>
-			<item value="arr_val"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item value="284" key="DIALOG_WIDTH"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
-		<item value="391" key="DIALOG_HEIGHT"/>
+		<item value="385" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|5|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="523" key="DIALOG_HEIGHT"/>
 		<item value="279" key="DIALOG_X_ORIGIN"/>
 		<item value="498" key="DIALOG_Y_ORIGIN"/>
 	</section>

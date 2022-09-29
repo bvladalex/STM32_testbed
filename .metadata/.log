@@ -8674,3 +8674,485 @@ Caused by: java.lang.NullPointerException
 	at java.lang.reflect.Method.invoke(Method.java:498)
 	at org.eclipse.e4.core.internal.di.MethodRequestor.execute(MethodRequestor.java:55)
 	... 36 more
+!SESSION 2022-09-17 19:57:52.027 -----------------------------------------------
+eclipse.buildId=4.6.3.M20170301-0400
+java.version=1.8.0_151
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -pluginCustomization configuration/st_pref.ini -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -pluginCustomization configuration/st_pref.ini -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.epp.logging.aeri.ide 2 17 2022-09-17 19:58:33.523
+!MESSAGE Server ‘org.eclipse.epp.logging.aeri.ide.server’ failed with exception: Received fatal alert: handshake_failure. ; version: 2.0.4.v20170307-1435
+!STACK 0
+javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:154)
+	at sun.security.ssl.SSLSocketImpl.recvAlert(SSLSocketImpl.java:2033)
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1135)
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1385)
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1413)
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1397)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.createLayeredSocket(SSLConnectionSocketFactory.java:290)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.connectSocket(SSLConnectionSocketFactory.java:259)
+	at org.apache.http.impl.conn.HttpClientConnectionOperator.connect(HttpClientConnectionOperator.java:125)
+	at org.apache.http.impl.conn.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:319)
+	at org.apache.http.impl.execchain.MainClientExec.establishRoute(MainClientExec.java:363)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:219)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:195)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:86)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:108)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:184)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:82)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:57)
+	at org.apache.http.client.fluent.Executor.execute(Executor.java:206)
+	at org.eclipse.epp.internal.logging.aeri.ide.server.mars.IO.request(IO.java:206)
+	at org.eclipse.epp.internal.logging.aeri.ide.server.mars.IO.refreshConfiguration(IO.java:68)
+	at org.eclipse.epp.internal.logging.aeri.ide.server.mars.ServerConnection.startUp(ServerConnection.java:124)
+	at com.google.common.util.concurrent.AbstractIdleService$2$1.run(AbstractIdleService.java:54)
+	at com.google.common.util.concurrent.Callables$3.run(Callables.java:93)
+	at java.lang.Thread.run(Thread.java:748)
+
+!ENTRY fr.ac6.mcu.ide 1 1 2022-09-17 19:58:34.074
+!MESSAGE Started RMI Server, listening on port 21112
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 19:59:04.768
+!MESSAGE Error parsing line [Error: read version failed]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 21:00:26.597
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 21:02:41.331
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+!SESSION 2022-09-17 21:10:16.776 -----------------------------------------------
+eclipse.buildId=4.6.3.M20170301-0400
+java.version=1.8.0_151
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -pluginCustomization configuration/st_pref.ini -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -pluginCustomization configuration/st_pref.ini -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.epp.logging.aeri.ide 2 17 2022-09-17 21:10:31.771
+!MESSAGE Server ‘org.eclipse.epp.logging.aeri.ide.server’ failed with exception: Received fatal alert: handshake_failure. ; version: 2.0.4.v20170307-1435
+!STACK 0
+javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:154)
+	at sun.security.ssl.SSLSocketImpl.recvAlert(SSLSocketImpl.java:2033)
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1135)
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1385)
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1413)
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1397)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.createLayeredSocket(SSLConnectionSocketFactory.java:290)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.connectSocket(SSLConnectionSocketFactory.java:259)
+	at org.apache.http.impl.conn.HttpClientConnectionOperator.connect(HttpClientConnectionOperator.java:125)
+	at org.apache.http.impl.conn.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:319)
+	at org.apache.http.impl.execchain.MainClientExec.establishRoute(MainClientExec.java:363)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:219)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:195)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:86)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:108)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:184)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:82)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:57)
+	at org.apache.http.client.fluent.Executor.execute(Executor.java:206)
+	at org.eclipse.epp.internal.logging.aeri.ide.server.mars.IO.request(IO.java:206)
+	at org.eclipse.epp.internal.logging.aeri.ide.server.mars.IO.refreshConfiguration(IO.java:68)
+	at org.eclipse.epp.internal.logging.aeri.ide.server.mars.ServerConnection.startUp(ServerConnection.java:124)
+	at com.google.common.util.concurrent.AbstractIdleService$2$1.run(AbstractIdleService.java:54)
+	at com.google.common.util.concurrent.Callables$3.run(Callables.java:93)
+	at java.lang.Thread.run(Thread.java:748)
+
+!ENTRY fr.ac6.mcu.ide 1 1 2022-09-17 21:10:32.004
+!MESSAGE Started RMI Server, listening on port 21112
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 21:11:01.468
+!MESSAGE Error parsing line [Error: read version failed]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 21:12:34.785
+!MESSAGE Error parsing line [Error: read version failed]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.launchbar.core 2 0 2022-09-17 21:13:44.656
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2022-09-17 21:13:44.657
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.core.resources 4 372 2022-09-17 21:13:44.660
+!MESSAGE Resource '/i2c_lcd_test' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2022-09-17 21:13:44.661
+!MESSAGE Resource '/test1_project' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2022-09-17 21:13:44.662
+!MESSAGE Resource '/toggle_led' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2022-09-17 21:13:44.663
+!MESSAGE Resource '/toggle_led_int' is not open.
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 21:18:28.410
+!MESSAGE Error parsing line [Error: read version failed]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 21:19:19.024
+!MESSAGE Error parsing line [Error: read version failed]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 21:19:46.231
+!MESSAGE Error parsing line [Error: read version failed]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 21:20:07.746
+!MESSAGE Error parsing line [Error: read version failed]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-17 21:29:48.982
+!MESSAGE Error parsing line [Error: read version failed]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+!SESSION 2022-09-17 21:40:12.649 -----------------------------------------------
+eclipse.buildId=4.6.3.M20170301-0400
+java.version=1.8.0_151
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -pluginCustomization configuration/st_pref.ini -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -pluginCustomization configuration/st_pref.ini -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.epp.logging.aeri.ide 2 17 2022-09-17 21:40:43.092
+!MESSAGE Server ‘org.eclipse.epp.logging.aeri.ide.server’ failed with exception: Received fatal alert: handshake_failure. ; version: 2.0.4.v20170307-1435
+!STACK 0
+javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:154)
+	at sun.security.ssl.SSLSocketImpl.recvAlert(SSLSocketImpl.java:2033)
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1135)
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1385)
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1413)
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1397)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.createLayeredSocket(SSLConnectionSocketFactory.java:290)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.connectSocket(SSLConnectionSocketFactory.java:259)
+	at org.apache.http.impl.conn.HttpClientConnectionOperator.connect(HttpClientConnectionOperator.java:125)
+	at org.apache.http.impl.conn.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:319)
+	at org.apache.http.impl.execchain.MainClientExec.establishRoute(MainClientExec.java:363)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:219)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:195)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:86)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:108)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:184)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:82)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:57)
+	at org.apache.http.client.fluent.Executor.execute(Executor.java:206)
+	at org.eclipse.epp.internal.logging.aeri.ide.server.mars.IO.request(IO.java:206)
+	at org.eclipse.epp.internal.logging.aeri.ide.server.mars.IO.refreshConfiguration(IO.java:68)
+	at org.eclipse.epp.internal.logging.aeri.ide.server.mars.ServerConnection.startUp(ServerConnection.java:124)
+	at com.google.common.util.concurrent.AbstractIdleService$2$1.run(AbstractIdleService.java:54)
+	at com.google.common.util.concurrent.Callables$3.run(Callables.java:93)
+	at java.lang.Thread.run(Thread.java:748)
+
+!ENTRY fr.ac6.mcu.ide 1 1 2022-09-17 21:40:44.264
+!MESSAGE Started RMI Server, listening on port 21112
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-18 08:23:02.724
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-18 08:24:55.836
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-18 08:31:00.630
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-18 08:31:26.052
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-18 08:44:11.676
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-18 10:30:41.347
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-18 10:32:20.378
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-18 10:33:14.655
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.cdt.core 4 0 2022-09-18 10:36:58.913
+!MESSAGE Error parsing line [Error: init mode failed (unable to connect to the target)]
+!STACK 0
+java.lang.NullPointerException
+	at org.eclipse.cdt.core.ErrorParserManager.addProblemMarker(ErrorParserManager.java:595)
+	at org.eclipse.cdt.core.ErrorParserManager.generateExternalMarker(ErrorParserManager.java:582)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.recordError(RegexErrorPattern.java:318)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorPattern.processLine(RegexErrorPattern.java:284)
+	at org.eclipse.cdt.core.errorparsers.RegexErrorParser.processLine(RegexErrorParser.java:148)
+	at org.eclipse.cdt.core.ErrorParserManager.processLine(ErrorParserManager.java:354)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.processLine(ConsoleOutputSniffer.java:178)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer.access$0(ConsoleOutputSniffer.java:174)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.checkLine(ConsoleOutputSniffer.java:99)
+	at org.eclipse.cdt.internal.core.ConsoleOutputSniffer$ConsoleOutputStream.write(ConsoleOutputSniffer.java:58)
+	at java.io.OutputStream.write(OutputStream.java:75)
+	at org.eclipse.cdt.internal.core.ProcessClosure$ReaderThread.run(ProcessClosure.java:57)
+
+!ENTRY org.eclipse.launchbar.core 2 0 2022-09-19 07:46:53.984
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2022-09-19 07:46:53.986
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.core.resources 4 372 2022-09-19 07:46:53.989
+!MESSAGE Resource '/i2c_lcd_test' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2022-09-19 07:46:53.993
+!MESSAGE Resource '/test1_project' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2022-09-19 07:46:53.995
+!MESSAGE Resource '/toggle_led' is not open.
+
+!ENTRY org.eclipse.core.resources 4 372 2022-09-19 07:46:53.996
+!MESSAGE Resource '/toggle_led_int' is not open.
