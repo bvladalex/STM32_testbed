@@ -59,6 +59,7 @@ uint8_t temp;
 extern __IO uint32_t TIM2Freq,TIM3Freq;
 extern uint8_t update_fan_screen;
 extern uint8_t update_fan;
+extern uint8_t read_temp;
 
 #define POT0_INC 		0x00
 #define POT1_INC 		0x01
@@ -72,6 +73,8 @@ extern uint8_t update_fan;
 
 uint8_t pot_commands_8bit[]={0x04,0x14,0x08,0x18};
 uint16_t arr_val[]={200, 315, 470, 600};
+//uint16_t arr_val[]={600, 600, 600, 600};
+
 
 typedef enum{
 	t_state1,
@@ -270,6 +273,11 @@ int main(void)
 		  update_cool_state();
 		  update_fan=0;
 	  }
+
+	  if(read_temp==1){
+		  while(I2C_GetFlagStatus(I2C1,I2C_FLAG_BUSY));
+		  get_temp();
+	  }
   }
 
 
@@ -436,7 +444,8 @@ void EXTI_Configuration(void){
 	EXTI_InitStruct.EXTI_Line=EXTI_Line5;
 	EXTI_InitStruct.EXTI_LineCmd=ENABLE;
 	EXTI_InitStruct.EXTI_Mode=EXTI_Mode_Interrupt;
-	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Falling;
+	//EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Falling;
+	EXTI_InitStruct.EXTI_Trigger=EXTI_Trigger_Rising;
 	EXTI_Init(&EXTI_InitStruct);
 
 	/*EXTI config for up and down buttons*/
@@ -554,7 +563,7 @@ void TIM_Configuration(void){
 	TIM_CtrlPWMOutputs(TIM1,ENABLE);
 
 	/* TIM1 enable counter */
-	TIM_Cmd(TIM1, ENABLE);
+	TIM_Cmd(TIM1, DISABLE);
 
 /* ---------------------------------------------------------------
 	TIM4 Configuration: PWM output mode on C3:
@@ -587,7 +596,7 @@ void TIM_Configuration(void){
 	//TIM_PrescalerConfig(TIM4, PrescalerValue, TIM_PSCReloadMode_Immediate);
 
 	/* TIM4 enable counter */
-	TIM_Cmd(TIM4, ENABLE);
+	TIM_Cmd(TIM4, DISABLE);
 
 }
 

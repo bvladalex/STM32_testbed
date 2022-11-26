@@ -50,6 +50,7 @@ extern __IO uint16_t DutyCycle;
 extern __IO uint32_t Frequency;
 uint8_t update_fan_screen=0;
 uint8_t update_fan=0;
+uint8_t read_temp=0;
 extern uint8_t lcd_vol_lvl;
 
 extern enum state_codes cur_state;
@@ -214,10 +215,12 @@ void TIM2_IRQHandler(void)
 		//if(lcd_vol_lvl>10)
 		//	TIM1->ARR=25000;
 		if(cur_state==fan)
-		update_fan_screen=1;
+			update_fan_screen=1;
+		//check to see if there is a need to change cooling state
 		update_fan=1;
 		//get temperature update
-		get_temp();
+		//get_temp();
+		read_temp=1;
 	}
 
 	if (TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET){
