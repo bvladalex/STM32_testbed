@@ -187,12 +187,12 @@ int main(void)
 	rc = state_fun();
 
 	//set volume to half for both channels in high scale
-	pot_rd_data=spi_pot_16b_op(POT0_WR,0x80); //full scale is 256 our of 256 of digpot
-	pot_rd_data=spi_pot_16b_op(POT1_WR,0x80); //full scale is 256 our of 256 of digpot
+	//pot_rd_data=spi_pot_16b_op(POT0_WR,0x80); //full scale is 256 our of 256 of digpot
+	//pot_rd_data=spi_pot_16b_op(POT1_WR,0x80); //full scale is 256 our of 256 of digpot
 
 	//set volume to half for both channels in high scale
-	//pot_rd_data=spi_pot_16b_op(POT0_WR,0x40); //full scale is 128 our of 256 of digpot
-	//pot_rd_data=spi_pot_16b_op(POT1_WR,0x40); //full scale is 128 our of 256 of digpot
+	pot_rd_data=spi_pot_16b_op(POT0_WR,0x40); //full scale is 128 our of 256 of digpot
+	pot_rd_data=spi_pot_16b_op(POT1_WR,0x40); //full scale is 128 our of 256 of digpot
 
 	//set volume to half for both channels in low scale (1:8 ratio)
 	//pot_rd_data=spi_pot_16b_op(POT0_WR,0x10); //full scale is 32 our of 256 of digpot
@@ -661,11 +661,11 @@ void change_lcd_bal(uint8_t direction){
 
 void change_pot_vol(uint8_t direction){
 	//full scale step
-	uint8_t step=16;
+	//uint8_t step=16;
 	//reduced scale step (1:8 ratio)
 	//uint8_t step=2;
 	//reduced scale step (1:2 ratio)
-	//uint8_t step=8;
+	uint8_t step=8;
 	//reduced scale step (1:16 ratio)
 	//uint8_t step=1;
 	if(direction==UP){

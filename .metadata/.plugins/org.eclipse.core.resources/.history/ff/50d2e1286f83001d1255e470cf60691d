@@ -187,20 +187,16 @@ int main(void)
 	rc = state_fun();
 
 	//set volume to half for both channels in high scale
+	/*
 	pot_rd_data=spi_pot_16b_op(POT0_WR,0x80); //full scale is 256 our of 256 of digpot
 	pot_rd_data=spi_pot_16b_op(POT1_WR,0x80); //full scale is 256 our of 256 of digpot
-
-	//set volume to half for both channels in high scale
-	//pot_rd_data=spi_pot_16b_op(POT0_WR,0x40); //full scale is 128 our of 256 of digpot
-	//pot_rd_data=spi_pot_16b_op(POT1_WR,0x40); //full scale is 128 our of 256 of digpot
+	*/
 
 	//set volume to half for both channels in low scale (1:8 ratio)
-	//pot_rd_data=spi_pot_16b_op(POT0_WR,0x10); //full scale is 32 our of 256 of digpot
-	//pot_rd_data=spi_pot_16b_op(POT1_WR,0x10); //full scale is 32 our of 256 of digpot
 
-	//set volume to half for both channels in low scale (1:16 ratio)
-	//pot_rd_data=spi_pot_16b_op(POT0_WR,0x8); //full scale is 32 our of 256 of digpot
-	//pot_rd_data=spi_pot_16b_op(POT1_WR,0x8); //full scale is 32 our of 256 of digpot
+	pot_rd_data=spi_pot_16b_op(POT0_WR,0x10); //full scale is 32 our of 256 of digpot
+	pot_rd_data=spi_pot_16b_op(POT1_WR,0x10); //full scale is 32 our of 256 of digpot
+
 
   while (1)
   {
@@ -660,14 +656,7 @@ void change_lcd_bal(uint8_t direction){
 
 
 void change_pot_vol(uint8_t direction){
-	//full scale step
 	uint8_t step=16;
-	//reduced scale step (1:8 ratio)
-	//uint8_t step=2;
-	//reduced scale step (1:2 ratio)
-	//uint8_t step=8;
-	//reduced scale step (1:16 ratio)
-	//uint8_t step=1;
 	if(direction==UP){
 		if(lcd_vol_lvl<=15){
 			if(lcd_bal_lvl==8){
@@ -680,22 +669,14 @@ void change_pot_vol(uint8_t direction){
 				GPIO_SetBits(GPIOA, GPIO_Pin_4);
 			}
 			else if(lcd_bal_lvl<8){
-				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
-				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
 				pot_rd_data=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT1_WR,pot_rd_data+step);
-				spi_pot_16b_op(POT0_WR,((pot_rd_data+step)*(lcd_bal_lvl-1))/7);
-				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
-				GPIO_SetBits(GPIOA, GPIO_Pin_4);
+				spi_pot_16b_op(POT1_WR,pot_rd_data+16);
+				spi_pot_16b_op(POT0_WR,((pot_rd_data+16)*(lcd_bal_lvl-1))/7);
 			}
 			else if(lcd_bal_lvl>8){
-				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
-				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
 				pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);
-				spi_pot_16b_op(POT0_WR,pot_rd_data+step);
-				spi_pot_16b_op(POT1_WR,((pot_rd_data+step)*(15-lcd_bal_lvl))/7);
-				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
-				GPIO_SetBits(GPIOA, GPIO_Pin_4);
+				spi_pot_16b_op(POT0_WR,pot_rd_data+16);
+				spi_pot_16b_op(POT1_WR,((pot_rd_data+16)*(15-lcd_bal_lvl))/7);
 			}
 		}
 	}
@@ -711,22 +692,14 @@ void change_pot_vol(uint8_t direction){
 				GPIO_SetBits(GPIOA, GPIO_Pin_4);
 			}
 			else if(lcd_bal_lvl<8){
-				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
-				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
 				pot_rd_data=spi_pot_16b_op(POT1_RD,SPI_DUMMY_BYTE);//
 				spi_pot_16b_op(POT1_WR,pot_rd_data-step);
-				spi_pot_16b_op(POT0_WR,((pot_rd_data-step)*(lcd_bal_lvl-1))/7);
-				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
-				GPIO_SetBits(GPIOA, GPIO_Pin_4);
+				spi_pot_16b_op(POT0_WR,((pot_rd_data-16)*(lcd_bal_lvl-1))/7);
 			}
 			else if(lcd_bal_lvl>8){
-				GPIO_ResetBits(GPIOA,GPIO_Pin_4);
-				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE) == RESET);
 				pot_rd_data=spi_pot_16b_op(POT0_RD,SPI_DUMMY_BYTE);//
 				spi_pot_16b_op(POT0_WR,pot_rd_data-step);
-				spi_pot_16b_op(POT1_WR,((pot_rd_data-step)*(15-lcd_bal_lvl))/7);
-				while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
-				GPIO_SetBits(GPIOA, GPIO_Pin_4);
+				spi_pot_16b_op(POT1_WR,((pot_rd_data-16)*(15-lcd_bal_lvl))/7);
 			}
 		}
 	}

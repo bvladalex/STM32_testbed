@@ -30,10 +30,10 @@ endif
 all: spi_gpio_int.elf
 
 # Tool invocations
-spi_gpio_int.elf: $(OBJS) $(USER_OBJS) D:\stm_workspace\spi_gpio_int/LinkerScript.ld
+spi_gpio_int.elf: $(OBJS) $(USER_OBJS) /Volumes/other_stuff/electro_stuff/STM32_testbed/spi_gpio_int/LinkerScript.ld
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -T"D:/stm_workspace/spi_gpio_int/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "spi_gpio_int.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
+	arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -T"/Volumes/other_stuff/electro_stuff/STM32_testbed/spi_gpio_int/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "spi_gpio_int.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

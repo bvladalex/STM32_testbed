@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="update_fan" key="selection"/>
+		<item value="incr" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="incr"/>
+			<item value="16"/>
+			<item value="lcd"/>
 			<item value="update_fan"/>
 			<item value="update_fan_screen"/>
 			<item value="I2C_Send7bitAddress"/>
 			<item value="I2C_GetFlagStatus"/>
 			<item value="update_fan_set"/>
-			<item value="state_transitions"/>
-			<item value="hla_vid_pid 0x0483 0x374b"/>
-			<item value="CCR1_Val_t1c1"/>
 		</list>
 		<list key="replacehistory">
 		</list>
@@ -24,7 +24,7 @@
 		<item value="292" key="DIALOG_WIDTH"/>
 		<item value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont" key="DIALOG_FONT_NAME"/>
 		<item value="402" key="DIALOG_HEIGHT"/>
-		<item value="279" key="DIALOG_X_ORIGIN"/>
-		<item value="473" key="DIALOG_Y_ORIGIN"/>
+		<item value="50" key="DIALOG_X_ORIGIN"/>
+		<item value="177" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>
